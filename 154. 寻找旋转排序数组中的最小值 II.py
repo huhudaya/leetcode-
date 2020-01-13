@@ -21,17 +21,19 @@
 这道题是 寻找旋转排序数组中的最小值 的延伸题目。
 允许重复会影响算法的时间复杂度吗？会如何影响，为什么
 '''
+
+
 class Solution:
     def findMin(self, nums: List[int]) -> int:
         left, right = 0, len(nums) - 1
         while left < right:
             mid = (left + right) // 2
             if nums[mid] > nums[right]:
-            	left = mid + 1
+                left = mid + 1
             elif nums[mid] < nums[right]:
-            	right = mid
+                right = mid
             else:
-            	right = right - 1 # key
+                right = right - 1  # key
         return nums[left]
 
 
@@ -55,6 +57,8 @@ class Solution:
 
 # 分治
 from typing import List
+
+
 class Solution:
     def findMin(self, nums: List[int]) -> int:
         size = len(nums)
