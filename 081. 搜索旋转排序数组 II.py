@@ -76,18 +76,20 @@ public boolean search(int[] nums, int target) {
 
     }
 '''
+
+
 class Solution:
-    def search(self, nums: List[int], target: int) -> bool:
-        
+    def search(self, nums, target: int) -> bool:
+
         left = 0
         right = len(nums) - 1
         while left <= right:
-            #print(left, right)
+            # print(left, right)
             mid = left + (right - left) // 2
             # 等于目标值
             if nums[mid] == target:
                 return True
-            
+
             if nums[mid] == nums[left] == nums[right]:
                 left += 1
                 right -= 1
@@ -103,9 +105,11 @@ class Solution:
                 else:
                     right = mid - 1
         return False
+
+
 # 自己的版本
 class Solution:
-    def search(self, nums: List[int], target: int) -> bool:
+    def search(self, nums, target: int) -> bool:
         left = 0
         right = len(nums) - 1
         # 牢记LeetCode中一定有[]的存在，所以一定要判断一下
@@ -120,17 +124,31 @@ class Solution:
                 left += 1
                 right -= 1
             # 后面的部分
-            elif nums[mid] <= nums[right]:
-                if nums[mid] <= target <= nums[right]:
-                    left = mid
-                else:
-                    right = mid
-            else:
+            # elif nums[mid] <= nums[right]:
+            #     if nums[mid] <= target <= nums[right]:
+            #         left = mid
+            #     else:
+            #         right = mid
+            # else:
+            #     if nums[left] <= target <= nums[mid]:
+            #         right = mid
+            #     else:
+            #         left = mid
+
+            elif nums[left] <= nums[mid]:
                 if nums[left] <= target <= nums[mid]:
                     right = mid
                 else:
                     left = mid
+            else:
+                if nums[mid] <= target <= nums[right]:
+                    left = mid
+                else:
+                    right = mid
         if nums[left] == target or nums[right] == target:
             return True
         else:
             return False
+
+print(Solution().search([1, 3, 1, 1, 2],3))
+# 注意 13112这种情况是不会发生的，因为原数组是排好序的，按某一个点进行旋转，显然11213不满足升序条件

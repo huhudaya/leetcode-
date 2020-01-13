@@ -21,12 +21,12 @@
 链接：https://leetcode-cn.com/problems/search-in-rotated-sorted-array
 '''
 class Solution:
-    def search(self, nums: List[int], target: int) -> int:
+    def search(self, nums, target: int) -> int:
         # 二分法模板
         if len(nums) == 0:
             return -1
         left = 0
-        right = len(nums) - 1
+        right = len(nums ) - 1
         n = len(nums)
         while left + 1 < right:
             mid = left + (right - left) // 2
@@ -47,5 +47,5 @@ class Solution:
         if nums[right] == target:
             return right
         return -1
-
+print(Solution().search([1,3,1,1,0],3))
 
