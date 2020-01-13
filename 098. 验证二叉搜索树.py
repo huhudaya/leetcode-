@@ -29,32 +29,32 @@
 链接：https://leetcode-cn.com/problems/validate-binary-search-tree
 '''
 
+
 # Definition for a binary tree node.
 class TreeNode:
     def __init__(self, x):
         self.val = x
         self.left = None
         self.right = None
+
+
 # 递归
 class Solution:
     def isValidBST(self, root: TreeNode) -> bool:
         res = []
+
         def helper(root):
             if not root:
                 return
             helper(root.left)
             res.append(root.val)
             helper(root.right)
+
         helper(root)
         return res == sorted(res) and len(set(res)) == len(res)
-# 迭代
-# Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, x):
-#         self.val = x
-#         self.left = None
-#         self.right = None
 
+
+# 迭代
 class Solution:
     def isValidBST(self, root: TreeNode) -> bool:
         stack = []
@@ -70,3 +70,50 @@ class Solution:
             pre = p
             p = p.right
         return True
+
+
+# 递归中序遍历
+class Solution:
+    def isValidBST(self, root: TreeNode) -> bool:
+        self.pre = None
+
+        # 这种递归有点抽象，需要好好理解一下
+        # pre的值得变换规律是按中序排序的，先左再中后右边
+        def isBST(root):
+            if not root:
+                return True
+            if not isBST(root.left):
+                return False
+            if self.pre and self.pre.val >= root.val:
+                return False
+            self.pre = root
+            # print(root.val)
+            return isBST(root.right)
+
+        return isBST(root)
+
+
+# 最大最小值
+class Solution:
+    def isValidBST(self, root: TreeNode) -> bool:
+        def isBST(root, min_val, max_val):
+            if root == None:
+                return True
+            # print(root.val)
+            if root.val >= max_val or root.val <= min_val:
+                return False
+            return isBST(root.left, min_val, root.val) and isBST(root.right, root.val, max_val)
+
+        return isBST(root, float("-inf"), float("inf"))
+
+
+a = TreeNode(10)
+b = TreeNode(2)
+c = TreeNode(12)
+d = TreeNode(3)
+e = TreeNode(14)
+a.left = b
+a.right = c
+c.left = d
+c.right = e
+print(Solution().isValidBST(a))
