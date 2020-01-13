@@ -86,7 +86,7 @@ class Solution:
             mid = left + (right - left) // 2
             # 等于目标值
             if nums[mid] == target:
-            	return True
+                return True
             
             if nums[mid] == nums[left] == nums[right]:
                 left += 1
@@ -103,3 +103,34 @@ class Solution:
                 else:
                     right = mid - 1
         return False
+# 自己的版本
+class Solution:
+    def search(self, nums: List[int], target: int) -> bool:
+        left = 0
+        right = len(nums) - 1
+        # 牢记LeetCode中一定有[]的存在，所以一定要判断一下
+        if not nums:
+            return False
+        while left + 1 < right:
+            mid = left + ((right - left) >> 1)
+            # mid = left + (right - left) // 2
+            if nums[mid] == target:
+                return True
+            if nums[left] == nums[right] == nums[mid]:
+                left += 1
+                right -= 1
+            # 后面的部分
+            elif nums[mid] <= nums[right]:
+                if nums[mid] <= target <= nums[right]:
+                    left = mid
+                else:
+                    right = mid
+            else:
+                if nums[left] <= target <= nums[mid]:
+                    right = mid
+                else:
+                    left = mid
+        if nums[left] == target or nums[right] == target:
+            return True
+        else:
+            return False
