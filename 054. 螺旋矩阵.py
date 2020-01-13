@@ -23,6 +23,8 @@
 
 链接：https://leetcode-cn.com/problems/spiral-matrix
 '''
+
+
 # 模拟螺旋矩阵的形式
 class Solution:
     def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
@@ -54,6 +56,7 @@ class Solution:
                 column = column + column_index[di]
         return res
 
+
 # 精简版本
 class Solution:
     def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
@@ -62,8 +65,6 @@ class Solution:
             res += matrix.pop(0)
             matrix = list(map(list, zip(*matrix)))[::-1]
         return res
-
-
 
 
 # java
@@ -93,6 +94,8 @@ class Solution {
     }
 }
 '''
+
+
 # 按圈遍历
 class Solution(object):
     def spiralOrder(self, matrix):
@@ -114,9 +117,12 @@ class Solution(object):
         while r1 <= r2 and c1 <= c2:
             for r, c in spiral_coords(r1, c1, r2, c2):
                 ans.append(matrix[r][c])
-            r1 += 1; r2 -= 1
-            c1 += 1; c2 -= 1
+            r1 += 1;
+            r2 -= 1
+            c1 += 1;
+            c2 -= 1
         return ans
+
 
 # java 计算圈数
 '''
@@ -150,26 +156,28 @@ public List<Integer> spiralOrder(int[][] matrix) {
         return list;
     }
 '''
+
+
 class Solution:
     def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
         if not matrix: return []
         m = len(matrix)
         n = len(matrix[0])
-        layer_num = (min(m, n)+1) // 2  # 总共有多少层
+        layer_num = (min(m, n) + 1) // 2  # 总共有多少层
         res_list = []  # 保存结果
         for lr in range(layer_num):
             start = lr  # 该层左上角的位置(start, start)
-            last_col = n-lr-1  # 该层最后一列的索引
-            last_row = m-lr-1  # 该层最后一行的索引
-            
-            for c in range(start, last_col+1):  # from left to right
+            last_col = n - lr - 1  # 该层最后一列的索引
+            last_row = m - lr - 1  # 该层最后一行的索引
+
+            for c in range(start, last_col + 1):  # from left to right
                 res_list.append(matrix[start][c])
-            for r in range(start+1,last_row+1):  # from top to bottom
+            for r in range(start + 1, last_row + 1):  # from top to bottom
                 res_list.append(matrix[r][last_col])
-                
+
             if last_row != start and last_col != start:
-                for c1 in range(last_col-1, start-1, -1):  # from right to bottom
+                for c1 in range(last_col - 1, start - 1, -1):  # from right to bottom
                     res_list.append(matrix[last_row][c1])
-                for r1 in range(last_row-1, start, -1):  # from bottom to top
+                for r1 in range(last_row - 1, start, -1):  # from bottom to top
                     res_list.append(matrix[r1][start])
         return res_list
