@@ -1,0 +1,24 @@
+1.flink中kafkaConnector
+  https://www.jianshu.com/p/f9d447a3c48f
+  https://www.sohu.com/a/168546400_617676
+  注意点：DeserializationSchema
+      如何将从 kafka 中获取的字节流转换为 Java Object，则通过 DeserializationSchema 来实现转换。
+      其中 SimpleStringSchema 将 kafka 获取的字节流转换为字符串。
+      其中 KeyedDeserializationSchema 支持 Key, Value 反序列化。
+      Flink Kafka Consumer 需要知道如何将来自Kafka的二进制数据转换为Java/Scala对象。
+      DeserializationSchema接口允许程序员指定这个序列化的实现。该接口的 T deserialize(byte[]message) 会在收到每一条Kafka的消息的时候被调用。
+Flink提供了一些已实现的schema:
+1. TypeInformationSerializationSchema (andTypeInformationKeyValueSerializationSchema)
+   他们会基于Flink的TypeInformation来创建schema。这对于那些从Flink写入，又从Flink读出的数据是很有用的。
+   这种Flink-specific的反序列化会比其他通用的序列化方式带来更高的性能。
+2. JsonDeserializationSchema (andJSONKeyValueDeserializationSchema) 可以把序列化后的Json反序列化成ObjectNode，
+   ObjectNode可以通过objectNode.get(“field”).as(Int/String/…)() 来访问指定的字段。
+3. SimpleStringSchema可以将消息反序列化为字符串。
+    当我们接收到消息并且反序列化失败的时候，会出现以下两种情况:
+     1) Flink从deserialize(..)方法中抛出异常，这会导致job的失败，然后job会重启；
+     2) 在deserialize(..) 方法出现失败的时候返回null，这会让Flink Kafka consumer默默的忽略这条消息。请注意，如果配置了checkpoint 为enable，由于consumer的失败容忍机制，失败的消息会被继续消费，因此还会继续失败，这就会导致job被不断自动重启。
+
+4.https://blog.csdn.net/xuejianbest/article/details/81666543
+spark.read.schema(sch).option("header", true).csv("/path/file.csv")
+    1.csv会完全按照指定的schema结构进行转换，若不指定schema默认都解析为StringType（若指定了option("inferSchema", true)会遍历数据推断类型）。
+    2.列的顺序和指定schema中列的顺序是一致的，这点不像json，json会进行列名对应，但是csv不会，只会根据顺序判断（即使指定了option("header", true)也无效，会将header中列名进行覆盖）。
