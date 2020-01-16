@@ -19,22 +19,22 @@
 继续进行下一次插入排序，直到遍历到链表尾部
 '''
 class Solution():
-	"""docstring for Solution"""
-	def insertionSortList(self, head):
-		if head == None or head.next == None:
-			return head
-		dummyNode = ListNode(-1)
-		dummyNode.next = head
-		cur = head.next
-		head.next = None
-		# pre 保存待插入元素的前一个位置
-		while cur:
-			pre = dummyNode
-			while pre.next and pre.next.val < cur.val:
-				pre = pre.next
-			tmp = pre.next
-			q = cur.next
-			pre.next = cur
+    """docstring for Solution"""
+    def insertionSortList(self, head):
+        if head == None or head.next == None:
+            return head
+        dummyNode = ListNode(-1)
+        dummyNode.next = head
+        cur = head.next
+        head.next = None
+        # pre 保存待插入元素的前一个位置
+        while cur:
+            pre = dummyNode
+            while pre.next and pre.next.val < cur.val:
+                pre = pre.next
+            tmp = pre.next
+            q = cur.next
+            pre.next = cur
             cur.next = tmp
             cur = q
         return dummy.next
@@ -42,7 +42,7 @@ class Solution():
 # 从头开始 这个道题就像排队,先找个排头dummy,然后依次从head节点放入dummy,只需要依次dummy现有节点比较,插入其中!
 class Solution:
     def insertionSortList(self, head: ListNode) -> ListNode:
-     	# 找个排头
+        # 找个排头
         dummy = ListNode(-1)
         # 注意不要将dummy.next = head,此时dummy.next = None
         # 为什么要设置为none呢？因为此时的队尾就是none，要将cur插入到dummy开头的链表中,当前这个链表的终点是none
@@ -50,7 +50,7 @@ class Solution:
         # 依次拿head节点
         cur = head
         while cur:
-        	# 把下一次节点保持下来
+            # 把下一次节点保持下来
             tmp = cur.next
             # 找到插入的位置的前一个位置
             while pre.next and pre.next.val < cur.val:
