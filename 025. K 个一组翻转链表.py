@@ -41,7 +41,6 @@ k 是一个正整数，它的值小于或等于链表的长度。
 # }
 
 
-
 # // 解释一下 for 循环之后的几句代码，注意 reverse 函数是反转区间 [Node a, Node b)
 # ListNode reverseKGroup(ListNode head, int k) {
 #     if (head == null) return null;
@@ -59,9 +58,6 @@ k 是一个正整数，它的值小于或等于链表的长度。
 #     a.next = reverseKGroup(b, k);
 #     return newHead;
 # }
-
-
-
 
 
 # 尾插法
@@ -83,11 +79,12 @@ dummy    3     2    1     4     5
 		cur
 '''
 
+
 # Definition for singly-linked list.
-# class ListNode:
-#     def __init__(self, x):
-#         self.val = x
-#         self.next = None
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
 class Solution:
     def reverseKGroup(self, head: ListNode, k: int) -> ListNode:
         dummy = ListNode(0)
@@ -102,16 +99,15 @@ class Solution:
             if not tail: break
             head = pre.next
             while pre.next != tail:
-                cur = pre.next # 获取下一个元素
+                cur = pre.next  # 获取下一个元素
                 # pre与cur.next连接起来,此时cur(孤单)掉了出来
-                pre.next = cur.next 
-                cur.next = tail.next # 和剩余的链表连接起来
-                tail.next = cur #插在tail后面
+                pre.next = cur.next
+                cur.next = tail.next  # 和剩余的链表连接起来
+                tail.next = cur  # 插在tail后面
             # 改变 pre tail 的值
-            pre = head 
+            pre = head
             tail = head
         return dummy.next
-
 
 
 # 递归
@@ -125,7 +121,7 @@ class Solution:
     def reverseKGroup(self, head: ListNode, k: int) -> ListNode:
         cur = head
         count = 0
-        while cur and count!= k:
+        while cur and count != k:
             cur = cur.next
             count += 1
         if count == k:
@@ -136,8 +132,10 @@ class Solution:
                 cur = head
                 head = tmp
                 count -= 1
-            head = cur   
+            head = cur
         return head
+
+
 # 栈
 # Definition for singly-linked list.
 # class ListNode:
@@ -149,7 +147,7 @@ class Solution:
         dummy = ListNode(0)
         p = dummy
         while True:
-            count = k 
+            count = k
             stack = []
             tmp = head
             while count and tmp:
@@ -158,15 +156,54 @@ class Solution:
                 count -= 1
             # 注意,目前tmp所在k+1位置
             # 说明剩下的链表不够k个,跳出循环
-            if count : 
+            if count:
                 p.next = head
                 break
             # 翻转操作
             while stack:
                 p.next = stack.pop()
                 p = p.next
-            #与剩下链表连接起来 
+            # 与剩下链表连接起来
             p.next = tmp
             head = tmp
-        
+
+        return dummy.next
+
+
+# 迭代，空间复杂度为O(1)
+class Solution:
+    def reverseKGroup(self, head, k):
+        '''
+        :param head: ListNode
+        :param k: int
+        :return: ListNode
+        '''
+        if head == None or head.next == None:
+            return head
+        dummy = ListNode(-1)
+        dummy.next = head
+        cur = head
+        # 保存上一组反转的最后一个节点
+        pre = dummy
+        while cur:
+            cnt = 0
+            # p 保存下一组的首节点
+            p = cur
+            while cnt < k and p:
+                p = p.next
+                cnt += 1
+            if cnt == k:
+                start = cur
+                # 对 [cur, p)节点反转
+                q = None
+                for i in range(1, k + 1):
+                    next = cur.next
+                    cur.next = q
+                    q = cur
+                    cur = next
+                start.next = p
+                pre.next = q
+                pre = start
+            else:
+                break
         return dummy.next

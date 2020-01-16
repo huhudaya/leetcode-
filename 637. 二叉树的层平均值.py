@@ -24,7 +24,7 @@ class TreeNode:
         self.right = None
 from collections import deque
 class Solution:
-    def averageOfLevels(self, root: TreeNode) -> List[float]:
+    def averageOfLevels(self, root: TreeNode):
         # 双端队列
         res = []
         if root is None:

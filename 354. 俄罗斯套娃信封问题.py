@@ -14,15 +14,19 @@
 解释: 最多信封的个数为 3, 组合为: [2,3] => [5,4] => [6,7]。
 链接：https://leetcode-cn.com/problems/russian-doll-envelopes
 '''
+
+
+# 暴力dp 时间复杂度O(N2)
 class Solution:
     def maxEnvelopes(self, envelopes: List[List[int]]) -> int:
         # 转换为求最长递增子序列
         import functools
         length = len(envelopes)
-        envelopes.sort(key = functools.cmp_to_key(self.sortEnvelopes))
+        envelopes.sort(key=functools.cmp_to_key(self.sortEnvelopes))
         # 求LIS
         heigh = [envelope[1] for envelope in envelopes]
         return self.lengthOfLIS(heigh)
+
     def lengthOfLIS(self, heigh):
         length = len(heigh)
         if len(heigh) == 0:
@@ -33,8 +37,11 @@ class Solution:
                 if heigh[i] > heigh[j]:
                     dp[i] = max(dp[j] + 1, dp[i])
         return max(dp)
+
     def sortEnvelopes(self, cur, pre):
         return pre[1] - cur[1] if cur[0] == pre[0] else cur[0] - pre[0]
+
+
 # 二分法
 class Solution:
     def maxEnvelopes(self, envelopes: List[List[int]]) -> int:
@@ -43,13 +50,13 @@ class Solution:
         arr = []
         for _, y in envelopes:
             loc = bisect.bisect_left(arr, y)
-            arr[loc:loc+1] = [y]
+            arr[loc:loc + 1] = [y]
         return len(arr)
-
 
 
 # 二分法
 from bisect import bisect_left
+
 
 class Solution:
     def maxEnvelopes(self, arr: List[List[int]]) -> int:
@@ -65,19 +72,24 @@ class Solution:
                 else:
                     dp[idx] = nums[i]
             return len(dp)
+
         # extract the second dimension and run the LIS
         return lis([i[1] for i in arr])
 
+
 # 自己的版本
 class Solution:
-    def maxEnvelopes(self, envelopes: List[List[int]]) -> int:
+    def maxEnvelopes(self, envelopes) -> int:
         # 转换为求最长递增子序列
         import functools
         length = len(envelopes)
-        envelopes.sort(key = functools.cmp_to_key(self.sortEnvelopes))
+        # envelopes.sort(key = functools.cmp_to_key(self.sortEnvelopes))
+        envelopes.sort(key=lambda x: x(x[0], -x[1]))
         # 求LIS
+        # 得到tuple[1]的元素
         heigh = [envelope[1] for envelope in envelopes]
         return self.lengthOfLIS(heigh)
+
     # def lengthOfLIS(self, heigh):
     #     length = len(heigh)
     #     if len(heigh) == 0:
@@ -112,10 +124,11 @@ class Solution:
                 target = right
             else:
                 target = right + 1
-            if target == piples + 1: 
+            if target == piples + 1:
                 piples += 1
             # 更新牌顶
             top[target] = poker
         return piples
+
     def sortEnvelopes(self, cur, pre):
         return pre[1] - cur[1] if cur[0] == pre[0] else cur[0] - pre[0]

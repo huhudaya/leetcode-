@@ -21,12 +21,13 @@
 链接：https://leetcode-cn.com/problems/binary-tree-level-order-traversal
 '''
 
+
 # Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, x):
-#         self.val = x
-#         self.left = None
-#         self.right = None
+class TreeNode:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
 
 # 迭代
 class Solution:
@@ -46,6 +47,8 @@ class Solution:
             res.append(tmp)
             cur_level = next_level
         return res
+
+
 # 递归
 # Definition for a binary tree node.
 # class TreeNode:
@@ -56,16 +59,18 @@ class Solution:
 class Solution:
     def levelOrder(self, root: TreeNode) -> List[List[int]]:
         res = []
-        
+
         def helper(root, depth):
-            if not root: return 
+            if not root: return
             if len(res) == depth:
                 res.append([])
             res[depth].append(root.val)
             helper(root.left, depth + 1)
             helper(root.right, depth + 1)
+
         helper(root, 0)
         return res
+
 
 # 方法 1：递归
 # 算法
@@ -83,7 +88,7 @@ class Solution:
         levels = []
         if not root:
             return levels
-        
+
         def helper(node, level):
             # start the current level
             if len(levels) == level:
@@ -97,9 +102,11 @@ class Solution:
                 helper(node.left, level + 1)
             if node.right:
                 helper(node.right, level + 1)
-            
+
         helper(root, 0)
         return levels
+
+
 # 复杂度分析
 
 # 时间复杂度：O(N)，因为每个节点恰好会被运算一次。
@@ -124,6 +131,8 @@ class Solution:
 实现
 '''
 from collections import deque
+
+
 class Solution:
     def levelOrder(self, root):
         """
@@ -133,31 +142,32 @@ class Solution:
         levels = []
         if not root:
             return levels
-        
+
         level = 0
-        queue = deque([root,])
+        queue = deque([root, ])
         while queue:
             # start the current level
             levels.append([])
             # number of elements in the current level 
             level_length = len(queue)
-            
+
             for i in range(level_length):
                 node = queue.popleft()
                 # fulfill the current level
                 levels[level].append(node.val)
-                
+
                 # add child nodes of the current level
                 # in the queue for the next level
                 if node.left:
                     queue.append(node.left)
                 if node.right:
                     queue.append(node.right)
-            
+
             # go to next level
             level += 1
-        
+
         return levels
+
 
 # 复杂度分析
 
@@ -170,6 +180,8 @@ class Solution:
 #         self.left = None
 #         self.right = None
 from collections import deque
+
+
 class Solution:
     def levelOrder(self, root: TreeNode) -> List[List[int]]:
         # 借用队列
