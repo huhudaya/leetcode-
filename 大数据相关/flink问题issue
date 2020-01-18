@@ -22,3 +22,285 @@ Flink提供了一些已实现的schema:
 spark.read.schema(sch).option("header", true).csv("/path/file.csv")
     1.csv会完全按照指定的schema结构进行转换，若不指定schema默认都解析为StringType（若指定了option("inferSchema", true)会遍历数据推断类型）。
     2.列的顺序和指定schema中列的顺序是一致的，这点不像json，json会进行列名对应，但是csv不会，只会根据顺序判断（即使指定了option("header", true)也无效，会将header中列名进行覆盖）。
+
+5.关于rdd dataframe dataset
+抓住重点，因为都需要序列化和反序列化，所以
+dataset是 强类型的
+sparksession是spark2.0的入口
+val sparksession = SparkSession.builder().appName("DataFrameApp").master("local[2]").getOrCreate()
+sparksession支持sparkstream,dataframe,dataset
+sparksession.sparkcontext.textfile() 读取到的是RDD
+sparksession.read().format(json).load(file://)
+sparksession.read().format(csv).load(file://)
+
+rdd--->dataframe
+方式一:
+    val spark = SparkSession.builder().appName("DataFrameRDDApp").master("local[2]").getOrCreate()
+    //RDD ==> DataFrame
+    val rdd = spark.sparkContext.textFile("file:///Users/chandler/Documents/Projects/SparkProjects/people.txt")
+    //导入隐式转换
+    import spark.implicits._
+    val peopledataframe = rdd.map(_.split(",")).map(line => Info(line(0).toInt, line(1), line(2).toInt)).toDF()
+    case class Info(id: Int, name: String, age: Int)
+
+方式二:
+    val rdd = spark.sparkContext.textFile("file:///Users/chandler/Documents/Projects/SparkProjects/people.txt")
+    //1、创建一个RDD，我们用RowS来创建
+    val peopleRDD = rdd.map(_.split(",")).map(line => Row(line(0).toInt, line(1), line(2).toInt))
+    //2、定义一个Schema，我们用StructType来定义
+    val structType = StructType(Array(StructField("id", IntegerType, true),
+      StructField("name", StringType, true),
+      StructField("age", IntegerType, true)))
+    //3、把这个Schema作用到RDD的RowS上面通过createDataFrame这个方法来实现，当然这个方法是通过SaprkSession来提供的
+    val peopledataframe = spark.createDataFrame(peopleRDD, structType)
+    peopledataframe.printSchema()
+    peopledataframe.show()
+
+dataset:
+    DataFrame就可以等于Dataset[Row]
+    val spark = SparkSession.builder().appName("DatasetAPP").master("local[2]").getOrCreate()
+    //csv文件路径
+    val path = "file:///Users/chandler/Documents/Projects/SparkProjects/sales.csv"
+    //导入隐式转换
+    import spark.implicits._
+    //spark如何解析csv文件（外部数据源功能）
+    val csv_dataframe = spark.read.option("header","true").option("inferSchema","true").csv(path)
+    csv_dataframe.show
+    //把csv_dataframe转换成Dataset
+    val csv_dataset = csv_dataframe.as[Sales]
+    csv_dataset.map(line => line.itemId).show
+    spark.stop()
+    //把csv文件的列名拷贝进来
+    case class Sales(transactionId:Int,customerId:Int,itemId:Int,amountPaid:Double)
+
+
+
+6.mongodb 和 MySQL
+MongoDB 是文档型的数据库，是一种nosql，它使用BSON格式保存数据，归属于聚合型数据库。
+被设计用在数据模型简单，性能要求高的场合。之所以采用B树，是因为B树key和data域聚合在一起。
+因此并不需要类似于区间查询的操作。MongoDB 是一种 nosql，也存储在磁盘上，被设计用在 数据模型简单，性能要求高的场合。
+性能要求高，看看B/B+树的区别第一点：B+树内节点不存储数据，所有 data 存储在叶节点导致查询时间复杂度固定为 log n。
+而B-树查询时间复杂度不固定，与 key 在树中的位置有关，最好为O(1)我们说过，尽可能少的磁盘 IO 是提高性能的有效手段。
+MongoDB 是聚合型数据库，而 B-树恰好 key 和 data 域聚合在一起。
+
+6.java序列化
+当两个进程远程通信时，彼此可以发送各种类型的数据。
+无论是何种类型的数据，都会以二进制序列的形式在网络上传送。
+比如，我们可以通过http协议发送字符串信息;我们也可以在网络上直接发送Java对象。
+发送方需要把这个Java对象转换为字节序列，才能在网络上传送;
+接收方则需要把字节序列再恢复为Java对象才能正常读取。
+
+      把Java对象转换为字节序列的过程称为对象的序列化。把字节序列恢复为Java对象的过程称为对象的反序列化。
+
+      对象序列化的作用有如下两种：
+
+      1. 持久化： 把对象的字节序列永久地保存到硬盘上，通常存放在一个文件中，比如：休眠的实现。以后服务器session管理，hibernate将对象持久化实现。
+
+      2. 网络通信：在网络上传送对象的字节序列。比如：服务器之间的数据通信、对象传递。
+
+使用索引的建议:
+在区分度高的字段上面建立索引可以有效的使用索引，区分度太低，无法有效的利用索引，可能需要扫描所有数据页，此时和不使用索引差不多
+
+联合索引注意最左匹配原则：必须按照从左到右的顺序匹配，mysql会一直向右匹配直到遇到范围查询(>、<、between、like)就停止匹配，比如a = 1 and b = 2 and c > 3 and d = 4 如果建立(a,b,c,d)顺序的索引，d是用不到索引的，如果建立(a,b,d,c)的索引则都可以用到，a,b,d的顺序可以任意调整
+
+查询记录的时候，少使用*，尽量去利用索引覆盖，可以减少回表操作，提升效率
+
+有些查询可以采用联合索引，进而使用到索引下推（IPC），也可以减少回表操作，提升效率
+
+禁止对索引字段使用函数、运算符操作，会使索引失效
+
+字符串字段和数字比较的时候会使索引无效
+
+模糊查询'%值%'会使索引无效，变为全表扫描，但是'值%'这种可以有效利用索引
+
+排序中尽量使用到索引字段，这样可以减少排序，提升查询效率
+
+
+myslq:
+1.最左前缀匹配原则，MySQL会一直向右匹配直到遇到范围查询（>、<、between、like）就停止匹配，比如 a=3 and b=4 and c>5 and d=6,如果建立(a,b,c,d)顺序的索引，d是无法使用索引的，如果建立(a,b,d,c)的索引则都可以使用到，a、b、d的顺序可以任意调整。
+2.索引是建立的越多越好吗答：NO，数据量小的表不需要建立索引，建立会增加额外的索引开销。另外数据变更需要维护索引，因此更多的索引意味着更多的维护成本。更多的索引还需要消耗更多的空间。
+3.MyISAM与InnoDB关于锁方面的区别是什么
+
+    MyISAM默认使用表级锁，不支持行级锁。
+
+    InnoDB默认使用行级锁，也支持表级锁。
+
+    InnoDB在使用索引时，默认使用行级锁，但当其没有用到索引时，默认使用表级锁。
+4.行级锁一定比表级锁优吗？
+  答：不一定，锁的粒度越细，其消耗的资源代价越高。行级锁在上锁的时候需要扫描到某行再进行上锁，这样的代价是较大的。
+5.myisam和innodb
+    MyISAM和InnoDB各自适合的场景
+    MyISAM适合的场景：
+        频繁执行全表count语句。
+        对数据进行增删改的频率不高，查询非常频繁。
+        没有事务
+    InnoDB适合的场景：
+        数据增删改查都相当频繁。
+        可靠性要求比较高，存在事务。
+6.mysql
+1、4种隔离级别
+（1）未提交读（Read uncommitted）：一个事务读取到其他事务未提交的数据，是级别最低的隔离机制；
+（2）提交读（Read committed)：一个事务读取到其他事务提交后的数据；
+（3）可重复读（Repeatable read）：一个事务对同一份数据读取到的相同，不在乎其他事务对数据的修改；
+（4）序列化（Serializable） ：事务串行化执行，隔离级别最高，牺牲了系统的并发性。
+2、不同隔离级别解决的问题
+若不考虑事务的隔离级别，则事务的并发会造成以下问题：
+
+（1）脏读：事务A读取了事务B更新的数据，然后B回滚操作，那么A读取到的数据是脏数据。
+
+（2）不可重复读：事务 A 多次读取同一数据，事务 B 在事务A多次读取的过程中，对数据作了更新并提交，导致事务A多次读取同一数据时，结果 不一致。
+
+（3）幻读：同一事务中对同一范围的数据进行读取，结果却多出了数据或者少了数据，这就叫幻读。（如同一事务对id<10的范围进行2次查询，第一次出现id=8、9的两条数据，第二次出现id=7、8、9的3条数据）。
+ 不可重复读的和幻读很容易混淆，不可重复读侧重于修改，幻读侧重于新增或删除。解决不可重复读的问题只需锁住满足条件的行，解决幻读需要锁表。
+MVCC:
+上文提到 InnoDB 默认的隔离级别是可重复读（RR）
+InnoDB是通过MVCC（多版本并发控制）来实现可重复读的，下面为大家介绍MVCC
+
+7、锁
+总的来说，MySQL 这三种锁的特性可大致归纳如下：
+表级锁：开销小，加锁快；不会出现死锁；锁定粒度大，发生锁冲突的概率最高，并发度最低。
+行级锁：开销大，加锁慢；会出现死锁；锁定粒度最小，发生锁冲突的概率最低，并发度也最高。
+页面锁：开销和加锁时间界于表锁和行锁之间；会出现死锁；锁定粒度界于表锁和行锁之间，并发度一般。
+适用：从锁的角度来说，表级锁更适合于以查询为主，只有少量按索引条件更新数据的应用，如 Web 应用。
+而行级锁则更适合于有大量按索引条件并发更新少量不同数据，同时又有并发查询的应用，如一些在线事务处理（OLTP）系统.
+
+show status like "table%";
+这里有两个状态变量记录 MySQL 内部表级锁定的情况，两个变量说明如下：
+Table_locks_immediate：产生表级锁定的次数。
+Table_locks_waited：出现表级锁定争用而发生等待的次数；此值越高则说明存在着越严重的表级锁争用情况。
+此外，MyISAM 的读写锁调度是写优先，这也是 MyISAM 不适合做写为主表的存储引擎的原因。
+因为写锁后，其他线程不能做任何操作，大量的更新会使查询很难得到锁，从而造成永久阻塞。
+两个状态值都是从系统启动后开始记录，出现一次对应的事件则数量加 1。如果这里的 Table_locks_waited 状态值比较高，那么说明系统中表级锁定争用现象比较严重，就需要进一步分析为什么会有较多的锁定资源争用了。
+
+1.MySQL(myisim) 的表级锁有两种模式：
+
+    表共享读锁（Table Read Lock）
+
+    表独占写锁（Table Write Lock）
+
+2.InnoDB 的锁定模式实际上可以分为四种：
+
+    共享锁（S）
+
+    排他锁（X）
+
+    意向共享锁（IS）
+
+    意向排他锁（IX）
+
+
+间隙锁:
+间隙锁（Next-Key锁）
+当我们用范围条件而不是相等条件检索数据，并请求共享或排他锁时，InnoDB 会给符合条件的已有数据记录的索引项加锁。
+对于键值在条件范围内但并不存在的记录，叫做“间隙（GAP)”，InnoDB 也会对这个“间隙”加锁，这种锁机制就是所谓的间隙锁（Next-Key锁)
+
+假如 emp 表中只有 101 条记录，其 empid 的值分别是  1,2,...,100,101，下面的 SQL：
+mysql> select * from emp where empid > 100 for update;
+这是一个范围条件的检索，InnoDB 不仅会对符合条件的 empid 值为 101 的记录加锁，也会对 empid 大于 101（这些记录并不存在）的“间隙”加锁。
+
+InnoDB 使用间隙锁的目的：
+1.防止幻读，以满足相关隔离级别的要求（关于事务的隔离级别）。对于上面的例子，要是不使用间隙锁，如果其他事务插入了 empid 大于 100 的任何记录，那么本事务如果再次执行上述语句，就会发生幻读。
+2.为了满足其恢复和复制的需要。很显然，在使用范围条件检索并锁定记录时，即使某些不存在的键值也会被无辜的锁定，而造成在锁定的时候无法插入锁定键值范围内的任何数据。在某些场景下这可能会对性能造成很大的危害。
+
+除了间隙锁给 InnoDB 带来性能的负面影响之外，通过索引实现锁定的方式还存在其他几个较大的性能隐患：
+当 Query 无法利用索引的时候，InnoDB 会放弃使用行级别锁定而改用表级别的锁定，造成并发性能的降低。
+当 Query 使用的索引并不包含所有过滤条件的时候，数据检索使用到的索引键所指向的数据可能有部分并不属于该 Query 的结果集的行列，但是也会被锁定，因为间隙锁锁定的是一个范围，而不是具体的索引键。
+当 Query 在使用索引定位数据的时候，如果使用的索引键一样但访问的数据行不同的时候（索引只是过滤条件的一部分），一样会被锁定。
+因此，在实际应用开发中，尤其是并发插入比较多的应用，我们要尽量优化业务逻辑，尽量使用相等条件来访问更新数据，避免使用范围条件。
+还要特别说明的是，InnoDB 除了通过范围条件加锁时使用间隙锁外，如果使用相等条件请求给一个不存在的记录加锁，InnoDB 也会使用间隙锁。
+
+事务：
+事务级别的设置：
+MySQL 默认隔离级别是可重复读。
+1.未提交读（READ UNCOMMITED） 解决的障碍：无； 引入的问题：脏读
+    set SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
+2.已提交读 （READ COMMITED） 解决的障碍：脏读； 引入的问题：不可重复读
+    set SESSION TRANSACTION ISOLATION LEVEL read committed;
+
+3.可重复读（REPEATABLE READ）解决的障碍：不可重复读； 引入的问题：
+    set SESSION TRANSACTION ISOLATION LEVEL repeatable read;
+
+4.可串行化（SERIALIZABLE）解决的障碍：可重复读； 引入的问题：锁全表，性能低下
+    set SESSION TRANSACTION ISOLATION LEVEL repeatable read;
+总结：事务隔离级别为可重复读时，如果有索引（包括主键索引）的时候，以索引列为条件更新数据
+会存在间隙锁间、行锁、页锁的问题，从而锁住一些行；
+如果没有索引，更新数据时会锁住整张表。
+事务隔离级别为串行化时，读写数据都会锁住整张表，隔离级别越高，越能保证数据的完整性和一致性，但是对并发性能的影响也越大。
+对于多数应用程序，可以优先考虑把数据库系统的隔离级别设为 Read Committed，它能够避免脏读取，而且具有较好的并发性能。
+
+意向锁:
+总的来说，InnoDB 的锁定机制和 Oracle 数据库有不少相似之处。InnoDB 的行级锁定同样分为两种类型，共享锁和排他锁
+而在锁定机制的实现过程中为了让行级锁定和表级锁定共存，InnoDB 也同样使用了意向锁（表级锁定）的概念，也就有了意向共享锁和意向排他锁这两种。
+当一个事务需要给自己需要的某个资源加锁的时候，如果遇到一个共享锁正锁定着自己需要的资源的时候，自己可以再加一个共享锁，不过不能加排他锁。
+但是，如果遇到自己需要锁定的资源已经被一个排他锁占有之后，则只能等待该锁定释放资源之后自己才能获取锁定资源并添加自己的锁定。
+而意向锁的作用就是当一个事务在需要获取资源锁定的时候，如果遇到自己需要的资源已经被排他锁占用的时候，该事务需要在锁定行的表上面添加一个合适的意向锁。
+如果自己需要一个共享锁，那么就在表上面添加一个意向共享锁。而如果自己需要的是某行（或者某些行）上面添加一个排他锁的话，则先在表上面添加一个意向排他锁。
+意向共享锁可以同时并存多个，但是意向排他锁同时只能有一个存在。
+
+myisim:
+MySQL (myisim)的表级锁有两种模式：
+表共享读锁（Table Read Lock）
+表独占写锁（Table Write Lock）
+
+innodb:
+所以，可以说 InnoDB 的锁定模式实际上可以分为四种：
+共享锁（S）
+排他锁（X）
+意向共享锁（IS）
+意向排他锁（IX）
+意向锁是 InnoDB 自动加的，不需用户干预：
+对于 UPDATE、DELETE 和 INSERT 语句，InnoDB 会自动给涉及数据集加排他锁（X)。
+对于普通 SELECT 语句，InnoDB 不会加任何锁。
+
+
+锁的概念:
+行级锁定:悲观锁
+
+悲观锁：共享锁(lock in share mode)，排他锁(for update)
+
+5、并发控制 与 MVCC
+InnoDB可重复读隔离级别下如何避免幻读
+多版本并发控制(Multiversion Concurrency Control)
+
+表象
+快照读（非阻塞读）--伪MVCC。使用此种机制避免使我们看到“幻行”。
+
+当前读：select …lock in share mode,select …for update,update,delete,insert.即加了锁的增删改查语句。由于其读取的是记录的最新版本，所以称为当前读。
+
+快照读：不加锁的非阻塞读（非SERIALIZABLE），select。基于提升并发性能的考虑，基于多版本并发控制。既然是基于多版本，也就是说快照读有可能读到非最新版本的数据。
+
+内在
+next-key锁（行锁+gap锁）：next-key锁由两部分组成，行锁+gap锁，行锁即对单个行记录上的锁。Gap锁，即对插入索引间的空隙上锁，即锁定一个范围，但不包括记录本身。
+
+Gap锁的目的，是为了防止一个记录两次当前读出现幻读的情况。Gap锁只存在与Read-Committed（不包括Read-committed）以上的隔离级别存在。如果查询时，where条件全部命中（精确查询时），则不会用Gap锁，只会加记录锁。
+
+因为在精确查询的状况下，即使在读结果集的过程中，另一个事务增加一条数据，也不会增加到当前结果集下，只会在where条件的范围之外，所以并不会产生幻读现象，加行锁就足够了。如果where条件部分命中或者全不命中，则会加Gap锁。
+MVCC (multiple-version-concurrency-control）
+它是个行级锁的变种， 在普通读情况下避免了加锁操作，因此开销更低。虽然实现不同，但通常都是实现非阻塞读，对于写操作只锁定必要的行。
+一致性读 （就是读取快照）select * from table ....
+当前读(就是读取实际的持久化的数据)特殊的读操作，插入/更新/删除操作，属于当前读，处理的都是当前的数据，需要加锁。 select * from table where ? lock in share mode; select * from table where ? for update; insert; update ; delete;
+
+
+MySQL锁注意点：
+多并发版本控制MVCC有快照读和当前读，可以解决不可重复读
+间隙锁GAP可以解决幻读
+
+MySQL中：
+1.可重复度RR用的是MVCC
+RR 解决脏读、不可重复读、幻读等问题，使用的是 MVCC：MVCC 全称 Multi-Version Concurrency Control，即多版本的并发控制协议。
+MVCC 的特点：在同一时刻，不同的事务读取到的数据可能是不同的(即多版本)——在 T5 时刻，事务 A 和事务 C 可以读取到不同版本的数据。
+MVCC 最大的优点是读不加锁，因此读写不冲突，并发性能好。InnoDB 实现 MVCC，多个版本的数据可以共存，主要是依靠数据的隐藏列(也可以称之为标记位)和 undo log。
+2.InnoDB 实现的 RR 通过 next-keylock 机制避免了幻读现象。
+
+下面总结一下 ACID 特性及其实现原理：
+
+原子性：语句要么全执行，要么全不执行，是事务最核心的特性。事务本身就是以原子性来定义的；实现主要基于 undo log。
+
+持久性：保证事务提交后不会因为宕机等原因导致数据丢失；实现主要基于 redo log。
+
+隔离性：保证事务执行尽可能不受其他事务影响；InnoDB 默认的隔离级别是 可重复度 RR，RR 的实现主要基于锁机制、数据的隐藏列、undo log 和类 next-key lock 机制。
+
+一致性：事务追求的最终目标，一致性的实现既需要数据库层面的保障，也需要应用层面的保障。
+
+
