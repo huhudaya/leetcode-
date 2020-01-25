@@ -71,16 +71,6 @@ class Solution:
 
 
 # 非递归
-# Definition for singly-linked list.
-# class ListNode:
-#     def __init__(self, x):
-#         self.val = x
-#         self.next = None
-class Solution:
-    def deleteDuplicates(self, head):
-# Definition for singly-linked list.
-
-
 # class ListNode:
 #     def __init__(self, x):
 #         self.val = x
@@ -105,15 +95,7 @@ class Solution:
         return dummy.next
 
 
-
-
 # 递归
-# Definition for singly-linked list.
-class ListNode:
-    def __init__(self, x):
-        self.val = x
-        self.next = None
-
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, x):
@@ -130,6 +112,10 @@ class Solution:
         else:
             head.next = self.deleteDuplicates(head.next)
         return head
+
+
+# 读写指针
+
 
 
 list2ListNode([1, 2, 3, 3, 4, 4, 5])
