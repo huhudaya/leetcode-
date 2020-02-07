@@ -187,8 +187,8 @@ dp[i][j] 代表字符串 s 中前 i 个字符和 p 中前 j 个字符是否匹�
 记 s 第 i 个字符记为 s[m] == s[i - 1]；p 第 j 个字符记为 p[n] == p[j - 1]。
 记 s 和 p 长度分别为 ls，lp。
 初始状态：
-行是 字符串
-列是 匹配字符串
+行索引是 匹配串
+列索引是 字符串
 初始化第一行：dp[0][j] = dp[0][j - 2] and p[j - 1] == '*'；
 Tips: p 第 j 个字符记为 '*' 且 dp[0][j - 2] 为 True
 
@@ -222,7 +222,8 @@ Tips: p 第 j 个字符记为 '*' 且 dp[0][j - 2] 为 True
 class Solution:
     def isMatch(self, s: str, p: str) -> bool:
         ls, lp = len(s), len(p)
-        dp = [[False for _ in range(lp + 1)] for _ in range(ls + 1)]
+        # dp = [[False for _ in range(lp + 1)] for _ in range(ls + 1)]
+        dp = [[False] * (lp + 1) for i in range(ls + 1)]
         dp[0][0] = True
         # base case 初始化第一行
         for j in range(2, lp + 1):
@@ -343,3 +344,8 @@ class Solution:
 # 特殊情况
 # "" 和 ".*" 匹配，因为*可以匹配前面的字符0次
 # "" 和 "." 不匹配
+
+
+import pandas as pd
+data = pd.DataFrame([12,3,3])
+data_1 = data.set

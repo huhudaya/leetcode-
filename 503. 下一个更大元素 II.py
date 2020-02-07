@@ -89,20 +89,21 @@ public class Solution {
         return res;
     }
 }
+'''
+
 
 class Solution:
     def nextGreaterElements(self, nums: List[int]) -> List[int]:
         stack = []
         l = len(nums)
-        res = [-1]*l
+        res = [-1] * l
 
-        for i in range(l*2-1,-1,-1):
-            while(stack and nums[stack[-1]]<=nums[i%l]):
+        for i in range(l * 2 - 1, -1, -1):
+            while (stack and nums[stack[-1]] <= nums[i % l]):
                 stack.pop()
 
-            res[i%l] = -1 if stack==[] else nums[stack[-1]]
-            
-            stack.append(i%l)
+            res[i % l] = -1 if stack == [] else nums[stack[-1]]
+
+            stack.append(i % l)
 
         return res
-'''

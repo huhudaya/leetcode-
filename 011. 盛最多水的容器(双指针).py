@@ -9,7 +9,7 @@
 链接：https://leetcode-cn.com/problems/container-with-most-water
 '''
 class Solution:
-    def maxArea(self, height: List[int]) -> int:
+    def maxArea(self, height) -> int:
         # 双指针
         ans = 0
         left = 0

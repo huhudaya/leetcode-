@@ -33,12 +33,12 @@ class Solution:
             if nums[mid] == target:
                 return mid
             if nums[left] <= nums[mid]:
-                if nums[left] <= target and target <= nums[mid]:
+                if nums[left] <= target <= nums[mid]:
                     right = mid
                 else:
                     left = mid
             else:
-                if nums[mid] <= target and target <= nums[right]:
+                if nums[mid] <= target <= nums[right]:
                     left = mid
                 else:
                     right = mid

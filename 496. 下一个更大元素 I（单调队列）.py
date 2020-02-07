@@ -106,19 +106,14 @@ class Solution:
         res = {}
         stack = []
         ans = []
-        for i in range(n-1,-1,-1):
+        for i in range(n - 1, -1, -1):
+            # 维护一个 max 栈
             while stack and stack[-1] <= nums2[i]:
-                stack.pop()    
-            # res[i] =  stack[-1] if len(stack) != 0 else -1
+                stack.pop()
+                # res[i] =  stack[-1] if len(stack) != 0 else -1
             # res[i] = stack[-1] if stack else -1
             res[nums2[i]] = stack[-1] if stack else -1
             stack.append(nums2[i])
         for i in range(m):
             ans.append(res.get(nums1[i]))
         return ans
-
-
-
-
-
-        

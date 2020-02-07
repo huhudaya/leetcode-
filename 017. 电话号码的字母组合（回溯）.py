@@ -103,7 +103,7 @@ class Solution:
 
 # 标准模板的写法
 class Solution:
-    def letterCombinations(self, digits: str) -> List[str]:
+    def letterCombinations(self, digits: str):
         # 回溯法模板
         '''
         result = []
@@ -152,7 +152,7 @@ class Solution:
         return res
 # 简约
 class Solution:
-    def letterCombinations(self, digits: str) -> List[str]:
+    def letterCombinations(self, digits: str):
         # 回溯法模板
         '''
         result = []

@@ -51,12 +51,13 @@ public class Solution {
 '''
 注意画图理解
 1.从右侧遍历先找到右边第一个连续的数字a[i],a[i-1] 他们满足a[i] > a[i-1],此时i右边的数字都已经是降序了
-2.这个时候需要对包括i的所有需进行重新排序，这个时候就相当于找到一个新的排头兵，这个排头兵应该是i从右侧遍历比i大的第一个数
+2.这个时候需要对包括i的所有右侧进行重新排序，这个时候就相当于找到一个新的排头兵，这个排头兵应该是i从右侧遍历比i大的第一个数
+3.其实就相当于找到i右边从右侧开始遍历的第一个比i大的数作为新的排头兵，交换两个位置，然后反转index为i的右侧部分即可
 2.交换这两个数，然后反转i右侧的部分即可
 '''
 
 class Solution:
-    def nextPermutation(self, nums: List[int]) -> None:
+    def nextPermutation(self, nums) -> None:
         """
         Do not return anything, modify nums in-place instead.
         """
