@@ -56,7 +56,8 @@ exection -> execution (插入 'u')
 编辑距离问题就是给我们两个字符串s1和s2，只能用三种操作，让我们把s1变成s2，求最少的操作数。
 需要明确的是，不管是把s1变成s2还是反过来，结果都是一样的，所以后文就以s1变成s2举例。
 
-前文 最长公共子序列 说过，解决两个字符串的动态规划问题，一般都是用两个指针i,j分别指向两个字符串的最后，然后一步步往前走，缩小问题的规模。
+前文 最长公共子序列 说过，解决两个字符串的动态规划问题，
+一般都是用两个指针i,j分别指向两个字符串的最后，然后一步步往前走，缩小问题的规模。
 '''
 
 
@@ -83,7 +84,8 @@ def minDistance(s1, s2) -> int:
 
 
 '''
-都说递归代码的可解释性很好，这是有道理的，只要理解函数的定义，就能很清楚地理解算法的逻辑。我们这里 dp(i, j) 函数的定义是这样的：
+都说递归代码的可解释性很好，这是有道理的，只要理解函数的定义，就能很清楚地理解算法的逻辑。
+我们这里 dp(i, j) 函数的定义是这样的：
 
 def dp(i, j) -> int
 # 返回 s1[0..i] 和 s2[0..j] 的最小编辑距离
@@ -97,9 +99,12 @@ def dp(i, j) -> int
 
 dp[i-1][j-1]
 # 存储 s1[0..i] 和 s2[0..j] 的最小编辑距离
-有了之前递归解法的铺垫，应该很容易理解。dp 函数的 base case 是i,j等于 -1，而数组索引至少是 0，所以 dp 数组会偏移一位，dp[..][0]和dp[0][..]对应 base case。。
+有了之前递归解法的铺垫，应该很容易理解。
+dp 函数的 base case 是i,j等于 -1，而数组索引至少是 0，所以 dp 数组会偏移一位
+dp[..][0]和dp[0][..]对应 base case
 
-既然 dp 数组和递归 dp 函数含义一样，也就可以直接套用之前的思路写代码，唯一不同的是，DP table 是自底向上求解，递归解法是自顶向下求解：
+既然 dp 数组和递归 dp 函数含义一样
+也就可以直接套用之前的思路写代码，唯一不同的是，DP table 是自底向上求解，递归解法是自顶向下求解：
 '''
 '''
 # 备忘录算法
@@ -143,3 +148,29 @@ def minDistance(s1, s2) -> int:
                     dp[i - 1], dp[j - 1] + 1
                 )
     return dp[m][n]
+
+
+class Solution:
+    def minDistance(self, word1: str, word2: str) -> int:
+        # dp思想----dp[j][i]
+        m, n = len(word1), len(word2)
+        dp = [[0] * (n + 1) for i in range(m + 1)]
+        # 定义basecase
+        for i in range(m + 1):
+            dp[i][0] = i
+        for j in range(n + 1):
+            dp[0][j] = j
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+                if word1[i - 1] == word2[j - 1]:
+                    dp[i][j] = dp[i - 1][j - 1]
+                else:
+                    dp[i][j] = min(
+                        dp[i - 1][j] + 1,  # 删除
+                        dp[i - 1][j - 1] + 1,  # 替换
+                        dp[i][j - 1] + 1,  # 插入
+                    )
+        return dp[m][n],dp
+
+
+print(Solution().minDistance("a","cb"))

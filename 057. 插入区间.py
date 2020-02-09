@@ -16,6 +16,21 @@
 
 链接：https://leetcode-cn.com/problems/insert-interval
 '''
+'''
+贪心算法一般用来解决需要 “找到要做某事的最小数量” 或 “找到在某些情况下适合的最大物品数量” 的问题，且提供的是无序的输入。
+
+贪心算法的思想是每一步都选择最佳解决方案，最终获得全局最佳的解决方案。
+
+标准解决方案具有 O(NlogN) 的时间复杂度且由以下两部分组成：
+
+思考如何排序输入数据 O(NlogN) 的时间复杂度）。
+思考如何解析排序后的数据 O(N) 的时间复杂度）
+如果输入数据本身有序，则我们不需要进行排序，那么该贪心算法具有 O(N) 的时间复杂度。
+
+如何证明你的贪心思想具有全局最优的效果：可以使用反证法来证明。
+'''
+
+
 # 类比合并区间!
 class Solution:
     def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
@@ -26,5 +41,6 @@ class Solution:
             if not res or res[-1][1] < i[0]:
                 res.append(i)
             else:
-                res[-1][1] = max(i[1],res[-1][1])
+                res[-1][1] = max(i[1], res[-1][1])
         return res
+

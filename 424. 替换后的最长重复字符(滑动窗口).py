@@ -84,7 +84,8 @@ class Solution:
             # 注意这里为什么是while循环，举个特列 AABCD K=1,左指针必须移动到条件r-l+1不大于K
             # while right - left + 1 - maxCount > k:
             # 其实不用while，用 if 判断一下就可以了
-            if right - left + 1 - maxCount > k:
+            # if right - left + 1 - maxCount > k:
+            while right - left + 1 - maxCount > k:
                 hash[s[left]] -= 1
                 left += 1
                 # 这里按理也需要判断一下maxCount,为什么不判断了呢，相当于maxCount只大不小？

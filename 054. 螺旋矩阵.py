@@ -80,7 +80,7 @@ class Solution {
         while (r1 <= r2 && c1 <= c2) {
             for (int c = c1; c <= c2; c++) ans.add(matrix[r1][c]);
             for (int r = r1 + 1; r <= r2; r++) ans.add(matrix[r][c2]);
-            //这里不判断的话，单行或者单列的时候出多添加数字。为了往左走，往上走
+            //这里不判断的话，单行或者单列的时候会多添加数字。为了往左走，往上走
             if (r1 < r2 && c1 < c2) {
                 for (int c = c2 - 1; c > c1; c--) ans.add(matrix[r2][c]);
                 for (int r = r2; r > r1; r--) ans.add(matrix[r][c1]);
@@ -181,3 +181,36 @@ class Solution:
                 for r1 in range(last_row - 1, start, -1):  # from bottom to top
                     res_list.append(matrix[r1][start])
         return res_list
+
+
+class Solution:
+    def spiralOrder(self, matrix):
+        if not matrix:
+            return []
+        m, n = len(matrix), len(matrix[0])  # 行，列
+
+        # 1. 横向遍历m，纵向遍历n-1；
+        # 2. 横向遍历m-1，纵向遍历n-2；
+        # 3. 横向遍历m-2，纵向遍历n-3；
+        # 4. 直到有一方向遍历长度为0时终止。
+
+        ans = []
+        judge = 1  # 1为顺序遍历，-1为逆序遍历
+        i, j = 0, -1  # 初始位置，列为-1，因为代表[0,0]前一个位置
+        while m > 0 and n > 0:
+
+            # 横向遍历
+            for x in range(n):
+                j += judge * 1
+                ans.append(matrix[i][j])
+
+            # 纵向遍历
+            for y in range(m - 1):
+                i += judge * 1
+                ans.append(matrix[i][j])
+
+            m = m - 1
+            n = n - 1
+            judge *= -1
+
+        return ans

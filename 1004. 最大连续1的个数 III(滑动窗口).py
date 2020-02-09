@@ -24,6 +24,8 @@ A[i] 为 0 或 1 
 '''
 # 滑动窗口 O(N)
 from collections import defaultdict
+
+
 class Solution:
     def longestOnes(self, A, K: int) -> int:
         # 滑动窗口
@@ -43,8 +45,35 @@ class Solution:
                 left += 1
             res = max(res, right - left + 1)
         return res
-print(Solution().longestOnes([1,1,1,0,0,0,1,1,1,1,0],2))
 
 
+print(Solution().longestOnes([1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0], 2))
 
-
+# Java版本
+'''
+class Solution {
+public:
+    int longestOnes(vector<int>& A, int K) {
+        //count用来统计窗口中0的个数
+        int left=0;
+        int right=0; 
+        int count=0;
+        result=0;
+        size=A.size();
+        
+        while(right<size)
+        {
+            count += A[right] == 0;
+            while(count > K)//当窗口内0的个数大于K时，需要缩小窗口
+            {
+                count -= A[left] == 0;
+                left++;
+            }
+            //窗口内0的个数小于等于k时，也就是可以该窗口内的0都可以替换，根据该窗口长度来确定是否更新result
+            result = max(result, right - left + 1);
+            right++;
+        }
+        return result;
+    }
+};
+'''

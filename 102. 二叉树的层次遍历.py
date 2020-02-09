@@ -131,8 +131,6 @@ class Solution:
 实现
 '''
 from collections import deque
-
-
 class Solution:
     def levelOrder(self, root):
         """
@@ -182,6 +180,8 @@ class Solution:
 from collections import deque
 
 
+
+# 自己的版本
 class Solution:
     def levelOrder(self, root: TreeNode) -> List[List[int]]:
         # 借用队列

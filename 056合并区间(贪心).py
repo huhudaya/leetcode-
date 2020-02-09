@@ -46,13 +46,15 @@ public int[][] merge(int[][] intervals) {
 '''
 时间复杂度：O(nlogn)
 
-除去 sort 的开销，我们只需要一次线性扫描，所以主要的时间开销是排序的 O(nlgn)O(nlgn)
+除去 sort 的开销，我们只需要一次线性扫描，所以主要的时间开销是排序的 O(nlgn)
 
 空间复杂度：O(1) or O(N)
 
 如果我们可以原地排序 intervals ，就不需要额外的存储空间；否则，我们就需要一个线性大小的空间去存储 intervals 的备份，来完成排序过程。
 
 '''
+
+
 class Solution:
     def merge(self, intervals):
         res = []
@@ -61,7 +63,31 @@ class Solution:
             if not res or res[-1][1] < i[0]:
                 res.append(i)
             else:
-                res[-1][1] = max(i[1],res[-1][1])
+                res[-1][1] = max(i[1], res[-1][1])
         return res
-a = [[1,3],[6,9]]
+
+
+
+
+# intervals 形如 [[1,3],[2,6]...]
+def merge(intervals):
+    if not intervals: return []
+    # 按区间的 start 升序排列
+    intervals.sort(key=lambda intv: intv[0])
+    res = []
+    res.append(intervals[0])
+
+    for i in range(1, len(intervals)):
+        curr = intervals[i]
+        # res 中最后一个元素的引用
+        last = res[-1]
+        if curr[0] <= last[1]:
+            # 找到最大的 end
+            last[1] = max(last[1], curr[1])
+        else:
+            # 处理下一个待合并区间
+            res.append(curr)
+    return res
+
+a = [[1, 3], [6, 9]]
 print(a)

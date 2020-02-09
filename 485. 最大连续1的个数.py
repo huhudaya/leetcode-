@@ -13,6 +13,7 @@
 输入数组的长度是正整数，且不超过 10,000。
 '''
 
+
 class Solution:
     def findMaxConsecutiveOnes(self, nums: List[int]) -> int:
         count = max_count = 0
@@ -27,12 +28,16 @@ class Solution:
                 count = 0
         return max(max_count, count)
 
+
 '''
 使用 splits 函数在 0 处分割将数组转换成字符串。
 在获取子串的最大长度就是最大连续 1 的长度。
 '''
+
+
 def findMaxConsecutiveOnes(self, nums):
-  return max(map(len, ''.join(map(str, nums)).split('0')))
+    return max(map(len, ''.join(map(str, nums)).split('0')))
+
 
 # 双指针
 class Solution:
@@ -42,5 +47,5 @@ class Solution:
         for i in range(len(nums)):
             if nums[i] == 0:
                 left = i + 1
-            res = max(res,i-left + 1)
+            res = max(res, i - left + 1)
         return res

@@ -74,7 +74,7 @@ list.sort(key=functools.cmp_to_key(sort1))
 def sort1(a,b):
 	return b[1] - a[1] if a[0] == b[0] else a[0] - b[0]
 
-# 如下也可以做到 相当于传一个tuple进行比较，按第一个元素升序，第二个元素降序
+# 如下也可以做到 相当于传一个tuple进行比较，按第一个元素升序，第二个元素降序 相当于Scala中的自定义排序 sortBy
 arr.sort(key=lambda x: (x[0], -x[1]))
 
 7.count函数====>该方法返回子字符串在字符串中出现的次数。

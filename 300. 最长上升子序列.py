@@ -21,9 +21,12 @@
 至此，这道题就解决了，时间复杂度 O(N^2)。总结一下动态规划的设计流程：
 首先明确 dp 数组所存数据的含义。这步很重要，如果不得当或者不够清晰，会阻碍之后的步骤。
 然后根据 dp 数组的定义，运用数学归纳法的思想，假设 $dp[0...i-1]$ 都已知，想办法求出 $dp[i]$，一旦这一步完成，整个题目基本就解决了。
-但如果无法完成这一步，很可能就是 dp 数组的定义不够恰当，需要重新定义 dp 数组的含义；或者可能是 dp 数组存储的信息还不够，不足以推出下一步的答案，需要把 dp 数组扩大成二维数组甚至三维数组。
+但如果无法完成这一步，很可能就是 dp 数组的定义不够恰当，需要重新定义 dp 数组的含义；
+或者可能是 dp 数组存储的信息还不够，不足以推出下一步的答案，需要把 dp 数组扩大成二维数组甚至三维数组。
 最后想一想问题的 base case 是什么，以此来初始化 dp 数组，以保证算法正确运行。
 '''
+
+
 class Solution:
     def lengthOfLIS(self, nums):
         if nums is None or nums == []:
@@ -35,8 +38,10 @@ class Solution:
         for i in range(n):
             for j in range(i):
                 if nums[j] < nums[i]:
-                    dp[i] = max(dp[j]+1, dp[i])
-        return  max(dp)
+                    dp[i] = max(dp[j] + 1, dp[i])
+        return max(dp)
+
+
 # 二分
 '''
 public int lengthOfLIS(int[] nums) {
@@ -70,7 +75,8 @@ public int lengthOfLIS(int[] nums) {
 }
 '''
 from bisect import bisect_left
-a = [1,1,2,2,4]
+
+a = [1, 1, 2, 2, 4]
 print(bisect_left(a, 2))
 
 
@@ -83,11 +89,14 @@ class Solution:
             i, j = 0, res
             while i < j:
                 m = (i + j) // 2
-                if tails[m] < num: i = m + 1 # 如果要求非严格递增，将此行 '<' 改为 '<=' 即可。
-                else: j = m
+                if tails[m] < num:
+                    i = m + 1  # 如果要求非严格递增，将此行 '<' 改为 '<=' 即可。
+                else:
+                    j = m
             tails[i] = num
             if j == res: res += 1
         return res
+
 
 class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:
@@ -98,4 +107,3 @@ class Solution:
             else:
                 q[bisect.bisect_left(q, i)] = i
         return len(q) - 1
-
