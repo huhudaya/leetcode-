@@ -23,12 +23,13 @@
 # 二分
 class Solution:
     #O(nlogn)算法
-    def findDuplicate(self, nums: List[int]) -> int:
+    def findDuplicate(self, nums) -> int:
         start = 1
         end = len(nums) - 1
         #二分,相当于求解count(mid) > mid的FirstPosition
         while start + 1 < end:
             mid = start + (end-start) // 2
+            # 这里计算的是小于mid的个数
             count = sum(num <= mid for num in nums)
             if count <= mid:
                 start = mid
@@ -58,6 +59,7 @@ class Solution:
             if num in seen:
                 return num
             seen.add(num)
+
 # 快慢指针
 '''
 题目设定的问题是N+1个元素都在[1,n]这个范围内。
@@ -82,9 +84,10 @@ class Solution:
 '''
 # 相当于求环的入口 快慢指针  将索引数组看成链表
 class Solution:
-    def findDuplicate(self, nums: List[int]) -> int:
+    def findDuplicate(self, nums) -> int:
         slow = nums[0]
         fast = nums[nums[0]]
+        # 因为题意表示一定有环 注意题意是1-n,本题不能出现首位是0，不然会死循环
         while slow != fast:
             # print(slow, fast)
             slow = nums[slow]
@@ -94,3 +97,5 @@ class Solution:
             slow = nums[slow]
             fast = nums[fast]
         return slow
+a = [1, 2, 3, 4, 11, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0,15]
+print(Solution().findDuplicate(a))

@@ -180,8 +180,18 @@ class Solution:
 from collections import deque
 
 
+'''
+图解算法中的BFS算法的思想
+1.创建一个队列，将要查找的人添加到队列中（先添加一度关系的）
+2.从队列弹出一个人
+3.检查判断是否找到，找到了即退出
+4.没有找到就将这个人的朋友都添加到这个队列中（二度关系）
 
-# 自己的版本
+很重要的是：检查一个人之前，必须判断之前有没有检查过他，我们可以用一个列表来记录检查过的人
+'''
+
+
+# 自己的版本 BFS
 class Solution:
     def levelOrder(self, root: TreeNode) -> List[List[int]]:
         # 借用队列

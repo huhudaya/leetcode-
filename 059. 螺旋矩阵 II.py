@@ -64,8 +64,6 @@ class Solution {
     }
 }
 '''
-
-
 # 模拟过程
 class Solution:
     def generateMatrix(self, n: int) -> List[List[int]]:

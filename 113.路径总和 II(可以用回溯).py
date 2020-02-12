@@ -21,12 +21,15 @@
 ]
 '''
 
+
 # 递归
 class TreeNode:
     def __init__(self, x):
         self.val = x
         self.left = None
         self.right = None
+
+
 def pathSum(self, root: TreeNode, sum: int) -> List[List[int]]:
     res = []
     if not root: return []
@@ -44,6 +47,8 @@ def pathSum(self, root: TreeNode, sum: int) -> List[List[int]]:
 
     helper(root, sum, [])
     return res
+
+
 # 非递归
 class Solution:
     def pathSum(self, root: TreeNode, sum: int) -> List[List[int]]:
@@ -59,9 +64,6 @@ class Solution:
             if node.left:
                 stack.append((tmp + [node.left.val], node.left))
         return res
-
-
-
 
 
 # 回溯
@@ -166,6 +168,7 @@ class Solution:
         if root is None:
             return []
         res = []
+
         def helper(root, sum, tmp):
             if root is None:
                 return
@@ -177,7 +180,33 @@ class Solution:
                 return
             helper(root.left, sum, tmp + [root.val])
             helper(root.right, sum, tmp + [root.val])
+
         helper(root, sum, [])
         return res
 
+
+
+
 # 自己的版本回溯法，节省内存
+def binaryTreePathSum(self, root, target):
+    # self.res = []
+    self.find_binary_tree_path_sum(root, [], target, 0)
+    return self.res
+
+
+def find_binary_tree_path_sum(self, root, tmp_res, target, cur_sum):
+    # 这种方法其实不是很好，因为到了空节点才判断，所以这个时候就算了两遍相同的路径
+    if root is None:
+        # if not root:
+        return
+    # traverse
+    tmp_res.append(root.val)
+    cur_sum += root.val
+    if root.left == None and root.right == None:
+        if target == cur_sum:
+            self.res.append(tmp_res[:])
+    # divide&conquer
+    self.find_binary_tree_path_sum(root.left, tmp_res, target, cur_sum)
+    self.find_binary_tree_path_sum(root.right, tmp_res, target, cur_sum)
+    cur_sum -= root.val
+    tmp_res.pop()
