@@ -150,5 +150,6 @@ class Solution:
         else:
             return False
 
-print(Solution().search([1, 3, 1, 1, 2],3))
+
+print(Solution().search([1, 3, 1, 1, 2], 3))
 # 注意 13112这种情况是不会发生的，因为原数组是排好序的，按某一个点进行旋转，显然11213不满足升序条件

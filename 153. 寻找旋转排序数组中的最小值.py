@@ -47,4 +47,21 @@ class Solution:
                 right = mid 
         return nums[left]
 
-
+# 自己的版本
+class Solution:
+    def findMin(self, nums: List[int]) -> int:
+        #
+        left = 0
+        right = len(nums) - 1
+        if not nums:
+            return -1
+        while left + 1 < right:
+            mid = left + ((right - left) >> 1)
+            if nums[mid] < nums[right]:
+                right = mid
+            else:
+                left = mid
+        if nums[right] < nums[left]:
+            return nums[right]
+        else:
+            return nums[left]

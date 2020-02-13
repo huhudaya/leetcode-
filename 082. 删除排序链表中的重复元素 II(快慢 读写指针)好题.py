@@ -21,25 +21,25 @@ class ListNode:
 
 from utils import list2ListNode
 
-
-class Solution:
-    def deleteDuplicates(self, head: ListNode) -> ListNode:
-        dummy = ListNode(-1)
-        pre = dummy
-        cur = head
-        while cur and cur.next:
-            if cur.next.val != cur.val:
-                pre = cur
-                cur = cur.next
-            else:
-                while cur and cur.next and cur.next.val == cur.val:
-                    cur = cur.next
-                if cur == None:
-                    pre.next = None
-                else:
-                    pre.next = cur.next
-                    cur = cur.next
-        return dummy.next
+# 错的
+# class Solution:
+#     def deleteDuplicates(self, head: ListNode) -> ListNode:
+#         dummy = ListNode(-1)
+#         pre = dummy
+#         cur = head
+#         while cur and cur.next:
+#             if cur.next.val != cur.val:
+#                 pre = cur
+#                 cur = cur.next
+#             else:
+#                 while cur and cur.next and cur.next.val == cur.val:
+#                     cur = cur.next
+#                 if cur == None:
+#                     pre.next = None
+#                 else:
+#                     pre.next = cur.next
+#                     cur = cur.next
+#         return dummy.next
 
 
 # 非递归

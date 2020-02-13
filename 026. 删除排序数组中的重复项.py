@@ -56,3 +56,15 @@ class Solution:
                 slow += 1
                 nums[slow] = nums[fast]
         return slow + 1
+
+
+class Solution:
+    def removeDuplicates(self, nums) -> int:
+        # 定义为写指针
+        slow = 0
+        K = 1
+        for num in nums:
+            if slow < K or num != nums[slow - K]:
+                nums[slow] = num
+                slow += 1
+        return slow

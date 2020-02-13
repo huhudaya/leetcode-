@@ -37,6 +37,7 @@ class Solution:
         return nums[left]
 
 
+# 自己的版本
 class Solution:
     def findMin(self, nums: List[int]) -> int:
         left = 0
