@@ -48,18 +48,20 @@ for 选择 in 选择列表:
     将该选择再加入选择列表
 '''
 
+from typing import List
 class Solution:
     def permute(self, nums):
         # 回溯法
         res = []
         track = []
         n = len(nums)
+
         def helper(nums):
             # n叉树的遍历
             if len(track) == n:
                 # 这里需要注意一下，track应该被新new,否则存放的都是track的引用,最后均为[]
                 res.append(list(track))
-                return 
+                return
             for i in range(n):
                 if nums[i] in track:
                     # 终止条件
@@ -70,23 +72,50 @@ class Solution:
                 helper(nums)
                 # 撤销选择
                 track.pop()
+
         helper(nums)
         return res
+
 
 # 方法二：
 class Solution:
     def permute(self, nums):
         res = []
+
         def backtrack(nums, tmp):
             if not nums:
                 res.append(tmp)
-                return 
+                return
             for i in range(len(nums)):
                 # 一种太讨巧的方法了吧AHHHH.. i like it 
-                backtrack(nums[:i] + nums[i+1:], tmp + [nums[i]])
+                backtrack(nums[:i] + nums[i + 1:], tmp + [nums[i]])
+
         backtrack(nums, [])
         return res
+
+
 # 链接：https://leetcode-cn.com/problems/permutations/solution/hui-su-suan-fa-by-powcai-2/
 
-a=[1,2,3,4]
-print(a[0:0])
+
+# 作者：liweiwei1419
+# 通用的做法是使用一个布尔数组来表示是否添加过
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        def dfs(nums, size, depth, path, used, res):
+            if depth == size:
+                res.append(path)
+                return
+            for i in range(size):
+                if used[i] is False:
+                    used[i] = True
+                    path.append(nums[i])
+                    dfs(nums, size, depth + 1, path, used, res)
+                    used[i] = False
+                    path.pop()
+        size = len(nums)
+        if len(nums) == 0:
+            return []
+        used = [False for _ in range(size)]
+        res = []
+        dfs(nums, size, 0, [], used, res)
+        return res

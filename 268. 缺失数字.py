@@ -75,7 +75,7 @@ int missingNumber(int[] nums) {
     return res;
 }
 '''
-
+from typing import  List
 
 class Solution:
     # def missingNumber(self, nums) -> int:

@@ -69,6 +69,11 @@ Java
         recursion(nums, i + 1, res);
     }
 
+
+
+
+
+
 思路：
 集合中每个元素的选和不选，构成了一个满二叉状态树，比如，左子树是不选，右子树是选，从根节点、到叶子节点的所有路径，构成了所有子集。可以有前序、中序、后序的不同写法，结果的顺序不一样。本质上，其实是比较完整的中序遍历。
     /**
@@ -145,7 +150,7 @@ class Solution:
         for i in range(start, len(nums)):
             path.append(nums[i])
             # 因为 nums 不包含重复元素，并且每一个元素只能使用一次
-            # 所以下一次搜索从 i + 1 开始
+            # 所以下一次搜索从 i + 1 开始，每次选一个新的元素作为起点
             self.__dfs(nums, i + 1, path, res)
             path.pop()
 
@@ -241,3 +246,47 @@ class Solution:
         helper(0, [])
         return res
 
+
+
+# 自己的版本 套用labuladong的模板
+# 标准模板
+class Solution:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+    # labuladong回溯法模板
+        n = len(nums)
+        if n == 0:
+            return []
+        res = []
+        self.__dfs(nums, [], res)
+        return res
+    def __dfs(self, nums, path, res):
+        res.append(path[:])
+        for i in range(len(nums)):
+            # 选择路径
+            path.append(nums[i])
+            # 递归
+            self.__dfs(nums[i+1:], path, res)
+            # 撤销选择
+            path.pop()
+
+# 回溯法一:在回溯的过程中记录结点
+from typing import List
+class Solution:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        size = len(nums)
+        if size == 0:
+            return []
+
+        res = []
+        self.__dfs(nums, 0, [], res)
+        return res
+
+    def __dfs(self, nums, start, path, res):
+        # 每次遍历的时候都添加到res中
+        res.append(path[:])
+        for i in range(start, len(nums)):
+            path.append(nums[i])
+            # 因为 nums 不包含重复元素，并且每一个元素只能使用一次,所以排序之后对当前元素的后面元素进行处理
+            # 所以下一次搜索从 i + 1 开始，每次选一个新的元素作为起点
+            self.__dfs(nums, i + 1, path, res)
+            path.pop()

@@ -34,8 +34,10 @@ class Solution:
         left = 0
         cur = 0
         res = float("inf")
+        # 快指针为right
         for right in range(len(nums)):
             cur += nums[right]
+            # 慢指针 left 移动条件
             while cur >= s:
                 res = min(res, right - left + 1)
                 cur -= nums[left]

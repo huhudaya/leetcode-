@@ -77,6 +77,7 @@ public boolean search(int[] nums, int target) {
     }
 '''
 
+from typing import  List
 
 class Solution:
     def search(self, nums, target: int) -> bool:

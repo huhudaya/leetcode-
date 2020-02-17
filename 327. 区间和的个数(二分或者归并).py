@@ -14,6 +14,19 @@
 
 链接：https://leetcode-cn.com/problems/count-of-range-sum
 '''
+
+'''
+回到根本，这道题是让我们求解任意S[i] - S[j]满足：
+
+lower <= S[i] - S[j] <= upper，j <= i
+
+如果存在下面这个序列，左边蓝色部分是有序的，右边黄色部分是有序的，求有多少个答案满足：
+
+注意 此时的S是指当前区域的和
+lower <= S[i] - S[j] <= upper，j <= i (S[i]属于黄色右边区域，S[j]属于蓝色为左边区域)
+
+'''
+
 class Solution:
     def countSmaller(self, nums):
         # 使用索引数组
@@ -23,12 +36,14 @@ class Solution:
         # 归并
         self.__merge(nums, index, res)
         return res
+
     def __merge(self, nums, index, res):
         if len(index) <= 1:
             return
         mid = len(index) // 2
         left = index[:mid]
         right = index[mid:]
+        # 相当于归并排序，先将两边排好序，然后进行归并的操作
         self.__merge(nums, left, res)
         self.__merge(nums, right, res)
         i = 0
@@ -63,8 +78,19 @@ class Solution:
             k += 1
             j += 1
 
+
 # 自己的版本
 import bisect
+'''
+回到根本，这道题是让我们求解任意S[i] - S[j]S[i]−S[j]满足：
+
+lower <= S[i] - S[j] <= upper，j <= i
+
+如果存在下面这个序列，左边蓝色部分是有序的，右边黄色部分是有序的，求有多少个答案满足：
+
+lower <= S[i] - S[j] <= upper，j <= i (S[i]属于黄色右边区域，S[j]属于蓝色为左边区域)
+
+'''
 class Solution:
     # def countRangeSum(self, nums: List[int], lower: int, upper: int) -> int:
     #     # 前缀和数组初始化
@@ -94,6 +120,7 @@ class Solution:
             preSum[i + 1] = preSum[i] + nums[i]
         # 前缀和数组中必须有一个前缀0作为辅助位置
         return self.merge(preSum, lower, upper)
+
     '''
     归并的思想，归并思路大家应该都懂，但是需要注意的是为什么将前缀和数组preSum中的第一个辅助位置初始值0的数不去掉？
     这是因为有单个值就满足条件的情况
@@ -101,6 +128,7 @@ class Solution:
     这个时候有3个满足条件的区间，前缀数组和是[0,0,0]
     这样单个值也会和初始值0进行比较
     '''
+
     def merge(self, nums: List[int], lower, upper):
         if len(nums) <= 1:
             return 0
@@ -147,23 +175,27 @@ class Solution:
             k += 1
             j += 1
         return cnt
+
+
 # 二分
 class Solution:
     def countRangeSum(self, nums: List[int], lower: int, upper: int) -> int:
-        p = [0]                             #前缀和初始化，前缀和p[x]，就是区间数组[0, x)的和
+        p = [0]  # 前缀和初始化，前缀和p[x]，就是区间数组[0, x)的和
         for i in nums:
-            p += [p[-1] + i]                #前缀和计算
+            p += [p[-1] + i]  # 前缀和计算
         # for i in range(1,len(nums)):
         #     p[i] += p[i-1] + nums[i]
         ans = 0
-        q = []                              #有序的前缀和队列
-        for pi in p[:: -1]:                 #逆序遍历前缀和
-            i, j = pi + lower, pi + upper   #给出当前前缀和两个对应边界
-            l = bisect.bisect_left(q, i)    #二分查找
-            r = bisect.bisect_right(q, j)   #找到对应边界的在前缀和数组里的插入位置
-            ans += r - l                    #序号大于自己的前缀和里有多少个前缀和在边界里面，就是以当前区间为起点，符合区间和条件的个数
-            bisect.insort(q, pi)            #二分插入更新队列
+        q = []  # 有序的前缀和队列
+        for pi in p[:: -1]:  # 逆序遍历前缀和
+            i, j = pi + lower, pi + upper  # 给出当前前缀和两个对应边界
+            l = bisect.bisect_left(q, i)  # 二分查找
+            r = bisect.bisect_right(q, j)  # 找到对应边界的在前缀和数组里的插入位置
+            ans += r - l  # 序号大于自己的前缀和里有多少个前缀和在边界里面，就是以当前区间为起点，符合区间和条件的个数
+            bisect.insort(q, pi)  # 二分插入更新队列
         return ans
+
+
 # java
 '''
 前缀和数组为sum[];
@@ -199,6 +231,7 @@ class Solution {
 }
 '''
 
+
 # 分治法
 def cntSum(self, nums, lower, upper):
     """
@@ -210,6 +243,7 @@ def cntSum(self, nums, lower, upper):
     sums = [0]
     for i in nums:
         sums.append(sums[-1] + i)
+
     def sort(lo, hi):
         if hi - lo <= 1:  # 如果数组只有一个数，那么下面的算法将不能比较出来，还会将数组长度退化成1，在下面的 sort 会栈溢出
             return 0
@@ -224,4 +258,5 @@ def cntSum(self, nums, lower, upper):
         sums[lo:hi] = sorted(sums[lo:hi])  # 如果不排序，就会出现前面较大的数sums[h] (h >=mid)
         # 在索引低位的数 left计算失败后，left后移，而后面较小的数 sums[h+1] 计算不到 left 的情况的情况
         return count
+
     return sort(0, len(sums))

@@ -26,6 +26,9 @@ target = 13
 
 链接：https://leetcode-cn.com/problems/search-a-2d-matrix
 '''
+from typing import  List
+
+
 class Solution:
     def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
         if not matrix: return False
@@ -39,8 +42,9 @@ class Solution:
                 left = mid + 1
             else:
                 right = mid
-        #print(left,right)
+        # print(left,right)
         return left < row * col and matrix[left // col][left % col] == target
+
 
 # 自己的版本
 class Solution:
@@ -54,6 +58,7 @@ class Solution:
         right = row * col - 1
         while left + 1 < right:
             mid = left + (right - left) // 2
+            # 一般来说 // 是区间， % 是余数： 即 //可以表示行，%表示列
             if matrix[mid // col][mid % col] < target:
                 left = mid
             elif matrix[mid // col][mid % col] > target:

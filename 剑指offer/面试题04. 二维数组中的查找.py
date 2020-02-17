@@ -21,6 +21,8 @@
 0 <= m <= 1000
 注意：本题与主站 240 题相同：https://leetcode-cn.com/problems/search-a-2d-matrix-ii/
 '''
+from typing import  List
+
 class Solution:
     # array 二维列表
     def Find(self, target, array):
@@ -35,7 +37,6 @@ class Solution:
             else:
                 return True
         return False
-
 
 class Solution:
     def findNumberIn2DArray(self, matrix: List[List[int]], target: int) -> bool:
