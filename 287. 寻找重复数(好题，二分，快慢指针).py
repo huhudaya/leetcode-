@@ -83,7 +83,7 @@ class Solution:
 
 '''
 # 相当于求环的入口 快慢指针  将索引数组看成链表
-class Solution:
+class Solution1:
     def findDuplicate(self, nums) -> int:
         slow = nums[0]
         fast = nums[nums[0]]
@@ -93,9 +93,10 @@ class Solution:
             slow = nums[slow]
             fast = nums[nums[fast]]
         slow = 0
+        # slow = nums[0]
         while slow != fast:
             slow = nums[slow]
             fast = nums[fast]
         return slow
-a = [1, 2, 3, 4, 11, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0,15]
-print(Solution().findDuplicate(a))
+a = [1,2,0,2]
+print(Solution1().findDuplicate(a))

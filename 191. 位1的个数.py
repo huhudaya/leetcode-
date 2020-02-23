@@ -33,6 +33,7 @@
 链接：https://leetcode-cn.com/problems/number-of-1-bits
 '''
 
+
 # 解一
 # 调用函数懒蛋法。
 
@@ -44,6 +45,7 @@ class Solution(object):
         :rtype: int
         """
         return bin(n).count('1')
+
 
 # 解二
 # 手动循环计算 1 的个数。
@@ -59,8 +61,10 @@ class Solution(object):
         for c in n:
             if c == "1":
                 count += 1
-        return count  
-# 解三
+        return count
+    # 解三
+
+
 # 十进制转二进制的方式。每次对 2 取余判断是否是 1，是的话就 count = count + 1。
 # Python
 class Solution(object):
@@ -76,6 +80,8 @@ class Solution(object):
                 count += 1
             n //= 2
         return count
+
+
 # 解四
 # 位运算法。
 # 把 n 与 1 进行与运算，将得到 n 的最低位数字。因此可以取出最低位数，再将 n 右移一位。循环此步骤，直到 n 等于零。
@@ -88,9 +94,10 @@ class Solution(object):
         """
         count = 0
         while n:
-            count += n&1
+            count += n & 1
             n >>= 1
         return count
+
 
 '''
 //技巧：直接去掉二进制中位置最靠后的1
@@ -100,6 +107,7 @@ int hammingWeight(uint32_t n) {
         while(n)
         {
             ans++;
+            # 去掉最后一个1
             n &= n-1;
         }
         return ans;
@@ -129,8 +137,3 @@ int hammingWeight(uint32_t n) {
         return ans;
     }
 '''
-
-
-
-
-

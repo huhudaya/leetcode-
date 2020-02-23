@@ -21,6 +21,8 @@
 链接：https://leetcode-cn.com/problems/binary-tree-level-order-traversal
 '''
 
+from typing import List
+
 
 # Definition for a binary tree node.
 class TreeNode:
@@ -29,10 +31,12 @@ class TreeNode:
         self.left = None
         self.right = None
 
+
 # 迭代
 class Solution:
     def levelOrder(self, root: TreeNode) -> List[List[int]]:
-        if not root: return []
+        if not root:
+            return []
         res = []
         cur_level = [root]
         while cur_level:
@@ -61,7 +65,8 @@ class Solution:
         res = []
 
         def helper(root, depth):
-            if not root: return
+            if not root:
+                return
             if len(res) == depth:
                 res.append([])
             res[depth].append(root.val)
@@ -131,6 +136,8 @@ class Solution:
 实现
 '''
 from collections import deque
+
+
 class Solution:
     def levelOrder(self, root):
         """
@@ -178,7 +185,6 @@ class Solution:
 #         self.left = None
 #         self.right = None
 from collections import deque
-
 
 '''
 图解算法中的BFS算法的思想

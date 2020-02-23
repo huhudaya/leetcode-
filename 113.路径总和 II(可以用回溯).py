@@ -30,9 +30,13 @@ class TreeNode:
         self.right = None
 
 
+from typing import List
+
+
 def pathSum(self, root: TreeNode, sum: int) -> List[List[int]]:
     res = []
-    if not root: return []
+    if not root:
+        return []
 
     def helper(root, sum, tmp):
         if not root:
@@ -185,8 +189,6 @@ class Solution:
         return res
 
 
-
-
 # 自己的版本回溯法，节省内存
 def binaryTreePathSum(self, root, target):
     # self.res = []
@@ -201,6 +203,7 @@ def find_binary_tree_path_sum(self, root, tmp_res, target, cur_sum):
         return
     # traverse
     tmp_res.append(root.val)
+    # 这是是回溯
     cur_sum += root.val
     if root.left == None and root.right == None:
         if target == cur_sum:
@@ -208,5 +211,6 @@ def find_binary_tree_path_sum(self, root, tmp_res, target, cur_sum):
     # divide&conquer
     self.find_binary_tree_path_sum(root.left, tmp_res, target, cur_sum)
     self.find_binary_tree_path_sum(root.right, tmp_res, target, cur_sum)
+    # 撤销选择
     cur_sum -= root.val
     tmp_res.pop()

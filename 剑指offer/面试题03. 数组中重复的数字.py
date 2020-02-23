@@ -43,7 +43,7 @@ Floyd 的判圈算法被划分成两个不同的阶段：
 
 '''
 
-
+from typing import List
 class Solution:
     def findRepeatNumber(self, nums: List[int]) -> int:
         # Floyd法
@@ -53,6 +53,7 @@ class Solution:
         head = 0
         while nums[nums[head]] == head:
             head += 1
+
         fast = slow = head
 
         # 阶段1 快慢指针
@@ -69,3 +70,4 @@ class Solution:
             if fast == slow:
                 break
         return fast
+print(Solution().findRepeatNumber([1,0,1]))

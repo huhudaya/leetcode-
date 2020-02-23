@@ -85,6 +85,7 @@ class Solution:
         slow = dummy
         fast = dummy.next
         while fast:
+            # 牢记 双指针，slow相当于是pre指针，fast相当于本区域的最后一个指针
             while fast.next and slow.next.val == fast.next.val:
                 fast = fast.next
             if slow.next == fast:

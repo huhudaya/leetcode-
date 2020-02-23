@@ -20,6 +20,7 @@
 链接：https://leetcode-cn.com/problems/contains-duplicate
 '''
 
+from typing import List
 
 # set
 def containsDuplicate(nums):

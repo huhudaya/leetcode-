@@ -20,6 +20,10 @@
 然后将后一半的链表链表进行翻转（对中间过后的链表进行翻转
 之后将前面的链表和翻转后的链表进行交叉合并即可
 '''
+class ListNode():
+	def __init__(self, x):
+		self.val = x
+		self.next = None
 class Solution:
 	def reorderList(self, head):
 		if head == None or head.next == None or head.next.next == None:
@@ -54,5 +58,3 @@ class Solution:
 			cur.next = temp
 			p = temp
 			cur = next
-		
-			

@@ -56,6 +56,7 @@ public class combinationSum_39 {
 
 
 # 注意 题意， candidates是无重复的数组！！！！
+from typing import List
 class Solution:
     def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
         # 回溯法模板

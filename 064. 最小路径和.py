@@ -16,6 +16,9 @@
 解释: 因为路径 1→3→1→1→1 的总和最小。
 链接：https://leetcode-cn.com/problems/minimum-path-sum
 '''
+from typing import List
+
+
 class Solution:
     def minPathSum(self, grid: List[List[int]]) -> int:
         # dp思想，类似于62题
@@ -25,14 +28,11 @@ class Solution:
         # base case
         dp[0][0] = grid[0][0]
         for i in range(1, n):
-            dp[0][i] = dp[0][i-1] + grid[0][i]
+            dp[0][i] = dp[0][i - 1] + grid[0][i]
         for j in range(1, m):
-            dp[j][0] = dp[j-1][0] + grid[j][0]
+            dp[j][0] = dp[j - 1][0] + grid[j][0]
         # 递推
         for i in range(1, m):
             for j in range(1, n):
-                dp[i][j] = min(dp[i-1][j],dp[i][j-1])+grid[i][j]
-        return dp[m-1][n-1]
-
-        
-
+                dp[i][j] = min(dp[i - 1][j], dp[i][j - 1]) + grid[i][j]
+        return dp[m - 1][n - 1]

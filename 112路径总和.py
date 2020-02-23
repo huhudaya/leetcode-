@@ -1,8 +1,6 @@
 '''
 给定一个二叉树和一个目标和，判断该树中是否存在根节点到叶子节点的路径，这条路径上所有节点值相加等于目标和。
-
 说明: 叶子节点是指没有子节点的节点。
-
 示例: 
 给定如下二叉树，以及目标和 sum = 22，
 
@@ -39,6 +37,7 @@ class Solution:
         if not root:
             return False
 
+        # 注意这里是传值引用，每次都是一个新的sum，所以不必担心回溯
         sum -= root.val
         if not root.left and not root.right:  # if reach a leaf
             return sum == 0

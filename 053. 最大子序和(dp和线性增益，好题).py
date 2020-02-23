@@ -44,6 +44,9 @@ dp[i] = Math.max(dp[i - 1], 0) + array[i]
 题目要求子数组不能为空，因此一开始需要初始化，也就是 dp[0] = array[0]，保证最后答案的可靠性，另外我们需要用一个变量记录最后的答案，因为子数组有可能以数组中任意一个元素结尾
 '''
 # dp[i] 就是 “以 i 结尾的所有子数组的最大值”
+from typing import List
+
+
 class Solution:
     def maxSubArray(self, nums: List[int]) -> int:
         # dp思想
@@ -52,9 +55,10 @@ class Solution:
         dp[0] = nums[0]
         for i in range(1, n):
             # dp[i] = max(dp[i-1]+nums[i], nums[i])
-            dp[i] = max(dp[i-1], 0) + nums[i]
+            dp[i] = max(dp[i - 1], 0) + nums[i]
         res = max(dp)
         return res
+
     # 线性循环
     '''
      该算法更为简便之处是忽略了对子序列的寻找比较,而是根据规律直接找出最佳答案.
@@ -65,6 +69,7 @@ class Solution:
 
      上文引用来自https://www.cnblogs.com/sunnysola/p/4795691.html
     '''
+
     def maxSubArray(self, nums: List[int]) -> int:
         import sys
         n = len(nums)
@@ -78,6 +83,3 @@ class Solution:
                 sum_i = nums[i]
             res = max(sum_i, res)
         return res
-    
-
-

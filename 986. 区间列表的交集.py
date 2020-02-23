@@ -49,7 +49,7 @@ if b2 < a1 or a2 < b1:
 if b2 >= a1 and a2 >= b1:
     [a1,a2] 和 [b1,b2] 存在交集
 '''
-
+from typing import List
 # A, B 形如 [[0,2],[5,10]...]
 def intervalIntersection(A, B):
     i, j = 0, 0 # 双指针

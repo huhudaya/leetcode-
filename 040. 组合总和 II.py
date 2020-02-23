@@ -69,7 +69,7 @@ candidates 中的每个数字在每个组合中只能使用一次。
 第一个出现的2的特点就是 cur == begin. 第二个出现的2 特点是cur > begin.
 '''
 
-
+from typing import List
 class Solution:
     def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
         candidates.sort()
@@ -88,7 +88,7 @@ class Solution:
             # 大剪枝
             if target < candidates[i]:
                 break
-            # 小剪枝
+            # 小剪枝 这里的判断条件 candidates[i] == candidates[i - 1] 是为了防止出现 2，2 变换位置之后是两个结果，其实就是一个结果
             if start < i and candidates[i] == candidates[i - 1]:
                 continue
             # 路径选择

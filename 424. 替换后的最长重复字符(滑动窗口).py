@@ -77,6 +77,7 @@ class Solution:
         left = 0
         maxCount = 0
         res = 0
+        # 双指针 右指针不停向前
         for right in range(n):
             hash[s[right]] += 1
             # 当前窗口中元素最多的字符的数量

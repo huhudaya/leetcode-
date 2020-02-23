@@ -15,6 +15,8 @@
 解释: 最长连续递增序列是 [2], 长度为1。
 注意：数组长度不会超过10000。
 '''
+
+
 # 自己的版本
 class Solution:
     def findLengthOfLCIS(self, nums) -> int:
@@ -24,23 +26,23 @@ class Solution:
         n = len(nums)
         if nums == [] or nums is None:
             return 0
-        while right < n-1:
+        while right < n - 1:
             if nums[right] >= nums[right + 1]:
-                res = max(res,right - left + 1)
+                res = max(res, right - left + 1)
                 left = right + 1
             right += 1
-        return max(res,right - left + 1)
+        return max(res, right - left + 1)
 
-
-# 简约版本
+    # 简约版本
     def findLengthOfLCIS(self, nums) -> int:
         ans = anchor = 0
         for i in range(len(nums)):
-            if i and nums[i-1] >= nums[i]:
+            if i and nums[i - 1] >= nums[i]:
                 anchor = i
-            ans = max(ans, i-anchor+1)
+            ans = max(ans, i - anchor + 1)
         return ans
-        
+
+
 # Java版本 时间击败百分之百
 # 计数法
 # class Solution {
@@ -65,12 +67,7 @@ class Solution:
 #     }
 # }
 
-a = list(set([1,2,4,3,2,4]))
+a = list(set([1, 2, 4, 3, 2, 4]))
 a.sort()
 a.reverse()
 print(a)
-
-
-
-
-

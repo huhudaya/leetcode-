@@ -25,6 +25,7 @@
 或者可能是 dp 数组存储的信息还不够，不足以推出下一步的答案，需要把 dp 数组扩大成二维数组甚至三维数组。
 最后想一想问题的 base case 是什么，以此来初始化 dp 数组，以保证算法正确运行。
 '''
+from typing import List
 
 
 class Solution:
@@ -34,7 +35,7 @@ class Solution:
         # dp思想
         n = len(nums)
         # basecase为1
-        dp = [1 for i in range(n)]
+        dp = [1 for _ in range(n)]
         for i in range(n):
             for j in range(i):
                 if nums[j] < nums[i]:
@@ -97,6 +98,7 @@ class Solution:
             if j == res: res += 1
         return res
 
+import bisect
 
 class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:

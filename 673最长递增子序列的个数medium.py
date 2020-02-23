@@ -19,6 +19,8 @@
 注意: 给定的数组长度不超过 2000 并且结果一定是32位有符号整数。
 '''
 
+from typing import List
+
 
 class Solution:
     def findNumberOfLIS(self, nums: List[int]) -> int:
@@ -36,7 +38,7 @@ class Solution:
                         dp[i] = dp[j] + 1
                         dc[i] = dc[j]  # 组合数不变
                     elif dp[j] + 1 == dp[i]:
-                        dc[i] += dc[j] # 找到新的组合数
+                        dc[i] += dc[j]  # 找到新的组合数
             # dp[i] = max(dp[i],dp[j]+1)  
         _max = max(dp)
         res = 0
@@ -44,7 +46,8 @@ class Solution:
             if p == _max:
                 res += z
         return res
-        
+
+
 # scala版本
 '''
 import scala.util.control.Breaks._

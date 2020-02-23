@@ -17,6 +17,7 @@ B: [3,2,1,4,7]
 
 链接：https://leetcode-cn.com/problems/maximum-length-of-repeated-subarray
 '''
+from typing import List
 class Solution:
     def findLength(self, A: List[int], B: List[int]) -> int:
         # 最长公共子串

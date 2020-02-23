@@ -41,32 +41,33 @@ class Solution:
 '''
 
 # 双指针
+from typing import List
 class Solution:
     def fourSum(self, nums: List[int], target: int) -> List[List[int]]:
         n = len(nums)
         if n < 4: return []
         nums.sort()
         res = []
-        for i in range(n-3):
+        for i in range(n - 3):
             # 防止重复 数组进入 res
-            if i > 0 and nums[i] == nums[i-1]:
+            if i > 0 and nums[i] == nums[i - 1]:
                 continue
             # 当数组最小值和都大于target 跳出
-            if nums[i] + nums[i+1] + nums[i+2] + nums[i+3] > target:
+            if nums[i] + nums[i + 1] + nums[i + 2] + nums[i + 3] > target:
                 break
             # 当数组最大值和都小于target,说明i这个数还是太小,遍历下一个
-            if nums[i] + nums[n-1] + nums[n-2] + nums[n-3] < target:
+            if nums[i] + nums[n - 1] + nums[n - 2] + nums[n - 3] < target:
                 continue
             # 固定两个数 i 和 j
-            for j in range(i+1,n-2):
+            for j in range(i + 1, n - 2):
                 # 防止重复 数组进入 res
-                if j - i > 1 and nums[j] == nums[j-1]:
+                if j - i > 1 and nums[j] == nums[j - 1]:
                     continue
                 # 同理
-                if nums[i] + nums[j] + nums[j+1] + nums[j+2] > target:
+                if nums[i] + nums[j] + nums[j + 1] + nums[j + 2] > target:
                     break
                 # 同理
-                if nums[i] + nums[j] + nums[n-1] + nums[n-2] < target:
+                if nums[i] + nums[j] + nums[n - 1] + nums[n - 2] < target:
                     continue
                 # 双指针
                 left = j + 1
@@ -74,10 +75,10 @@ class Solution:
                 while left < right:
                     tmp = nums[i] + nums[j] + nums[left] + nums[right]
                     if tmp == target:
-                        res.append([nums[i],nums[j],nums[left],nums[right]])
-                        while left < right and nums[left] == nums[left+1]:
+                        res.append([nums[i], nums[j], nums[left], nums[right]])
+                        while left < right and nums[left] == nums[left + 1]:
                             left += 1
-                        while left < right and nums[right] == nums[right-1]:
+                        while left < right and nums[right] == nums[right - 1]:
                             right -= 1
                         left += 1
                         right -= 1
@@ -86,6 +87,8 @@ class Solution:
                     else:
                         left += 1
         return res
+
+
 # 简洁
 class Solution(object):
     def fourSum(self, nums, target):
@@ -95,22 +98,22 @@ class Solution(object):
         :rtype: List[List[int]]
         """
         nums.sort()
-        ans=set()
-        
-        for i in range(len(nums)-3):
-            for j in range(i+1,len(nums)-2):#固定两个数
-                left=j+1#左指针
-                right=len(nums)-1#右指针
-                while(right>left):
-                    temp=nums[i]+nums[j]+nums[left]+nums[right]
-                    if temp==target:
-                        ans.add((nums[i],nums[j],nums[left],nums[right]))
-                        left+=1
-                        right-=1
-                    if temp>target:right-=1#太大了，右指针左移
-                    if temp<target:left+=1#反之
-        #去重
-        rec=[]
+        ans = set()
+
+        for i in range(len(nums) - 3):
+            for j in range(i + 1, len(nums) - 2):  # 固定两个数
+                left = j + 1  # 左指针
+                right = len(nums) - 1  # 右指针
+                while (right > left):
+                    temp = nums[i] + nums[j] + nums[left] + nums[right]
+                    if temp == target:
+                        ans.add((nums[i], nums[j], nums[left], nums[right]))
+                        left += 1
+                        right -= 1
+                    if temp > target: right -= 1  # 太大了，右指针左移
+                    if temp < target: left += 1  # 反之
+        # 去重
+        rec = []
         for i in ans:
             rec.append(list(i))
         return rec

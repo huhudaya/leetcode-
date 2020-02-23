@@ -38,6 +38,7 @@ class Solution:
             for i in range(size):
                 if used[i] is False:
                     # 修改2：在used[i - 1]刚刚被撤销的时候剪枝，说明接下来会被选择，搜索一定会重复，故"剪枝"
+                    # 思考这里不加user[i - 1]会怎么样？？ 打断点调试分析一下 比如112，当运行到这里的时候，由于nums[i] == nums[i - 1]，所以即提前结束了，所以需要避免这种情况
                     if i > 0 and nums[i] == nums[i - 1] and used[i - 1] is False:
                         continue
                     used[i] = True
@@ -48,6 +49,7 @@ class Solution:
         size = len(nums)
         if size == 0:
             return []
+        # 必须要使用排序算法
         nums.sort()
         used = [False] * len(nums)
         res = []

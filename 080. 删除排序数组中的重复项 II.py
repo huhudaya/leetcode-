@@ -54,6 +54,7 @@ class Solution:
         i = 0
         K = 2
         for num in nums:
+            # 读写指针，i为写指针，num是读指针指向的元素
             if i < K or num != nums[i - K]:
                 nums[i] = num
                 i += 1

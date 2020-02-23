@@ -16,6 +16,7 @@ nums2 = [2,5,6],       n = 3
 
 链接：https://leetcode-cn.com/problems/merge-sorted-array
 '''
+from typing import List
 class Solution:
     def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
         """

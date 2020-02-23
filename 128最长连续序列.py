@@ -11,6 +11,8 @@
 输出: 4
 解释: 最长连续序列是 [1, 2, 3, 4]。它的长度为 4。
 '''
+from typing import List
+
 
 class Solution:
     def longestConsecutive(self, nums: List[int]) -> int:
@@ -20,11 +22,13 @@ class Solution:
         res = 0
         for num in nums:
             cnt = 1
-            while num+1 in nums:
+            while num + 1 in nums:
                 cnt += 1
                 num = num + 1
-            res = max(cnt,res)
+            res = max(cnt, res)
         return res
+
+
 # 排序法
 # 排序法应该很容易想到，没思路的话先排序哈哈
 class Solution1:
@@ -42,14 +46,15 @@ class Solution1:
         if n < 2:
             return n
         # 计数法
-        for i in range(n-1):
-            if nums[i] + 1 == nums[i+1]:
+        for i in range(n - 1):
+            if nums[i] + 1 == nums[i + 1]:
                 cnt += 1
-                res = max(cnt,res)
+                res = max(cnt, res)
             else:
                 cnt = 1
         return res
-        
+
+
 # 利用hash表
 class Solution3:
     def longestConsecutive(self, nums: List[int]) -> int:
@@ -73,10 +78,11 @@ class Solution3:
                     cnt += 1
                     tmp += 1
                 res = max(res, cnt)
-        return res 
+        return res
+
+    # 简约版 O(N)
 
 
-# 简约版 O(N)
 class Solution3(object):
     def longestConsecutive(self, nums):
         """
@@ -86,9 +92,9 @@ class Solution3(object):
         nums = set(nums)
         res = 0
         for x in nums:
-            if x-1 not in nums:
+            if x - 1 not in nums:
                 y = x + 1
                 while y in nums:
                     y += 1
-                res = max(res,y-x)
+                res = max(res, y - x)
         return res

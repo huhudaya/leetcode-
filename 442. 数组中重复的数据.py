@@ -39,6 +39,7 @@ def find(arr):
     if arr is None:
         return False
     for i in range(len(arr)):
+        # 如果不在自己的位置，就去交换，直到arr[i]在自己的位置，因为题目要求一定会满足这个条件的
         while arr[i] != i:
             # 找到重复的数字
             if arr[arr[i]] == arr[i]:
