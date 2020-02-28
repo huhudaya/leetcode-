@@ -13,7 +13,8 @@
 输入数组的长度是正整数，且不超过 10,000。
 '''
 
-
+from typing import List
+# 计数法
 class Solution:
     def findMaxConsecutiveOnes(self, nums: List[int]) -> int:
         count = max_count = 0

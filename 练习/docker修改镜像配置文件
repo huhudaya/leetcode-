@@ -1,0 +1,85 @@
+由于需要修改mysql的sql_mode，在命令行修改每次重启都会失效，因为修改docker下mysql的配置文件。
+
+操作系统：centos7
+docker版本：Docker version 17.05.0-ce, build 89658be
+mysql版本：5.7.18
+
+1.拉取镜像
+
+docker pull mysql:5.7.18
+1
+2.列出镜像
+
+[root@zk01 ~]# docker images
+REPOSITORY                                                   TAG                 IMAGE ID            CREATED             SIZE
+mysql                                                        5.7.18              e799c7f9ae9c        5 weeks ago         407MB
+1
+2
+3
+3.运行docker
+
+docker run -d -p 3306:3306 --name mymysql -e MYSQL_ROOT_PASSWORD=123456 mysql:5.7.18
+1
+4.列出正在运行的容器
+
+[root@zk01 docker]# docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                    NAMES
+e1066fe2db35        mysql:5.7.18        "docker-entrypoint..."   6 seconds ago       Up 6 seconds        0.0.0.0:3306->3306/tcp   mymysql
+1
+2
+3
+5.进入容器
+
+docker exec -it e1066fe2db35 /bin/bash
+1
+6.查看配置文件
+
+/etc/mysql/mysql.conf.d/mysqld.cnf
+1
+配置文件内容：
+
+[mysqld]
+pid-file    = /var/run/mysqld/mysqld.pid
+socket      = /var/run/mysqld/mysqld.sock
+datadir     = /var/lib/mysql
+#log-error  = /var/log/mysql/error.log
+# By default we only accept connections from localhost
+#bind-address   = 127.0.0.1
+# Disabling symbolic-links is recommended to prevent assorted security risks
+#symbolic-links=0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+7.查看mysql的sql_mode
+
+mysql> SELECT @@GLOBAL.sql_mode;
++-------------------------------------------------------------------------------------------------------------------------------------------+
+| @@GLOBAL.sql_mode                                                                                                                         |
++-------------------------------------------------------------------------------------------------------------------------------------------+
+| ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION |
++-------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set
+1
+2
+3
+4
+5
+6
+7
+8.停止并删除容器
+
+docker stop e1066fe2db35
+docker rm e1066fe2db35
+1
+2
+9.重新启动容器，指定数据目录和配置文件
+
+docker run -d -p 3306:3306 -v /soft/mysql/my.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf -v /soft/mysql/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 --name mymysql mysql:5.7.18
+1
+10.查看sql_mode

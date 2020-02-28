@@ -14,17 +14,18 @@
 给定字符串的长度和 k 在[1, 10000]范围内。
 链接：https://leetcode-cn.com/problems/reverse-string-ii
 '''
+
+
 # 其实就是每隔k个反转
 class Solution:
     def reverseStr(self, s: str, k: int) -> str:
         # python利用切片
         # 本题题意其实相当于每隔k个元素然后以k个元素进行反转
         a = list(s)
-        for i in range(0, len(a), 2*k):
+        for i in range(0, len(a), 2 * k):
             # 切片的时候不怕越界
-            a[i:i+k] = reversed(a[i:i+k])
+            a[i:i + k] = reversed(a[i:i + k])
         return "".join(a)
-
 
 
 # java
@@ -45,5 +46,5 @@ class Solution {
 }
 '''
 
-for i in range(0,7,4):
-	print(i)
+for i in range(0, 7, 4):
+    print(i)

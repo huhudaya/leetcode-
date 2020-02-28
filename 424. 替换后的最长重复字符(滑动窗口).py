@@ -80,7 +80,7 @@ class Solution:
         # 双指针 右指针不停向前
         for right in range(n):
             hash[s[right]] += 1
-            # 当前窗口中元素最多的字符的数量
+            # 记录当前窗口中元素最多的字符的数量！！！很重要
             maxCount = max(maxCount, hash[s[right]])
             # 注意这里为什么是while循环，举个特列 AABCD K=1,左指针必须移动到条件r-l+1不大于K
             # while right - left + 1 - maxCount > k:

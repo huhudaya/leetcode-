@@ -80,7 +80,7 @@
 空间复杂度：O(1)。
 
 '''
-
+from typing import List
 
 class Solution:
     def isValidSudoku(self, board):

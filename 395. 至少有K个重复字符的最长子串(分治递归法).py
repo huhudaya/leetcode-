@@ -1,30 +1,22 @@
 # 395. 至少有K个重复字符的最长子串.py
 '''
-找到给定字符串（由小写字符组成）中的最长子串 T ， 要求 T 中的每一字符出现次数都不少于 k 。输出 T 的长度。
-
+找到给定字符串（由小写字符组成）中的最长子串 T
+要求 T 中的每一字符出现次数都不少于 k 。输出 T 的长度。
 示例 1:
-
 输入:
 s = "aaabb", k = 3
-
 输出:
 3
 
 最长子串为 "aaa" ，其中 'a' 重复了 3 次。
 示例 2:
-
 输入:
 s = "ababbc", k = 2
-
 输出:
 5
-
 最长子串为 "ababb" ，其中 'a' 重复了 2 次， 'b' 重复了 3 次。
-
 链接：https://leetcode-cn.com/problems/longest-substring-with-at-least-k-repeating-characters
 '''
-
-
 # 暴力法 利用前缀和 O(N2) 最后一个测试用例过不去
 class Solution:
     def longestSubstring(self, s: str, k: int):
@@ -33,7 +25,9 @@ class Solution:
         n = len(s)
         prefix = [c.copy()]
         for i in range(n):
+            # c是一个hash
             c[s[i]] += 1
+            # prefix相当于是记录当前位置上的一个hash
             prefix.append(c.copy())
 
         def check(tmp):
@@ -68,7 +62,8 @@ class Solution:
 class Solution:
     def longestSubstring(self, s: str, k: int) -> int:
         from collections import defaultdict
-        if not s: return 0
+        if not s:
+            return 0
         # 统计字符串字符的个数
         n = len(s)
         # 统计不同字符的数量
@@ -114,12 +109,23 @@ class Solution:
     def longestSubstring(self, s: str, k: int) -> int:
         if len(s) < k:
             return 0
-        # 找个字符串个数最少的字符
+        # 找字符串中个数最少的字符
         t = min(set(s), key=s.count)
-        # 最少字符的个数都大于等于k
+        # 最少字符的个数都大于等于k，说明整个字符串中的所有字符的个数均大于K
         if s.count(t) >= k:
             return len(s)
+        #  如果不满足，就需要按个数最少的字符串来分割原来的字符串，然后遍历分割后的字符串，继续递归，最后只要找最大值就可以了
         return max(self.longestSubstring(a, k) for a in s.split(t))
 
 
-print(Solution().longestSubstring("aaabb", 3))
+class Solution(object):
+    def longestSubstring(self, s, k):
+        if not s:
+            return 0
+        for c in set(s):
+            if s.count(c) < k:
+                return max(self.longestSubstring(t, k) for t in s.split(c))
+        return len(s)
+
+# print(Solution().longestSubstring("aaabb", 3))
+

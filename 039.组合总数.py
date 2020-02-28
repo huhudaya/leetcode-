@@ -77,7 +77,7 @@ class Solution:
                 break
             # 路径添加
             path.append(candidates[i])
-            # 递归 i表示这里可以利用当前元素以及当前元素之后的元素
+            # 递归 i 表示这里可以利用当前元素以及当前元素之后的元素
             self.__dfs(candidates, i, res, target - candidates[i], path, size)
             # 路径移除
             path.pop()
