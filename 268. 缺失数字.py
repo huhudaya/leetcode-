@@ -41,6 +41,7 @@ int missingNumber(int[] nums) {
     // 先和新补的索引异或一下
     res ^= n;
     // 和其他的元素、索引做异或
+    # 注意异或的性质，0和任何数异或为本身，自己和自己异或是0
     for (int i = 0; i < n; i++)
         res ^= i ^ nums[i];
     return res;
@@ -80,7 +81,7 @@ int missingNumber(int[] nums) {
     return res;
 }
 '''
-from typing import  List
+from typing import List
 
 class Solution:
     # def missingNumber(self, nums) -> int:

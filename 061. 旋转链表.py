@@ -21,43 +21,49 @@
 
 链接：https://leetcode-cn.com/problems/rotate-list
 '''
+
+
 # 快慢指针
 
 class Solution(object):
-	"""docstring for Solution"""
-	def __init__(self, arg):
-		super(Solution, self).__init__()
-		self.arg = arg
-	def rotateRight(self, head, k):
-		if head == None or head.next == None or k == 0:
-			return head
-		dummy = ListNode(-1)
-		dummy.next = head
-		pre = dummy
-		cur = head
-		n = 0
-		while cur:
-			n += 1
-			cur = cur.next
-		k = k % n
-		if k == 0:
-			return head
-		fast = slow = head
-		for i in range(k):
-			assert(fast != None)
-			fast = fast.next
-		while fast != None and fast.next != None:
-			slow = slow.next
-			fast = fast.next
-		newNode = slow.next
-		slow.next = None
-		fast.next = head
-		return newNode
-		
+    """docstring for Solution"""
+
+    def __init__(self, arg):
+        super(Solution, self).__init__()
+        self.arg = arg
+
+    def rotateRight(self, head, k):
+        if head == None or head.next == None or k == 0:
+            return head
+        dummy = ListNode(-1)
+        dummy.next = head
+        pre = dummy
+        cur = head
+        n = 0
+        while cur:
+            n += 1
+            cur = cur.next
+        k = k % n
+        if k == 0:
+            return head
+        fast = slow = head
+        for i in range(k):
+            assert (fast != None)
+            fast = fast.next
+        while fast != None and fast.next != None:
+            slow = slow.next
+            fast = fast.next
+        newNode = slow.next
+        slow.next = None
+        fast.next = head
+        return newNode
+
+
 class ListNode:
     def __init__(self, x):
         self.val = x
         self.next = None
+
 
 # 穿针引线
 class Solution:
@@ -77,7 +83,7 @@ class Solution:
         k = k % counter
         if k == 0:
             return head
-
+        # 很重要，先将尾部节点指向头结点，形成一个环！！！
         node.next = head
         node = head
         # 可以取一些极端的例子找到规律
@@ -87,4 +93,3 @@ class Solution:
         new_head = node.next
         node.next = None
         return new_head
-

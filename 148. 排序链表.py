@@ -24,11 +24,15 @@
 然后分别对链表的左右两边进行归并排序,最后进行 merge 操作
 和并两个有序链表，可以用 O(N) 的时间复杂度完成。
 '''
+
+
 # Definition for singly-linked list.
 class ListNode:
     def __init__(self, x):
         self.val = x
         self.next = None
+
+
 # 归并
 class Solution:
     def sortList(self, head: ListNode) -> ListNode:
@@ -39,26 +43,30 @@ class Solution:
         pre.next = None
         #  * 是解包的操作
         return self.mergeTwoLists(*map(self.sortList, (head, slow)))
-    
+
     def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
         if l1 and l2:
             if l1.val > l2.val: l1, l2 = l2, l1
             l1.next = self.mergeTwoLists(l1.next, l2)
         return l1 or l2
+
+
 # 快排
 class Solution(object):
     def sortList(self, head):
-    """
-    :type head: ListNode
-    :rtype: ListNode
-    """
+
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+
     def partition(start, end):
         node = start.next.next
         pivotPrev = start.next
         pivotPrev.next = end
         pivotPost = pivotPrev
         while node != end:
-        temp = node.next
+            temp = node.next
         if node.val > pivotPrev.val:
             node.next = pivotPost.next
             pivotPost.next = node
@@ -74,7 +82,7 @@ class Solution(object):
 
     def quicksort(start, end):
         if start.next != end:
-        prev, post = partition(start, end)
+            prev, post = partition(start, end)
         quicksort(start, prev)
         quicksort(post, end)
 
@@ -82,6 +90,7 @@ class Solution(object):
     newHead.next = head
     quicksort(newHead, None)
     return newHead.next
+
 
 # Definition for singly-linked list.
 # class ListNode:
@@ -91,6 +100,7 @@ class Solution(object):
 # 自己的版本
 class Solution():
     """docstring for Solution"""
+
     def sortList(self, head):
         if head is None or head.next is None:
             return head
@@ -106,6 +116,7 @@ class Solution():
         list_1 = self.sortList(head)
         list_2 = self.sortList(head2)
         return self.mergeTwoLists(list_1, list_2)
+
     # # 递归
     # def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
     #     if not l1 or not l2:
@@ -136,8 +147,11 @@ class Solution():
             cur.next = p
         return dummy.next
 
+
 # 堆排序
 import heapq
+
+
 # class ListNode:
 #     def __init__(self, x):
 #         self.val = x
@@ -155,4 +169,3 @@ class Solution:
             ptr.val = heapq.heappop(p_queue)
             ptr = ptr.next
         return head
-    

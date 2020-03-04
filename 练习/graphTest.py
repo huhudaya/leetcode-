@@ -22,6 +22,7 @@ def search(name):
                 print("has seen")
                 return True
             else:
+                # 这里的图用邻接矩阵表示！这里的graph[person]是一个列表
                 search_queue += (graph[person])
                 searched.append(person)
 

@@ -92,7 +92,8 @@ def sumNumbers(self, root: TreeNode) -> int:
     self.res = 0
 
     def helper(root, tmp):
-        if not root: return
+        if not root:
+            return
         if not root.left and not root.right:
             self.res += int(tmp + str(root.val))
             return
@@ -113,6 +114,7 @@ class Solution:
             if root.right is None and root.left is None:
                 res.append(int(tmp + str(root.val)))
                 return
+            # 这里的tmp每次都是新的字符串str
             tmp += str(root.val)
             if root.left:
                 dfs(root.left, tmp, res)
@@ -120,7 +122,6 @@ class Solution:
                 dfs(root.right, tmp, res)
         dfs(root, "", res)
         return sum(res)
-
 
 # 数学法
 # Definition for a binary tree node.

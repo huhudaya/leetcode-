@@ -20,30 +20,39 @@
 
 链接：https://leetcode-cn.com/problems/binary-tree-zigzag-level-order-traversal
 '''
+
+
 # Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, x):
-#         self.val = x
-#         self.left = None
-#         self.right = None
+class TreeNode:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+
+
 # 使用递归
 from collections import deque
+from typing import List
+
+
 class Solution:
     def zigzagLevelOrder(self, root: TreeNode) -> List[List[int]]:
         # dfs
         res = deque()
+
         def helper(root, depth):
-            if not root: return 
+            if not root: return
             if len(res) == depth:
                 # 使用双端队列
                 res.append(deque())
             # 奇偶判断 depth & 1 == 0 为偶数 非0 为奇数
             if depth % 2 == 0:
                 res[depth].append(root.val)
-            else: 
+            else:
                 res[depth].appendleft(root.val)
             helper(root.left, depth + 1)
             helper(root.right, depth + 1)
+
         helper(root, 0)
         return res
 # 也可以直接按102题的bfs思路来做 不过在最后输出的时候按层数的奇偶性判断一下是否反转

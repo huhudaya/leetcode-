@@ -79,19 +79,26 @@ class Solution(object):
 
 class Solution(object):
     def partition(self, head, x):
+        # 准备两个哑结点
         before_dummy = ListNode(-1)
         after_dummy = ListNode(-1)
+        # 定义两组节点
         before = before_dummy
         after = after_dummy
+        # 遍历当前链表
         while head:
+            # 如果当前值小于x,则放入前半部分节点中
             if head.val < x:
                 before.next = head
                 before = before.next
+            # 否则加入到后半部分的节点中
             else:
                 after.next = head
                 after = after.next
             head = head.next
+        # 将后半部分的尾部节点置None
         after.next = None
+        # 将前半部分的尾部节点置为后半部分节点的头结点
         before.next = after_dummy.next
         return before_dummy.next
 '''

@@ -17,7 +17,7 @@
 
 '''
 首先利用快慢指针得到中间节点
-然后将后一半的链表链表进行翻转（对中间过后的链表进行翻转
+然后将后一半的链表链表进行翻转（对中间过后的链表进行翻转）
 之后将前面的链表和翻转后的链表进行交叉合并即可
 '''
 class ListNode():
@@ -33,8 +33,9 @@ class Solution:
 		pre = dummy
 		fast = dummy
 		slow = dummy
-		# 找到中间节点  下边界
-		while fast != None and fast.next != None:
+		# 找到中间节点  上边界
+		# while fast != None and fast.next != None:
+		while fast and fast.next:
 			slow = slow.next
 			fast = fast.next.next
 		p = slow.next
@@ -48,13 +49,17 @@ class Solution:
 			pre = cur
 			cur = next
 		# 交叉合并
-		cur = pre
-		p = head
+		cur = pre  #cun此时是后半部分反转后的首节点
+		p = head   #p此时是前半部分的首节点
 		# 可以不去理会链表长度是奇偶性这些边界问题
 		while cur:
+			# 保存 前半部分的下一个节点
 			temp = p.next
+			# 保存 后半部分的下一个节点
 			next = cur.next
+			# 交叉合并
 			p.next = cur
 			cur.next = temp
+			# 分别指向各自部分的下一个节点
 			p = temp
 			cur = next

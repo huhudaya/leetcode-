@@ -24,7 +24,7 @@
 注意：本题与主站 79 题相同：https://leetcode-cn.com/problems/word-search/
 
 '''
-
+from typing import List
 
 # 好的解题思路
 # https://leetcode-cn.com/problems/word-search/solution/zai-er-wei-ping-mian-shang-shi-yong-hui-su-fa-pyth/

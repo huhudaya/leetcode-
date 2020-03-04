@@ -130,7 +130,6 @@ Java
     }
 '''
 
-
 '''-----------------------------容易理解版本
 # 回溯法一:在回溯的过程中记录结点
 from typing import List
@@ -182,8 +181,6 @@ class Solution:
             path.pop()
 '''
 
-
-
 # 回溯法：
 '''
 import java.util.ArrayList;
@@ -233,44 +230,54 @@ public class Solution8 {
 }
 
 '''
+
+
 class Solution:
-    def subsets(self, nums):        
+    def subsets(self, nums):
         if not nums:
             return []
         res = []
         n = len(nums)
+
         def helper(idx, temp_list):
             res.append(temp_list)
             for i in range(idx, n):
                 helper(i + 1, temp_list + [nums[i]])
+
         helper(0, [])
         return res
 
+
+from typing import List
 
 
 # 自己的版本 套用labuladong的模板
 # 标准模板
 class Solution:
     def subsets(self, nums: List[int]) -> List[List[int]]:
-    # labuladong回溯法模板
+        # labuladong回溯法模板
         n = len(nums)
         if n == 0:
             return []
         res = []
         self.__dfs(nums, [], res)
         return res
+
     def __dfs(self, nums, path, res):
         res.append(path[:])
         for i in range(len(nums)):
             # 选择路径
             path.append(nums[i])
             # 递归
-            self.__dfs(nums[i+1:], path, res)
+            self.__dfs(nums[i + 1:], path, res)
             # 撤销选择
             path.pop()
 
+
 # 回溯法一:在回溯的过程中记录结点
 from typing import List
+
+
 class Solution:
     def subsets(self, nums: List[int]) -> List[List[int]]:
         size = len(nums)

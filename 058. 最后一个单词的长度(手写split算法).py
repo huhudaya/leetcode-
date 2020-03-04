@@ -9,13 +9,14 @@
 输出: 5
 '''
 
-
 '''
 先去掉字符串的最后空格
 将字符串按照空格分组
 取分组后的最后一项
 计算它的长度
 '''
+
+
 class Solution:
     def lengthOfLastWord(self, s: str) -> int:
         return len(s.rstrip().split(" ")[-1])
@@ -28,6 +29,8 @@ class Solution:
 
 再找最后一个单词第一个字母
 '''
+
+
 class Solution:
     def lengthOfLastWord(self, s: str) -> int:
         end = len(s) - 1
@@ -39,6 +42,7 @@ class Solution:
             start -= 1
         return end - start
 
+
 # 自己编写split算法
 class Solution:
     def lengthOfLastWord(self, s: str) -> int:
@@ -46,16 +50,19 @@ class Solution:
         # 自己编写一个split算法吧。。。
         # 去掉最后面的空格，很简单，就不写了，直接用库吧
         s = s.rstrip()
+
         def splitFun(str, char):
             res = []
             slow = 0
             fast = 0
             str += char
+            # 快慢指针
             for i in str:
                 if i == char:
                     res.append(str[slow:fast])
-                    slow = fast+1
+                    slow = fast + 1
                 fast += 1
             return res
+
         res = len(splitFun(s, " ")[-1])
         return res

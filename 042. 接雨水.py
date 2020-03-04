@@ -1,10 +1,9 @@
 # 42. 接雨水.py
 '''
 给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。
-
-
-
-上面是由数组 [0,1,0,2,1,0,1,3,2,1,2,1] 表示的高度图，在这种情况下，可以接 6 个单位的雨水（蓝色部分表示雨水）。 感谢 Marcos 贡献此图。
+上面是由数组 [0,1,0,2,1,0,1,3,2,1,2,1]
+表示的高度图，在这种情况下，可以接 6 个单位的雨水（蓝色部分表示雨水）。 
+感谢 Marcos 贡献此图。
 
 示例:
 
@@ -13,8 +12,6 @@
 
 链接：https://leetcode-cn.com/problems/trapping-rain-water
 '''
-
-
 class Solution:
     def trap(self, height) -> int:
         # 双指针优化版本
@@ -44,8 +41,6 @@ class Solution:
 # 接雨水
 # 暴力法
 '''
-
-
 def trap(heigh):
     length = len(heigh)
     ans = 0
@@ -63,16 +58,13 @@ def trap(heigh):
         ans += min(l_max, r_max) - heigh[i]
     return ans
 
-
-# 备忘录优化
+#备忘录优化
 # 准备两个备忘录，减少重复计算
 '''
 # 我们开两个数组r_max和l_max充当备忘录
 # l_max[i]表示位置 i 左边最高的柱子高度
 # r_max[i]表示位置 i 右边最高的柱子高度
 '''
-
-
 def mempTrap(heigh):
     if len(heigh) < 1:
         return 0
@@ -102,8 +94,6 @@ def mempTrap(heigh):
 # r_max是height[right..end]的最高柱子的高度
 # 最后双指针一定会相遇，所以移动一次计算一次
 '''
-
-
 def twoPreTrap(heigh):
     if len(heigh) < 1:
         return 0

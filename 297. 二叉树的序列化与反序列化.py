@@ -24,6 +24,8 @@
 
 说明: 不要使用类的成员 / 全局 / 静态变量来存储状态，你的序列化和反序列化算法应该是无状态的。
 '''
+
+
 # Definition for a binary tree node.
 class TreeNode(object):
     def __init__(self, x):
@@ -31,8 +33,11 @@ class TreeNode(object):
         self.left = None
         self.right = None
 
+
 # traverse+divide&conquer
 from collections import deque
+
+
 class Codec:
     # traverse+divide&conquer
     def serialize(self, root):
@@ -43,7 +48,7 @@ class Codec:
         if root is None:
             return "#!"
         # 先序遍历方式序列化
-        res = str(root.val)+"!"
+        res = str(root.val) + "!"
         res += self.serialize(root.left)
         res += self.serialize(root.right)
         return res
@@ -60,7 +65,7 @@ class Codec:
             queue.append(values[i])
         return self.helper(queue)
 
-    def helper(self,queue):
+    def helper(self, queue):
         # 每次从队列中弹出一个 这个时候就相当于前序遍历
         value = queue.popleft()
         if value == "#":
@@ -68,8 +73,8 @@ class Codec:
         head = TreeNode(value)
         head.left = self.helper(queue)
         head.right = self.helper(queue)
-        return head 
-# Your Codec object will be instantiated and called as such:
+        return head
+    # Your Codec object will be instantiated and called as such:
 # codec = Codec()
 # codec.deserialize(codec.serialize(root))
 

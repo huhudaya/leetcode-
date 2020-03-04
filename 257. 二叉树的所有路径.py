@@ -20,12 +20,18 @@
 
 链接：https://leetcode-cn.com/problems/binary-tree-paths
 '''
+
+
 # Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, x):
-#         self.val = x
-#         self.left = None
-#         self.right = None
+class TreeNode:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+
+
+from typing import List
+
 
 # 这里Python用的其实就是回溯法，注意这里的添加选择和撤销选择两部分，为什么Java不用选择和撤销呢？这是因为在Java程序中每次都传了一个新的str
 class Solution:
@@ -47,13 +53,14 @@ class Solution:
         if root is None:
             return []
         result = []
+
         def helper(root, path, result):
             if root.left is None and root.right is None:
                 result.append("->".join(path))
-                return 
-            # 前序遍历 + 后序遍历 类似于回溯法中的决策树
+                return
+                # 前序遍历 + 后序遍历 类似于回溯法中的决策树，下面这两个就相当于多叉树的标准的回溯模板
             if root.left:
-            	# 选择
+                # 选择
                 path.append(str(root.left.val))
                 helper(root.left, path, result)
                 # 撤销选择
@@ -62,9 +69,12 @@ class Solution:
                 path.append(str(root.right.val))
                 helper(root.right, path, result)
                 path.pop()
+
         helper(root, [str(root.val)], result)
         return result
-# java 
+
+
+# java
 '''
 public class Solution {
     /**

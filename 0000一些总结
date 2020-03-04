@@ -1,0 +1,20 @@
+注意 在树的递归中
+使用了 if root.left:
+         xxx
+      if root.right:
+         xxx
+这样的话在最前面一定要有一个判断，即if root is None:
+                                    return
+
+
+注意，其实
+path.append(xx)
+for i in range(size):
+    dfs(xx)
+path.pop()
+等同于
+for i in range(size):
+    path.append(xx)
+    dfs(xx)
+    path.pop()
+只不过可能在下面这种方式中，有时候需要用到i,所以需要写成这样

@@ -56,7 +56,8 @@ def pathSum(self, root: TreeNode, sum: int) -> List[List[int]]:
 # 非递归
 class Solution:
     def pathSum(self, root: TreeNode, sum: int) -> List[List[int]]:
-        if not root: return []
+        if not root:
+            return []
         stack = [([root.val], root)]
         res = []
         while stack:
@@ -158,14 +159,7 @@ public class BinaryTreePathSum {
 '''
 
 
-# 自己的版本
-# Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, x):
-#         self.val = x
-#         self.left = None
-#         self.right = None
-
+# 自己的版本1
 class Solution:
     def pathSum(self, root: TreeNode, sum: int) -> List[List[int]]:
         # traverse方法
@@ -189,28 +183,90 @@ class Solution:
         return res
 
 
+# 自己的版本2
+class Solution:
+    def pathSum(self, root: TreeNode, sum: int) -> List[List[int]]:
+        # traverse方法
+        if root is None:
+            return []
+        res = []
+
+        def helper(root, sum, tmp):
+            if root is None:
+                return
+            sum -= root.val
+            if root.left is None and root.right is None:
+                if sum == 0:
+                    # tmp += [root.val]
+                    res.append(tmp)
+                return
+            if root.left:
+                helper(root.left, sum, tmp + [root.left.val])
+            if root.right:
+                helper(root.right, sum, tmp + [root.right.val])
+
+        helper(root, sum, [root.val])
+        return res
+
+
+# 自己的版本3
+class Solution:
+    def pathSum(self, root: TreeNode, sum: int) -> List[List[int]]:
+        # traverse方法
+        if root is None:
+            return []
+        res = []
+
+        def helper(root, sum, tmp):
+            if root is None:
+                return
+            sum -= root.val
+            if root.left is None and root.right is None:
+                if sum == 0:
+                    tmp += [root.val]
+                    res.append(tmp)
+                return
+            if root.left:
+                helper(root.left, sum, tmp + [root.val])
+            if root.right:
+                helper(root.right, sum, tmp + [root.val])
+
+        helper(root, sum, [])
+        return res
+
+
 # 自己的版本回溯法，节省内存
-def binaryTreePathSum(self, root, target):
-    # self.res = []
-    self.find_binary_tree_path_sum(root, [], target, 0)
-    return self.res
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
 
+class Solution:
+    def pathSum(self, root: TreeNode, sum: int) -> List[List[int]]:
+        self.res = []
+        self.find_binary_tree_path_sum(root, [], sum, 0)
+        return self.res
 
-def find_binary_tree_path_sum(self, root, tmp_res, target, cur_sum):
-    # 这种方法其实不是很好，因为到了空节点才判断，所以这个时候就算了两遍相同的路径
-    if root is None:
-        # if not root:
-        return
-    # traverse
-    tmp_res.append(root.val)
-    # 这是是回溯
-    cur_sum += root.val
-    if root.left == None and root.right == None:
-        if target == cur_sum:
-            self.res.append(tmp_res[:])
-    # divide&conquer
-    self.find_binary_tree_path_sum(root.left, tmp_res, target, cur_sum)
-    self.find_binary_tree_path_sum(root.right, tmp_res, target, cur_sum)
-    # 撤销选择
-    cur_sum -= root.val
-    tmp_res.pop()
+    def find_binary_tree_path_sum(self, root, tmp_res, target, cur_sum):
+        # 这种方法其实不是很好，因为到了空节点才判断，所以这个时候就算了两遍相同的路径
+        if root is None:
+            # if not root:
+            return
+        # traverse 路径选择
+        tmp_res.append(root.val)
+        # 注意这里相当于回溯
+        cur_sum += root.val
+        if root.left == None and root.right == None:
+            if target == cur_sum:
+                self.res.append(tmp_res[:])
+                # 下面这两行可以加也可以不加，最好加上，提前停止递归
+                # tmp_res.pop()
+                # return
+        # divide&conquer
+        self.find_binary_tree_path_sum(root.left, tmp_res, target, cur_sum)
+        self.find_binary_tree_path_sum(root.right, tmp_res, target, cur_sum)
+        # 这句话加不加其实都可以，因为上面cur_sum其实每次都是一个新的字符串！
+        # cur_sum -= root.val
+        tmp_res.pop()

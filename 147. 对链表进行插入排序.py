@@ -18,8 +18,17 @@
 
 继续进行下一次插入排序，直到遍历到链表尾部
 '''
+
+
+class ListNode():
+    def __init__(self, x):
+        self.val = x
+        self.next = None
+
+
 class Solution():
     """docstring for Solution"""
+
     def insertionSortList(self, head):
         if head == None or head.next == None:
             return head
@@ -32,13 +41,16 @@ class Solution():
             pre = dummyNode
             while pre.next and pre.next.val < cur.val:
                 pre = pre.next
+            # tmp 保存待插入链表中的下一个节点
             tmp = pre.next
+            # q 保存原始链表中待插入点的下一个节点
             q = cur.next
             pre.next = cur
             cur.next = tmp
             cur = q
-        return dummy.next
-        
+        return dummyNode.next
+
+
 # 从头开始 这个道题就像排队,先找个排头dummy,然后依次从head节点放入dummy,只需要依次dummy现有节点比较,插入其中!
 class Solution:
     def insertionSortList(self, head: ListNode) -> ListNode:
@@ -61,6 +73,7 @@ class Solution:
             pre = dummy
             cur = tmp
         return dummy.next
+
 
 # tail插法
 class Solution:
@@ -86,6 +99,6 @@ class Solution:
                 # 进行插入操作
                 cur.next = pre.next
                 pre.next = cur
-                pre= dummy
+                pre = dummy
                 cur = tmp
         return dummy.next

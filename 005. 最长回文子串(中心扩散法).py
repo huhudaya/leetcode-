@@ -14,19 +14,23 @@
 
 链接：https://leetcode-cn.com/problems/longest-palindromic-substring
 '''
+
+
 class Solution:
     def longestPalindrome(self, s: str) -> str:
-        #中心扩散法
+        # 中心扩散法
         length = len(s)
         self.res = ""
-        def help(left,right):
+
+        def help(left, right):
             while left >= 0 and right < length and s[left] == s[right]:
                 left -= 1
                 right += 1
-            return s[left+1:right]
+            return s[left + 1:right]
+
         for i in range(length):
-            s1 = help(i,i)
-            s2 = help(i,i+1)
+            s1 = help(i, i)
+            s2 = help(i, i + 1)
             self.res = s1 if len(self.res) < len(s1) else self.res
             self.res = s2 if len(self.res) < len(s2) else self.res
         return self.res

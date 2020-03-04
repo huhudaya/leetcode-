@@ -34,7 +34,7 @@ class Solution:
             return None
         stack = []
         res = []
-        while stack or root:
+        while root or stack:
             # while root:
             if root:
                 stack.append(root)

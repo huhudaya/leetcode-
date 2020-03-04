@@ -22,14 +22,17 @@ board =
 # 时间复杂度是 O(m*n*m*n) 因为需要对每一个格子进行搜索
 from typing import List
 
+
 class Solution:
     directions = [[0, -1], [-1, 0], [0, 1], [1, 0]]
+
     def exist(self, board, word):
         m = len(board)
         if m == 0:
             return False
         n = len(board[0])
         marked = [[False] * n for _ in range(m)]
+        # 因为涉及到回溯，所以一定是用DFS
         for i in range(m):
             for j in range(n):
                 # 不同于200题的岛屿数量，这里每一个格子都需要遍历一次，所以上一次的状态需要清除
@@ -43,7 +46,7 @@ class Solution:
             return board[start_x][start_x] == word[index]
         # 中间是否匹配
         if board[start_x][start_y] == word[index]:
-            # 先占住位置，搜索不成功，就要释放掉
+            # 先占住位置，搜索不成功，就要释放掉，路径选择
             marked[start_x][start_y] = True
             for direction in self.directions:
                 new_x = start_x + direction[0]
@@ -52,8 +55,8 @@ class Solution:
                 if 0 <= new_x < m \
                         and 0 <= new_y < n \
                         and not marked[new_x][new_y] \
-                        and self._search_word(board, word,index + 1,new_x, new_y,marked, m, n):
+                        and self._search_word(board, word, index + 1, new_x, new_y, marked, m, n):
                     return True
-            # 否则回溯的时候恢复为False
+            # 否则回溯的时候恢复为False，撤销选择
             marked[start_x][start_y] = False
         return False

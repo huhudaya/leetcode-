@@ -16,12 +16,12 @@
 链接：https://leetcode-cn.com/problems/binary-tree-preorder-traversal
 '''
 # Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, x):
-#         self.val = x
-#         self.left = None
-#         self.right = None
-
+class TreeNode:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+from typing import List
 class Solution:
     def preorderTraversal(self, root: TreeNode) -> List[int]:
         # 非递归 使用栈,先压右边，在压左边

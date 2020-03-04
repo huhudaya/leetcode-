@@ -15,11 +15,14 @@
 
 链接：https://leetcode-cn.com/problems/palindrome-linked-list
 '''
+
+
 # Definition for singly-linked list.
 class ListNode:
     def __init__(self, x):
         self.val = x
         self.next = None
+
 
 class Solution:
     def isPalindrome(self, head: ListNode) -> bool:
@@ -30,19 +33,19 @@ class Solution:
         fast = head
         # 快慢指针遍历
         while fast.next and fast.next.next:
-            slow = slow.next        #中间节点
-            fast = fast.next.next   #结尾节点
-        cur = slow.next #右部分第一个节点
+            slow = slow.next  # 中间节点
+            fast = fast.next.next  # 结尾节点
+        cur = slow.next  # 右部分第一个节点
         # 中间节点指向None
-        slow.next = None 
+        slow.next = None
         pre = slow
         # 反转右半区
         while cur:
             next = cur.next
-            cur.next = pre 
+            cur.next = pre
             pre = cur
             cur = next
-        tail = pre # 保留最后一个节点
+        tail = pre  # 保留最后一个节点
         right = pre
         left = head
         res = True
@@ -63,6 +66,7 @@ class Solution:
             pre = cur
             cur = next
         return res
+
 
 '''
     public boolean isPalindrome(ListNode head) {
@@ -93,14 +97,13 @@ class Solution:
 '''
 
 
-
 class Solution(object):
     def isPalindrome(self, head):
         """
         :type head: ListNode
         :rtype: bool
         """
-        # 边界条件不用忘记了
+        # 边界条件不要忘记了
         if not (head and head.next):
             return True
         # p = dummy
@@ -110,17 +113,17 @@ class Solution(object):
         fast = p
         # 快慢指针不断迭代，找到中间节点
         while fast and fast.next:
-            low,fast = low.next, fast.next.next
+            low, fast = low.next, fast.next.next
         cur = low.next
         pre = None
         low.next = None
-        #将链表一分为二之后，反转链表后半部分
+        # 将链表一分为二之后，反转链表后半部分
         while cur:
-            cur.next,pre,cur = pre,cur,cur.next
-        a,b = p.next,pre
+            cur.next, pre, cur = pre, cur, cur.next
+        a, b = p.next, pre
         # 将链表前半部分和 反转的后半部分对比
         while b:
-            if a.val!=b.val:
+            if a.val != b.val:
                 return False
-            a,b = a.next,b.next
+            a, b = a.next, b.next
         return True

@@ -36,9 +36,7 @@ class TreeNode:
         self.val = x
         self.left = None
         self.right = None
-
-
-# 递归
+# 递归 中序遍历的方式
 class Solution:
     def isValidBST(self, root: TreeNode) -> bool:
         res = []
@@ -54,7 +52,7 @@ class Solution:
         return res == sorted(res) and len(set(res)) == len(res)
 
 
-# 迭代
+# 中序遍历迭代的方式 迭代
 class Solution:
     def isValidBST(self, root: TreeNode) -> bool:
         stack = []

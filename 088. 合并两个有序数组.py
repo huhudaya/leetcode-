@@ -17,6 +17,11 @@ nums2 = [2,5,6],       n = 3
 链接：https://leetcode-cn.com/problems/merge-sorted-array
 '''
 from typing import List
+
+
+# 时间复杂度 : O(n + m)
+# 空间复杂度 : O(m)
+# 双指针从前往后
 class Solution:
     def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
         """
@@ -27,6 +32,7 @@ class Solution:
         i = 0
         j = 0
         k = 0
+        # 本题的核心核心就是复制一个tmp数组！！！1
         tmp = nums1[:m]
         while i < m and j < n:
             # 谁小移动谁
@@ -46,3 +52,38 @@ class Solution:
             nums1[k] = nums2[j]
             j += 1
             k += 1
+
+
+# 双指针 从后往前
+'''
+分析：
+    直觉
+    双指针从前往后已经取得了最优的时间复杂度O(n + m)
+    但需要使用额外空间。这是由于在从头改变nums1的值时，需要把nums1中的元素存放在其他位置
+如果我们从结尾开始改写 nums1 的值又会如何呢？这里没有信息，因此不需要额外空间！！！
+
+这里的指针 p 用于追踪添加元素的位置
+
+时间复杂度 : O(n + m)
+空间复杂度 : O(1)
+'''
+
+
+class Solution(object):
+    def merge(self, nums1, m, nums2, n):
+        # two get pointers for nums1 and nums2
+        p1 = m - 1
+        p2 = n - 1
+        # set pointer for nums1
+        p = m + n - 1
+        # while there are still elements to compare
+        while p1 >= 0 and p2 >= 0:
+            if nums1[p1] < nums2[p2]:
+                nums1[p] = nums2[p2]
+                p2 -= 1
+            else:
+                nums1[p] = nums1[p1]
+                p1 -= 1
+            p -= 1
+        # add missing elements from nums2
+        nums1[:p2 + 1] = nums2[:p2 + 1]

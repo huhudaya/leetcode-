@@ -32,27 +32,6 @@ class TreeNode:
         self.right = None
 
 
-# 迭代
-class Solution:
-    def levelOrder(self, root: TreeNode) -> List[List[int]]:
-        if not root:
-            return []
-        res = []
-        cur_level = [root]
-        while cur_level:
-            tmp = []
-            next_level = []
-            for node in cur_level:
-                tmp.append(node.val)
-                if node.left:
-                    next_level.append(node.left)
-                if node.right:
-                    next_level.append(node.right)
-            res.append(tmp)
-            cur_level = next_level
-        return res
-
-
 # 递归
 # Definition for a binary tree node.
 # class TreeNode:
@@ -135,56 +114,6 @@ class Solution:
 进入下一层 level++。
 实现
 '''
-from collections import deque
-
-
-class Solution:
-    def levelOrder(self, root):
-        """
-        :type root: TreeNode
-        :rtype: List[List[int]]
-        """
-        levels = []
-        if not root:
-            return levels
-
-        level = 0
-        queue = deque([root, ])
-        while queue:
-            # start the current level
-            levels.append([])
-            # number of elements in the current level 
-            level_length = len(queue)
-
-            for i in range(level_length):
-                node = queue.popleft()
-                # fulfill the current level
-                levels[level].append(node.val)
-
-                # add child nodes of the current level
-                # in the queue for the next level
-                if node.left:
-                    queue.append(node.left)
-                if node.right:
-                    queue.append(node.right)
-
-            # go to next level
-            level += 1
-
-        return levels
-
-
-# 复杂度分析
-
-# 时间复杂度：O(N)，因为每个节点恰好会被运算一次。
-# 空间复杂度：O(N)，保存输出结果的数组包含 N 个节点的值。
-# Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, x):
-#         self.val = x
-#         self.left = None
-#         self.right = None
-from collections import deque
 
 '''
 图解算法中的BFS算法的思想
@@ -195,6 +124,7 @@ from collections import deque
 
 很重要的是：检查一个人之前，必须判断之前有没有检查过他，我们可以用一个列表来记录检查过的人
 '''
+from collections import deque
 
 
 # 自己的版本 BFS
@@ -205,13 +135,16 @@ class Solution:
         if root is None:
             return res
         queue = deque()
+        # bfs就是先添加一个元素到队里
         queue.append(root)
         while queue:
             level = []
             size = len(queue)
             for i in range(size):
+                # 从队列弹出一个元素
                 node = queue.popleft()
                 level.append(node.val)
+                # 添加到队列中他的一度关系元素 在树中，是当前节点的左右节点
                 if node.left:
                     queue.append(node.left)
                 if node.right:

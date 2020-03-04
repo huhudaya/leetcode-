@@ -17,18 +17,22 @@
 
 链接：https://leetcode-cn.com/problems/palindromic-substrings
 '''
+
+
 class Solution:
-    #中心扩散法
+    # 中心扩散法
     def countSubstrings(self, s: str) -> int:
         length = len(s)
-        self.res = 0 
-        def helper(left,right):
+        self.res = 0
+
+        def helper(left, right):
             while left >= 0 and right < length and s[left] == s[right]:
-                #中心扩散
+                # 中心扩散
                 left -= 1
                 right += 1
                 self.res += 1
+
         for i in range(length):
-            helper(i,i)
-            helper(i,i+1)
+            helper(i, i)
+            helper(i, i + 1)
         return self.res
