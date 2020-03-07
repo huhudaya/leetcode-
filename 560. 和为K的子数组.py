@@ -14,6 +14,8 @@
 链接：https://leetcode-cn.com/problems/subarray-sum-equals-k
 '''
 
+from typing import List
+
 
 # hash优化版本
 class Solution:

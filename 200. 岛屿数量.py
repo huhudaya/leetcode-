@@ -111,6 +111,7 @@ class Solution():
                 if marked[i][j] is False and grid[i][j] == '1':
                     # 标记第一个节点已经被访问过
                     marked[i][j] = True
+                    # count记录岛屿的数量 只要没有标记过并且当前节点是1，就一定存在一个孤立的岛屿！
                     count += 1
                     queue = deque()
                     # 先入队
@@ -122,8 +123,7 @@ class Solution():
                         for dir in self.directions:
                             row = row + dir[0]
                             column = column + dir[1]
-                            if 0 <= row < m and 0 <= column < n and not marked[row][column] and grid[row][
-                                column] == '1':
+                            if 0 <= row < m and 0 <= column < n and not marked[row][column] and grid[row][column] == '1':
                                 queue.append((row, column))
                                 marked[row][column] = True
         return count

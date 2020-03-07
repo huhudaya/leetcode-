@@ -93,10 +93,10 @@ class Solution:
     #     return res
     def missingNumber(self, nums) -> int:
         n = len(nums)
-        res = 0
         # 新补的索引
         res = n
         for i in range(n):
             # 对应的索引数组相减
             res += i - nums[i]
         return res
+

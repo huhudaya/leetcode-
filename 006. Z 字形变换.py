@@ -29,19 +29,21 @@ T     S     G
 
 链接：https://leetcode-cn.com/problems/zigzag-conversion
 '''
+
+
 # 边界条件，利用 flag
 class Solution:
     def convert(self, s: str, numRows: int) -> str:
-        if numRows < 2: return s
+        if numRows < 2:
+            return s
         res = ["" for _ in range(numRows)]
         i, flag = 0, -1
         for c in s:
             res[i] += c
-            if i == 0 or i == numRows - 1: flag = -flag
+            if i == 0 or i == numRows - 1:
+                flag = -flag
             i += flag
         return "".join(res)
-
-
 
 
 # 控制条件
@@ -49,51 +51,53 @@ class Solution:
     def convert(self, s: str, numRows: int) -> str:
         if not s:
             return ""
-        if numRows == 1:return s
+        if numRows == 1: return s
         s_Rows = [""] * numRows
-        i  = 0
+        i = 0
         n = len(s)
         while i < n:
             for j in range(numRows):
                 if i < n:
                     s_Rows[j] += s[i]
                     i += 1
-            for j in range(numRows-2,0,-1):
+            for j in range(numRows - 2, 0, -1):
                 if i < n:
                     s_Rows[j] += s[i]
                     i += 1
         return "".join(s_Rows)
+
 
 # 找规律
 '''
 每一个Z字的首字母差，numRows*2-2 位置
 除去首尾两行，每个 Z 字有两个字母，索引号关系为，一个为 i，另一个为 numsRows*2-2-i
 '''
+
+
 class Solution:
     def convert(self, s: str, numRows: int) -> str:
         if not s:
             return ""
-        if numRows == 1:return s
+        if numRows == 1: return s
         split_s_len = numRows * 2 - 2
         data = []
         n = len(s)
-        
-        for i in range(0, n,split_s_len):
-            data.append(s[i:i+split_s_len])
-        #print(data)
+
+        for i in range(0, n, split_s_len):
+            data.append(s[i:i + split_s_len])
+        # print(data)
         res = ""
         for i in range(numRows):
             for tmp in data:
                 if i < len(tmp):
-                    if i == 0 or i == numRows-1:
+                    if i == 0 or i == numRows - 1:
                         res += tmp[i]
                     else:
                         res += tmp[i]
-                        if split_s_len -i  < len(tmp):
-                            res += tmp[split_s_len-i]
+                        if split_s_len - i < len(tmp):
+                            res += tmp[split_s_len - i]
         return res
 
 
-
-a= [1,2,3,4]
+a = [1, 2, 3, 4]
 print(a[0:3])

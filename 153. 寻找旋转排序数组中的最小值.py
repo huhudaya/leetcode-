@@ -35,17 +35,21 @@
 
 相关题型: 154. 寻找旋转排序数组中的最小值 II
 '''
+from typing import List
+
+
 class Solution:
     def findMin(self, nums: List[int]) -> int:
         left = 0
-        right = len(nums) - 1 
+        right = len(nums) - 1
         while left < right:
             mid = left + (right - left) // 2
             if nums[right] < nums[mid]:
                 left = mid + 1
             else:
-                right = mid 
+                right = mid
         return nums[left]
+
 
 # 自己的版本
 class Solution:

@@ -26,7 +26,8 @@ from typing import  List
 class Solution:
     # array 二维列表
     def Find(self, target, array):
-        if not array: return False
+        if not array:
+            return False
         m, n = len(array), len(array[0])
         row, col = m - 1, 0
         while row >= 0 and col < n:

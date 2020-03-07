@@ -24,6 +24,8 @@
 链接：https://leetcode-cn.com/problems/spiral-matrix
 '''
 
+from typing import List
+
 
 # 模拟螺旋矩阵的形式
 class Solution:

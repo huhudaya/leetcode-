@@ -197,7 +197,6 @@ class Solution:
             sum -= root.val
             if root.left is None and root.right is None:
                 if sum == 0:
-                    # tmp += [root.val]
                     res.append(tmp)
                 return
             if root.left:

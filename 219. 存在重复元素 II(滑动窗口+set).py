@@ -18,7 +18,7 @@
 
 '''
 
-
+from typing import List
 # 滑动窗口
 class Solution:
     def containsNearbyDuplicate(self, nums: List[int], k: int) -> bool:

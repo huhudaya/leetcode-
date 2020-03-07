@@ -139,6 +139,7 @@ class Solution:
         queue.append(root)
         while queue:
             level = []
+            # 相当于一度关系
             size = len(queue)
             for i in range(size):
                 # 从队列弹出一个元素

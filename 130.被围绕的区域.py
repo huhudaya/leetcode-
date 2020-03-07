@@ -24,13 +24,13 @@ X O X X
 如果两个元素在水平或垂直方向相邻，则称它们是“相连”的。
 '''
 
-
 # 分析
 '''
 分析:
 本题可以用 DFS（深度优先搜索）解决。
 
-找到所有被 X 围绕的区域不容易，但是其等价于找到所有没有没有被 X 围绕的区域（连接边界的区域），这样就可以从边界上的 O 开始进行深度优先搜索，
+找到所有被 X 围绕的区域不容易
+但是其等价于找到所有没有没有被 X 围绕的区域（连接边界的区域），这样就可以从边界上的 O 开始进行深度优先搜索，
 
 举个例子：
 
@@ -66,6 +66,8 @@ X O X X
 '''
 
 from typing import List
+
+
 class Solution:
     def solve(self, board: List[List[str]]) -> None:
         """
@@ -97,7 +99,7 @@ class Solution:
             if board[i][0] == "O":
                 dfs(i, 0)
             # 最后一列
-            if board[i][col-1] == "O":
+            if board[i][col - 1] == "O":
                 dfs(i, col - 1)
 
         for i in range(row):
@@ -109,12 +111,14 @@ class Solution:
                 if board[i][j] == "B":
                     board[i][j] = "O"
 
+
 # 这道题的核心思路就是转变条件，我们先从四条边界中的"O"开始DFS，如果找到一条路径，这证明这个"O"不能被包围，所以不能变成X
 # 我们将不能变成X的"O"重写为"#"，遍历完之后，"#"恢复为"O"，其余的变成"X"
 
 class Solution:
     # 上右下左的顺时针
     directions = [[-1, 0], [0, 1], [1, 0], [0, -1]]
+
     def solve(self, board: List[List[str]]) -> None:
         """
         Do not return anything, modify board in-place instead.
@@ -123,6 +127,7 @@ class Solution:
             return
         row = len(board)
         col = len(board[0])
+
         def __dfs(i, j):
             board[i][j] = "#"
             for x, y in self.directions:
@@ -130,7 +135,8 @@ class Solution:
                 tmp_j = j + y
                 # 一定要注意这里的逻辑，是大于等于1！！！！！ 因为不能包括边界
                 if 1 <= tmp_i < row and 1 <= tmp_j < col and board[tmp_i][tmp_j] == "O":
-                    dfs(tmp_i, tmp_j)
+                    __dfs(tmp_i, tmp_j)
+
         for j in range(col):
             # 第一行
             if board[0][j] == "O":
@@ -141,7 +147,7 @@ class Solution:
         for i in range(row):
             # 第一列
             if board[i][0] == "O":
-                __dfs(i, 0 )
+                __dfs(i, 0)
             # 最后一列
             if board[i][col - 1] == "O":
                 __dfs(i, col - 1)

@@ -24,6 +24,8 @@ class Solution:
         # 异或的方法
         res = 0
         while n:
+            # 记录个数
             res += 1
+            # 去掉最后一位1
             n &= n - 1
         return res

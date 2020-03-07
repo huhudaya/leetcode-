@@ -22,6 +22,8 @@
 允许重复会影响算法的时间复杂度吗？会如何影响，为什么
 '''
 
+from typing import List
+
 
 class Solution:
     def findMin(self, nums: List[int]) -> int:

@@ -11,6 +11,7 @@
 输出：0
 注意：本题与主站 154 题相同：https://leetcode-cn.com/problems/find-minimum-in-rotated-sorted-array-ii/
 '''
+from typing import  List
 class Solution:
     def minArray(self, numbers: List[int]) -> int:
         # 这道题并不简单吧。。。二分
