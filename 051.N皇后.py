@@ -27,9 +27,6 @@ n 皇后问题研究的是如何将 n 个皇后放置在 n×n 的棋盘上，�
 '''
 
 # PS：皇后可以攻击同一行、同一列、左上左下右上右下四个方向的任意单位。
-from typing import List
-
-
 class Solution:
     def solveNQueens(self, n: int) -> List[List[str]]:
         # 初始化棋盘
@@ -37,12 +34,15 @@ class Solution:
         self.res = []
         self.helper(board, 0)
         return self.res
-
     def helper(self, board, row):
         size = len(board)
         # 遍历当前行的所有列
         if row == size:
-            self.res.append(board)
+            tmp = []
+            for i in range(size):
+                tmp.append("".join(board[i]))
+            self.res.append(tmp[:])
+            print(board)
             return
         for i in range(size):
             # 剪枝
@@ -54,7 +54,6 @@ class Solution:
             self.helper(board, row + 1)
             # 撤销选择
             board[row][i] = "."
-
     def isValid(self, board, row, col):
         n = len(board)
         # 判断这列是否非法
@@ -78,4 +77,3 @@ class Solution:
             tmp_col -= 1
             tmp_row -= 1
         return True
-print(Solution().solveNQueens(4))

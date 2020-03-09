@@ -81,3 +81,14 @@ class Solution:
             self.__dfs(candidates, i, res, target - candidates[i], path, size)
             # 路径移除
             path.pop()
+
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        import functools
+        @functools.lru_cache(None)
+        def helper(amount):
+            if amount == 0:
+                return 0
+            return min(helper(amount - c) if amount - c >= 0 else float("inf") for c in coins) + 1
+        res = helper(amount)
+        return res if res != float("inf") else -1
