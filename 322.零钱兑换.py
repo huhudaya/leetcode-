@@ -58,8 +58,10 @@ def coinChange(coins: List[int], amount: int):
         # 查备忘录，避免重复计算
         if n in memo: return memo[n]
 
-        if n == 0: return 0
-        if n < 0: return -1
+        if n == 0:
+            return 0
+        if n < 0:
+            return -1
         res = float('INF')
         for coin in coins:
             subproblem = dp(n - coin)

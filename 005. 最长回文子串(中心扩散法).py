@@ -33,4 +33,5 @@ class Solution:
             s2 = help(i, i + 1)
             self.res = s1 if len(self.res) < len(s1) else self.res
             self.res = s2 if len(self.res) < len(s2) else self.res
+            #self.res = max(s1, s2)
         return self.res

@@ -90,7 +90,9 @@ class Solution(object):
             return ""
         prefix = strs[0]  # 从第1个字符串开始
         for i in range(len(strs)):
-            while(strs[i].find(prefix) != 0):  # 不是其他字符串的前缀，则为-1，如果是前缀则是匹配的第一个index即0
+            # 不是其他字符串的前缀，则为-1，如果是前缀则是匹配的第一个index即0
+            # 水平扫描，当i等于1的时候，这个时候得到的prefix是i=0和i=1的公共前缀，如果find的值是0，说明有公共前缀，否则while中prefix一直减小
+            while(strs[i].find(prefix) != 0):
                 # prefix = prefix[0: len(prefix)-1]  # 减少前缀
                 prefix = prefix[:-1]
                 if not prefix:
