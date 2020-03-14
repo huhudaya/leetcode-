@@ -1,6 +1,7 @@
 # 354. 俄罗斯套娃信封问题.py
 '''
-给定一些标记了宽度和高度的信封，宽度和高度以整数对形式 (w, h) 出现。当另一个信封的宽度和高度都比这个信封大的时候，这个信封就可以放进另一个信封里，如同俄罗斯套娃一样。
+给定一些标记了宽度和高度的信封，宽度和高度以整数对形式 (w, h) 出现
+。当另一个信封的宽度和高度都比这个信封大的时候，这个信封就可以放进另一个信封里，如同俄罗斯套娃一样。
 
 请计算最多能有多少个信封能组成一组“俄罗斯套娃”信封（即可以把一个信封放到另一个信封里面）。
 
@@ -14,7 +15,7 @@
 解释: 最多信封的个数为 3, 组合为: [2,3] => [5,4] => [6,7]。
 链接：https://leetcode-cn.com/problems/russian-doll-envelopes
 '''
-
+from typing import List
 
 # 暴力dp 时间复杂度O(N2)
 class Solution:
@@ -122,6 +123,7 @@ class Solution:
                 target = left
             elif top[right] >= poker:
                 target = right
+            # 否则新建一堆
             else:
                 target = right + 1
             if target == piples + 1:

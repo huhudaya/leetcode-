@@ -19,11 +19,12 @@
 我们的定义是这样的：dp[i] 表示以 nums[i] 这个数结尾的最长递增子序列的长度。
 
 至此，这道题就解决了，时间复杂度 O(N^2)。总结一下动态规划的设计流程：
-首先明确 dp 数组所存数据的含义。这步很重要，如果不得当或者不够清晰，会阻碍之后的步骤。
-然后根据 dp 数组的定义，运用数学归纳法的思想，假设 $dp[0...i-1]$ 都已知，想办法求出 $dp[i]$，一旦这一步完成，整个题目基本就解决了。
-但如果无法完成这一步，很可能就是 dp 数组的定义不够恰当，需要重新定义 dp 数组的含义；
-或者可能是 dp 数组存储的信息还不够，不足以推出下一步的答案，需要把 dp 数组扩大成二维数组甚至三维数组。
-最后想一想问题的 base case 是什么，以此来初始化 dp 数组，以保证算法正确运行。
+首先明确 dp 数组所存数据的含义。这步很重要，如果不得当或者不够清晰，会阻碍之后的步骤
+然后根据 dp 数组的定义，运用数学归纳法的思想，假设 $dp[0...i-1]$ 都已知，想办法求出 $dp[i]$
+一旦这一步完成，整个题目基本就解决了
+但如果无法完成这一步，很可能就是 dp 数组的定义不够恰当，需要重新定义 dp 数组的含义
+或者可能是 dp 数组存储的信息还不够，不足以推出下一步的答案，需要把 dp 数组扩大成二维数组甚至三维数组
+最后想一想问题的 base case 是什么，以此来初始化 dp 数组，以保证算法正确运行
 '''
 from typing import List
 
@@ -78,14 +79,15 @@ public int lengthOfLIS(int[] nums) {
 from bisect import bisect_left
 
 a = [1, 1, 2, 2, 4]
-print(bisect_left(a, 2))
+# print(bisect_left(a, 2))
 
 
 # 二分法
 # Dynamic programming + Dichotomy.
 class Solution:
     def lengthOfLIS(self, nums: [int]) -> int:
-        tails, res = [0] * len(nums), 0
+        tails = [0] * len(nums)
+        res = 0
         for num in nums:
             i, j = 0, res
             while i < j:
@@ -95,7 +97,8 @@ class Solution:
                 else:
                     j = m
             tails[i] = num
-            if j == res: res += 1
+            if j == res:
+                res += 1
         return res
 
 import bisect
@@ -109,3 +112,48 @@ class Solution:
             else:
                 q[bisect.bisect_left(q, i)] = i
         return len(q) - 1
+
+# dp
+# class Solution:
+#     def lengthOfLIS(self, nums: List[int]) -> int:
+#         if nums is None or nums == []:
+#             return 0
+#         # dp思想
+#         n = len(nums)
+#         # basecase为1
+#         dp = [1 for i in range(n)]
+#         for i in range(n):
+#             for j in range(i):
+#                 if nums[j] < nums[i]:
+#                     dp[i] = max(dp[j]+1, dp[i])
+#         return  max(dp)
+
+# 自己的版本
+# 二分 O(NlogN)
+class Solution:
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        n = len(nums)
+        top = [0 for _ in range(n)]
+        piples = 0
+        for i in range(n):
+            poker = nums[i]
+            left = 0
+            right = piples
+            # 当前 i 要进入的堆的缩影
+            index = 0
+            # log(N) 找左边界
+            while left + 1 < right:
+                mid = left + (right - left) // 2
+                if top[mid] >= poker:
+                    right = mid
+                else:
+                    left = mid
+            if top[left] >= poker:
+                index = left
+            else:
+                index = right
+            # 否则新建一个堆
+            if index == piples:
+                piples += 1
+            top[index] = poker
+        return piples
