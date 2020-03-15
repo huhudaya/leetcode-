@@ -24,6 +24,14 @@
 
 
 # 特别注意，设计到重复的问题，必须先排序！！！！
+# 这里的 i 是指回溯树中同一层中的其他节点，start指层数
+'''
+start i
+1 2 3 4
+2 3 4
+3 4
+4
+'''
 
 from typing import List
 class Solution:
@@ -48,4 +56,4 @@ class Solution:
             # 从当前元素之后遍历
             self._dfs(nums, size, path, res, i + 1)
             path.pop()
-print(Solution().subsetsWithDup([1,1,2]))
+print(Solution().subsetsWithDup([1,2,2]))
