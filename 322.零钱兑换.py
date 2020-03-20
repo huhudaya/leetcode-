@@ -93,7 +93,7 @@ PS：为啥dp数组初始化为amount + 1呢
 class Solution:
     def coinChange(self, coins: List[int], amount: int):
         # 初始化为 amount + 1
-        dp = [amount + 1 for i in range(amount + 1)]
+        dp = [amount + 1 for _ in range(amount + 1)]
         dp[0] = 0
         # 计算dp的每一个值 从dp[i] i=0开始
         for i in range(amount + 1):
