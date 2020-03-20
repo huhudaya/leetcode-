@@ -27,6 +27,7 @@ class Solution:
             if nums[i] in windows:
                 return True
             windows.add(nums[i])
+            # 超过窗口长度就减少窗口
             if len(windows) > k:
                 windows.remove(nums[i - k])
         return False

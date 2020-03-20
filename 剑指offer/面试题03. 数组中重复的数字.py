@@ -18,6 +18,7 @@
 2 <= n <= 100000
 链接：https://leetcode-cn.com/problems/shu-zu-zhong-zhong-fu-de-shu-zi-lcof
 '''
+# 时间复杂度O(n),空间复杂度O(1)
 class Solution:
     def findRepeatNumber(self, arr) -> int:
         if arr is None or arr == []:
@@ -34,11 +35,13 @@ class Solution:
 
 '''
 将数组看做链表，其中元素的值看做next指针
-由于存在相同的元素值，则必然存在两个节点同时指向了一个节点，即存在环。此时，本问题就转换为了求环形链表中环入口位置的问题。
+由于存在相同的元素值，则必然存在两个节点同时指向了一个节点，即存在环
+此时，本问题就转换为了求环形链表中环入口位置的问题
 
 Floyd 的判圈算法被划分成两个不同的阶段：
 
-在第一阶段，用快慢指针找出列表中是否有环。如果没有环，可以直接返回 null 并退出
+在第一阶段，用快慢指针找出列表中是否有环
+如果没有环，可以直接返回 null 并退出
 在第二阶段，用同速指针相遇来找到环的入口
 
 '''
@@ -47,7 +50,8 @@ from typing import List
 class Solution:
     def findRepeatNumber(self, nums: List[int]) -> int:
         # Floyd法
-        if not nums: return None
+        if not nums:
+            return None
 
         # 阶段0 寻找不指向自己的元素作为head
         head = 0
@@ -70,4 +74,4 @@ class Solution:
             if fast == slow:
                 break
         return fast
-print(Solution().findRepeatNumber([1,0,1]))
+print(Solution().findRepeatNumber([1,0]))

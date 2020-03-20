@@ -20,26 +20,31 @@
 
 链接：https://leetcode-cn.com/problems/find-the-duplicate-number
 '''
+
+
 # 二分
 class Solution:
-    #O(nlogn)算法
+    # O(nlogn)算法
     def findDuplicate(self, nums) -> int:
         start = 1
         end = len(nums) - 1
-        #二分,相当于求解count(mid) > mid的FirstPosition
+        # 二分,相当于求解count(mid) > mid的FirstPosition
         while start + 1 < end:
-            mid = start + (end-start) // 2
+            mid = start + (end - start) // 2
             # 这里计算的是小于mid的个数
             count = sum(num <= mid for num in nums)
+            #  <= 说明重复元素在右边
             if count <= mid:
                 start = mid
             else:
                 end = mid
-        #如果
+        # 如果
         if sum(num <= start for num in nums) > start:
             return start
         else:
             return end
+
+
 # 排序
 class Solution:
     def firstDuplicate(self, nums):
@@ -48,6 +53,8 @@ class Solution:
         for i in range(1, len(nums)):
             if nums[i] == nums[i - 1]:
                 return nums[i]
+
+
 # 时间复杂度 O(NlogN)
 
 # 集合
@@ -59,6 +66,7 @@ class Solution:
             if num in seen:
                 return num
             seen.add(num)
+
 
 # 快慢指针
 '''
@@ -82,6 +90,8 @@ class Solution:
     得到相遇的是环的入口，入口元素即为重复元素
 
 '''
+
+
 # 相当于求环的入口 快慢指针  将索引数组看成链表
 class Solution1:
     def findDuplicate(self, nums) -> int:
@@ -98,5 +108,7 @@ class Solution1:
             slow = nums[slow]
             fast = nums[fast]
         return slow
-a = [1,2,0,2]
+
+
+a = [1, 3,0]
 print(Solution1().findDuplicate(a))

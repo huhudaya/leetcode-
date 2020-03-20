@@ -20,13 +20,17 @@
 链接：https://leetcode-cn.com/problems/contains-duplicate-iii
 '''
 # 利用set,底层是红黑树
+from typing import List
+
+
 class Solution:
     def containsNearbyAlmostDuplicate(self, nums: List[int], k: int, t: int) -> bool:
         n = len(nums)
         if n <= 1:
             return False
-        
+
         record = set()  # 定义窗口
+        # 遍历整个数组
         for i in range(n):
             if t == 0:  # 如果t=0，那么看看窗口内是否有重复元素，有就返回True
                 if nums[i] in record:
@@ -36,7 +40,7 @@ class Solution:
                     if abs(j - nums[i]) <= t:
                         return True
             record.add(nums[i])  # 向集合添加元素
-            
+
             if len(record) > k:
-                record.remove(nums[i-k])  # 维护长度为k的窗口
+                record.remove(nums[i - k])  # 维护长度为k的窗口
         return False

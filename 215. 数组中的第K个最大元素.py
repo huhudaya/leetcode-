@@ -1,6 +1,7 @@
 # 215. 数组中的第K个最大元素.py
 '''
-在未排序的数组中找到第 k 个最大的元素。请注意，你需要找的是数组排序后的第 k 个最大的元素，而不是第 k 个不同的元素。
+在未排序的数组中找到第 k 个最大的元素。
+请注意，你需要找的是数组排序后的第 k 个最大的元素，而不是第 k 个不同的元素。
 
 示例 1:
 
@@ -66,7 +67,8 @@ class Solution:
 
 
 # 快排
-# 快速选择算法 的平均时间复杂度为 O(N)。就像快速排序那样，本算法也是 Tony Hoare 发明的，因此也被称为 Hoare选择算法。
+# 快速选择算法 的平均时间复杂度为 O(N)。
+# 就像快速排序那样，本算法也是 Tony Hoare 发明的，因此也被称为 Hoare选择算法。
 '''
 复杂度分析
 
@@ -101,6 +103,69 @@ class Solution:
                 left = idx + 1
             if idx > k - 1:
                 right = idx - 1
+
+
+
+# 官方题解
+import random
+'''
+随机选择一个枢轴。
+
+使用划分算法将枢轴放在数组中的合适位置 pos。将小于枢轴的元素移到左边，大于等于枢轴的元素移到右边。
+
+比较 pos 和 N - k 以决定在哪边继续递归处理。
+
+'''
+class Solution:
+    def findKthLargest(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+
+        def partition(left, right, pivot_index):
+            pivot = nums[pivot_index]
+            # 1. move pivot to end
+            nums[pivot_index], nums[right] = nums[right], nums[pivot_index]
+
+            # 2. move all smaller elements to the left
+            store_index = left
+            for i in range(left, right):
+                if nums[i] < pivot:
+                    nums[store_index], nums[i] = nums[i], nums[store_index]
+                    store_index += 1
+
+            # 3. move pivot to its final place
+            nums[right], nums[store_index] = nums[store_index], nums[right]
+
+            return store_index
+
+        def select(left, right, k_smallest):
+            """
+            Returns the k-th smallest element of list within left..right
+            """
+            if left == right:  # If the list contains only one element,
+                return nums[left]  # return that element
+
+            # select a random pivot_index between
+            pivot_index = random.randint(left, right)
+
+            # find the pivot position in a sorted list
+            pivot_index = partition(left, right, pivot_index)
+
+            # the pivot is in its final sorted position
+            if k_smallest == pivot_index:
+                return nums[k_smallest]
+            # go left
+            elif k_smallest < pivot_index:
+                return select(left, pivot_index - 1, k_smallest)
+            # go right
+            else:
+                return select(pivot_index + 1, right, k_smallest)
+
+        # kth largest is (n - k)th smallest
+        return select(0, len(nums) - 1, len(nums) - k)
 
 
 # --------------------------------------------------------------
@@ -145,7 +210,7 @@ def partition1(arr, l, r):
     return l
 
 
-# topK
+# topK O(logN)
 # 思路 利用快排求topK
 def topK(arr, k, low, high):
     pos = partition(arr, low, high)
@@ -156,3 +221,39 @@ def topK(arr, k, low, high):
     elif pos > k:
         return topK(arr, k, 0, pos - 1)
     return arr[pos]
+
+
+
+
+# 自己的版本 一定要加随机因子
+
+from typing import List
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        n = len(nums) - 1
+        return self.topK(nums, 0, n, k - 1)
+
+    def topK(self, nums, low, high, k):
+        pos = self.partition(nums, low, high)
+        if pos < k:
+            return self.topK(nums, pos + 1, high, k)
+        elif pos > k:
+            return self.topK(nums, low, pos - 1, k)
+        return nums[pos]
+
+    # 挖坑法
+    def partition(self, arr, low, high):
+        # 选取基准元素
+        key = randint(low, high)
+        arr[key], arr[low] = arr[low], arr[key]
+        index = arr[low]
+        while low < high:
+            while low < high and arr[high] <= index:
+                high -= 1
+            arr[low] = arr[high]
+            while low < high and arr[low] > index:
+                low += 1
+            arr[high] = arr[low]
+            # 填坑
+        arr[low] = index
+        return low
