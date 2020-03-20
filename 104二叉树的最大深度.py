@@ -46,13 +46,26 @@ class Solution:
         return self.depth
 
 
-# divide&conquer
+# divide&conquer 相当于后序遍历
+# 有返回值的递归一定要先写递归结束条件
 class Solution:
     def maxDepth(self, root: TreeNode) -> int:
         if root is None:
             return 0
         left = self.maxDepth(root.left)
         right = self.maxDepth(root.right)
+        # 相当于后序遍历，自底向上
+        res = max(left, right)
+        return res + 1
+
+
+class Solution2:
+    def maxDepth(self, root: TreeNode) -> int:
+        if root:
+            left = self.maxDepth(root.left)
+            right = self.maxDepth(root.right)
+        else:
+            return 0
         # 相当于后序遍历，自底向上
         res = max(left, right)
         return res + 1

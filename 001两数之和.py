@@ -11,10 +11,13 @@
 因为 nums[0] + nums[1] = 2 + 7 = 9
 所以返回 [0, 1]
 '''
+from typing import List
+
+
 class Solution:
     def twoSum(self, nums: List[int], target: int) -> List[int]:
         hash = {}
-        for i,num in enumerate(nums):
-            if hash.get(target-num) is not None:
-                return [i,hash.get(target-num)]
+        for i, num in enumerate(nums):
+            if hash.get(target - num) is not None:
+                return [i, hash.get(target - num)]
             hash[num] = i

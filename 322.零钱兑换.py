@@ -1,5 +1,7 @@
 '''
-给定不同面额的硬币 coins 和一个总金额 amount。编写一个函数来计算可以凑成总金额所需的最少的硬币个数。如果没有任何一种硬币组合能组成总金额，返回 -1。
+给定不同面额的硬币 coins 和一个总金额 amount。
+编写一个函数来计算可以凑成总金额所需的最少的硬币个数。
+如果没有任何一种硬币组合能组成总金额，返回 -1。
 
 示例 1:
 
@@ -13,7 +15,6 @@
 说明:
 你可以认为每种硬币的数量是无限的
 '''
-
 
 '''
 # 伪码框架
@@ -32,31 +33,38 @@ def coinChange(coins: List[int], amount: int):
 '''
 # 暴力递归
 from typing import List
-def coinChange(coins: List[int], amount: int):
 
+
+def coinChange(coins: List[int], amount: int):
     def dp(n):
         # base case
-        if n == 0: return 0
-        if n < 0: return -1
+        if n == 0:
+            return 0
+        if n < 0:
+            return -1
         # 求最小值，所以初始化为正无穷
         res = float('INF')
         for coin in coins:
             subproblem = dp(n - coin)
             # 子问题无解，跳过
-            if subproblem == -1: continue
+            if subproblem == -1:
+                continue
             res = min(res, 1 + subproblem)
 
         return res if res != float('INF') else -1
 
     return dp(amount)
 
+
 # 备忘录
 def coinChange(coins: List[int], amount: int):
     # 备忘录
     memo = dict()
+
     def dp(n):
         # 查备忘录，避免重复计算
-        if n in memo: return memo[n]
+        if n in memo:
+            return memo[n]
 
         if n == 0:
             return 0
@@ -65,15 +73,22 @@ def coinChange(coins: List[int], amount: int):
         res = float('INF')
         for coin in coins:
             subproblem = dp(n - coin)
-            if subproblem == -1: continue
+            if subproblem == -1:
+                continue
             res = min(res, 1 + subproblem)
-
         # 记入备忘录
         memo[n] = res if res != float('INF') else -1
         return memo[n]
 
     return dp(amount)
 
+
+# dp[i] = x表示，当目标金额为i时，至少需要x枚硬币。
+'''
+PS：为啥dp数组初始化为amount + 1呢
+因为凑成amount金额的硬币数最多只可能等于amount（全用 1 元面值的硬币）
+所以初始化为amount + 1就相当于初始化为正无穷，便于后续取最小值
+'''
 # 动态规划
 class Solution:
     def coinChange(self, coins: List[int], amount: int):

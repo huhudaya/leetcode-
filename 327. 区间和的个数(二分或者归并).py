@@ -26,7 +26,7 @@ lower <= S[i] - S[j] <= upper，j <= i
 lower <= S[i] - S[j] <= upper，j <= i (S[i]属于黄色右边区域，S[j]属于蓝色为左边区域)
 
 '''
-
+from typing import List
 class Solution:
     def countSmaller(self, nums):
         # 使用索引数组
@@ -81,6 +81,7 @@ class Solution:
 
 # 自己的版本
 import bisect
+
 '''
 回到根本，这道题是让我们求解任意S[i] - S[j]S[i]−S[j]满足：
 
@@ -91,6 +92,8 @@ lower <= S[i] - S[j] <= upper，j <= i
 lower <= S[i] - S[j] <= upper，j <= i (S[i]属于黄色右边区域，S[j]属于蓝色为左边区域)
 
 '''
+
+
 class Solution:
     # def countRangeSum(self, nums: List[int], lower: int, upper: int) -> int:
     #     # 前缀和数组初始化
