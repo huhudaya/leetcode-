@@ -85,7 +85,7 @@ class Solution(object):
                 if board[i][j] == word[0]:
                     # 将该元素标记为已使用
                     mark[i][j] = 1
-                    if self.backtrack(i, j, mark, board, word[1:]) == True:
+                    if not True != self.backtrack(i, j, mark, board, word[1:]):
                         return True
                     else:
                         # 回溯

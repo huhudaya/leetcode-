@@ -83,7 +83,6 @@ def coinChange(coins: List[int], amount: int):
     return dp(amount)
 
 
-# dp[i] = x表示，当目标金额为i时，至少需要x枚硬币。
 '''
 PS：为啥dp数组初始化为amount + 1呢
 因为凑成amount金额的硬币数最多只可能等于amount（全用 1 元面值的硬币）
@@ -96,6 +95,7 @@ class Solution:
         dp = [amount + 1 for _ in range(amount + 1)]
         dp[0] = 0
         # 计算dp的每一个值 从dp[i] i=0开始
+        # dp[i] = x表示，当目标金额为i时，至少需要x枚硬币。
         for i in range(amount + 1):
             for coin in coins:
                 if i - coin < 0:

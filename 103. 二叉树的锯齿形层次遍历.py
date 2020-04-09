@@ -41,7 +41,8 @@ class Solution:
         res = deque()
 
         def helper(root, depth):
-            if not root: return
+            if not root:
+                return
             if len(res) == depth:
                 # 使用双端队列
                 res.append(deque())

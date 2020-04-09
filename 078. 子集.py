@@ -297,3 +297,4 @@ class Solution:
             # 所以下一次搜索从 i + 1 开始，每次选一个新的元素作为起点
             self.__dfs(nums, i + 1, path, res)
             path.pop()
+print(Solution().subsets([1,2,3]))

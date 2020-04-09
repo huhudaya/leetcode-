@@ -221,7 +221,8 @@ class Solution:
                         # 放进stack_next里面，集中管理，精准隔离，方便排查下一轮会变坏的橘子
                         stack_next.append([y_new, x_new])
             # 如果橘子们都检查完了发现再无其他坏橘子，终止循环，宣布疫情结束
-            if not stack_next: break
+            if not stack_next:
+                break
             # 把这一轮感染的坏橘子放进stack里，因为我们每一轮都是从stack开始搜索的
             stack = stack_next
             # 看来橘子们还没凉透，来，给橘子们续一秒，哦不，续一分钟
@@ -294,6 +295,7 @@ class Solution:
                     new_x = cur_x + tmp_i
                     new_y = cur_y + tmp_j
                     if 0 <= new_x < m and 0 <= new_y < n and grid[new_x][new_y] == 1:
+                        # wtf..我怎么又写成了 == ？？？？？
                         grid[new_x][new_y] = 2
                         cnt -= 1
                         _deque.append((new_x, new_y))

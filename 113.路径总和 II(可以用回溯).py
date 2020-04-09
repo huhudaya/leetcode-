@@ -225,6 +225,7 @@ class Solution:
                     tmp += [root.val]
                     res.append(tmp)
                 return
+            # 比方法一多了一个判断
             if root.left:
                 helper(root.left, sum, tmp + [root.val])
             if root.right:
@@ -257,7 +258,7 @@ class Solution:
         tmp_res.append(root.val)
         # 注意这里相当于回溯
         cur_sum += root.val
-        if root.left == None and root.right == None:
+        if root.left is None and root.right is None:
             if target == cur_sum:
                 self.res.append(tmp_res[:])
                 # 下面这两行可以加也可以不加，最好加上，提前停止递归
