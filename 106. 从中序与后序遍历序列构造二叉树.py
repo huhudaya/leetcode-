@@ -17,12 +17,19 @@
    15   7
 链接：https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal
 '''
+
+
 # Definition for a binary tree node.
 class TreeNode:
     def __init__(self, x):
         self.val = x
         self.left = None
         self.right = None
+
+
+from typing import List
+
+
 class Solution:
     def buildTree(self, inorder: List[int], postorder: List[int]) -> TreeNode:
         if len(inorder) == 0:

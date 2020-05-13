@@ -59,6 +59,7 @@ public class Solution {
         HashMap < Integer, Integer > map = new HashMap < > ();
         int[] res = new int[findNums.length];
         for (int i = 0; i < nums.length; i++) {
+            //其实也相当于维护了一个max栈，即栈底是max
             while (!stack.empty() && nums[i] > stack.peek())
                 map.put(stack.pop(), nums[i]);
             stack.push(nums[i]);
@@ -73,18 +74,17 @@ public class Solution {
     }
 }
 '''
-'''
+from typing import List
 class Solution:
     def nextGreaterElement(self, nums1: List[int], nums2: List[int]) -> List[int]:
         stack, hashmap = list(), dict()
         for i in nums2:
-        	# 其实相当于维护一个双端队列qmax，只不过在弹出值得时候加到hahsMap中
-            while len(stack) != 0 and stack[-1] < i:hashmap[stack.pop()] = i
+            # 其实相当于维护一个双端队列qmax，只不过在弹出值得时候加到hahsMap中
+            while len(stack) != 0 and stack[-1] < i:
+                hashmap[stack.pop()] = i
             stack.append(i)
         # 因为无重复数据
-        return [hashmap.get(i,-1) for i in nums1]
-
-'''
+        return [hashmap.get(i, -1) for i in nums1]
 '''
 这就是单调队列解决问题的模板。for 循环要从后往前扫描元素
 因为我们借助的是栈的结构，倒着入栈
@@ -98,11 +98,10 @@ class Solution:
 分析它的时间复杂度
 要从整体来看：总共有 n 个元素，每个元素都被 push 入栈了一次，而最多会被 pop 一次
 没有任何冗余操作。所以总的计算规模是和元素规模 n 成正比的，也就是 O(n) 的复杂度
-
 这道题一个思路：
-
 '''
 from typing import List
+
 
 class Solution:
     def nextGreaterElement(self, nums1: List[int], nums2: List[int]) -> List[int]:

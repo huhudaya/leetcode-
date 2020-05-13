@@ -41,8 +41,8 @@ class Solution:
                     # 思考这里不加user[i - 1]会怎么样？？
                     # 打断点调试分析一下 比如112，当运行到这里的时候，由于nums[i] == nums[i - 1]，所以即提前结束了，所以需要避免这种情况
                     # 思考，这里的 i > 0仅仅是为了有i-1存在，不同于90题，i > start是表示当前节点下的第二个分支
-                    # if i > 0 and nums[i] == nums[i - 1] and used[i - 1] is False:
-                    if i > 0 and nums[i] == nums[i - 1]:
+                    if i > 0 and nums[i] == nums[i - 1] and used[i - 1] is False:
+                    # if i > 0 and nums[i] == nums[i - 1]:
                         continue
                     used[i] = True
                     path.append(nums[i])

@@ -5,9 +5,9 @@
 
 1、由于是 k 个排序链表，那么这 k 个排序的链表头结点中 val 最小的结点就是合并以后的链表中最小的结点；
 
-2、最小结点所在的链表的头结点就要更新了，更新成最小结点的下一个结点（如果有的话），此时还是这 kk 个链表，这 kk 个排序的链表头结点中 val 最小的结点就是合并以后的链表中第 22 小的结点。
+2、最小结点所在的链表的头结点就要更新了，更新成最小结点的下一个结点（如果有的话），此时还是这 k 个链表，这 k 个排序的链表头结点中 val 最小的结点就是合并以后的链表中第 22 小的结点。
 
-写到这里，我想你应该差不多明白了，我们每一次都从这 kk 个排序的链表头结点中拿出 val 最小的结点“穿针引线”成新的链表，这个链表就是题目要求的“合并后的排序链表”。“局部最优，全局就最优”，这不就是贪心算法的思想吗。
+写到这里，我想你应该差不多明白了，我们每一次都从这 k 个排序的链表头结点中拿出 val 最小的结点“穿针引线”成新的链表，这个链表就是题目要求的“合并后的排序链表”。“局部最优，全局就最优”，这不就是贪心算法的思想吗。
 
 这里我们举生活中的例子来理解这个思路。
 
@@ -74,6 +74,12 @@ class Solution:
 空间复杂度O(N)
 '''
 
+from typing import List
+class ListNode(object):
+    def __init__(self, x):
+        self.val = x
+        self.next = None
+
 
 class Solution(object):
     def mergeKLists(self, lists):
@@ -95,9 +101,7 @@ class Solution(object):
 
 
 # 优先队列----穿针引线
-from Queue import PriorityQueue
-
-
+from queue import PriorityQueue
 class Solution(object):
     def mergeKLists(self, lists):
         """
@@ -126,7 +130,7 @@ class Solution(object):
 #         self.next = None
 
 
-# 使用heapq
+# 使用heapq NlogK Python中默认是小根堆
 class Solution:
     def mergeKLists(self, lists: List[ListNode]) -> ListNode:
         import heapq
@@ -136,13 +140,16 @@ class Solution:
         for i in range(len(lists)):
             if lists[i]:
                 heapq.heappush(head, (lists[i].val, i))
+                # 这一步骤很关键
                 lists[i] = lists[i].next
         while head:
+            # 一定要注意，每个链表都是有序的
             val, idx = heapq.heappop(head)
             p.next = ListNode(val)
             p = p.next
             if lists[idx]:
                 heapq.heappush(head, (lists[idx].val, idx))
+                # 这一步骤很关键，必须要指向下一个节点，因为当前节点以及入堆了
                 lists[idx] = lists[idx].next
         return dummy.next
 
@@ -197,7 +204,8 @@ class Solution(object):
 #         self.next = None
 class Solution:
     def mergeKLists(self, lists: List[ListNode]) -> ListNode:
-        if not lists: return
+        if not lists:
+            return
         n = len(lists)
         return self.merge(lists, 0, n - 1)
 
@@ -211,8 +219,10 @@ class Solution:
 
     # 递归
     def mergeTwoLists(self, l1, l2):
-        if not l1: return l2
-        if not l2: return l1
+        if not l1:
+            return l2
+        if not l2:
+            return l1
         if l1.val < l2.val:
             l1.next = self.mergeTwoLists(l1.next, l2)
             return l1

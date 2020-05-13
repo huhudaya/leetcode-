@@ -42,7 +42,6 @@ class TreeNode:
 class Solution:
     def levelOrder(self, root: TreeNode) -> List[List[int]]:
         res = []
-
         def helper(root, depth):
             if not root:
                 return
@@ -51,7 +50,6 @@ class Solution:
             res[depth].append(root.val)
             helper(root.left, depth + 1)
             helper(root.right, depth + 1)
-
         helper(root, 0)
         return res
 

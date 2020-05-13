@@ -134,6 +134,7 @@ public int largestRectangleArea(int[] heights) {
 
 
 # py
+from typing import List
 class Solution:
     def maximalRectangle(self, matrix: List[List[str]]) -> int:
         if len(matrix) == 0:

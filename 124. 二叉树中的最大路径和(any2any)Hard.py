@@ -25,7 +25,7 @@ class TreeNode:
         self.left = None
         self.right = None
 class ResultType:
-    def __init__(self,root2any,any2any):
+    def __init__(self, root2any, any2any):
         self.root2any = root2any
         self.any2any = any2any
 class Solution:
@@ -43,18 +43,17 @@ class Solution:
             tmp = max(left.root2any, 0) + max(right.root2any, 0) + root.val
             any2any = max(tmp, any2any)
             return ResultType(root2any, any2any)
+
         res = help(root)
         return res.root2any
-
-# 递归
+# 递归 traverse+divide&conquer
 class TreeNode(object):
     """ Definition of a binary tree node."""
+
     def __init__(self, x):
         self.val = x
         self.left = None
         self.right = None
-
-
 class Solution:
     def maxPathSum(self, root):
         """
@@ -65,7 +64,6 @@ class Solution:
             nonlocal max_sum
             if not node:
                 return 0
-
             # max sum on the left and right sub-trees of node
             left_gain = max(max_gain(node.left), 0)
             right_gain = max(max_gain(node.right), 0)
@@ -74,6 +72,7 @@ class Solution:
             price_newpath = node.val + left_gain + right_gain
 
             # update max_sum if it's better to start a new path
+            # max_sum记录的是any2any和left2any,right2any的最大值
             max_sum = max(max_sum, price_newpath)
 
             # for recursion :

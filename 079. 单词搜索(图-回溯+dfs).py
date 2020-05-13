@@ -28,6 +28,7 @@ class Solution:
     directions = [[0, -1], [-1, 0], [0, 1], [1, 0]]
 
     def exist(self, board, word):
+
         m = len(board)
         if m == 0:
             return False

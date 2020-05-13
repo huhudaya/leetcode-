@@ -1,0 +1,2 @@
+1.sleep会阻塞，但是没有让出锁
+2.wait和notify是针对对象Object的，这是因为由于synchronize锁是利用了ObjectMonitor对象

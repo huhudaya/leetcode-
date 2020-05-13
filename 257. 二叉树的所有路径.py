@@ -212,17 +212,14 @@ class Solution:
         # 在这里一直使用的就是一个path，相当于是一个全局变量!
         # 直接加就好了
         path.append(str(node.val))
-
         # 这里先判断左右孩子
         if node.left is None and node.right is None:
             result.append('->'.join(path))
             path.pop()
             # 因为这里属于递归结束点，会提前结束，所以需要提前pop(),如果不提前return，就可以不使用pop()
             return  # 这里一定要return哦
-
         if node.left:
             self.dfs(node.left, path, result)
-
         if node.right:
             self.dfs(node.right, path, result)
         # 这里需要思考一下为什么需要pop()，这是因为当left和right都执行完之后，一定会弹出当前的值，即出栈!

@@ -19,8 +19,6 @@
 输出: 3
 '''
 from typing import List
-
-
 # DFS
 # 明白题的意思，其实就是上下左右相连，都算一个岛屿，相当于求图中有几个连通域问题，即并查集
 # 按照 上，右，下，左来进行遍历
@@ -94,8 +92,6 @@ class Solution:
 # 所有加入队列的结点，都应该马上被标记为 “已经访问”，否则有可能会被重复加入队列。
 from typing import List
 from collections import deque
-
-
 class Solution():
     directions = [[-1, 0], [0, -1], [1, 0], [0, 1]]
 

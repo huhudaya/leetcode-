@@ -66,3 +66,58 @@ class Solution:
             candies -= min(i + 1, candies)
             i += 1
         return ans
+
+class Solution:
+    def distributeCandies(self, candies: int, num_people: int) -> List[int]:
+        index = 0
+        res = [0 for _ in range(num_people)]
+        while candies > 0:
+            for i in range(num_people):
+                index += 1
+                if candies - index < 0:
+                    res[i] += candies
+                    return res
+                else:
+                    candies -= index
+                res[i] += index
+
+# java
+'''
+class Solution {
+    public int[] distributeCandies(int candies, int num_people) {
+        int[] ans = new int[num_people];
+        int i = 0;
+        while (candies != 0) {
+            ans[i % num_people] += Math.min(candies, i + 1);
+            candies -= Math.min(candies, i + 1);
+            i += 1;
+        }
+        return ans;
+    }
+}
+'''
+
+'''
+import scala.util.control.Breaks._
+
+object Solution {
+  def distributeCandies(candies: Int, num_people: Int): Array[Int] = {
+    val res = Array.fill(num_people)(0)
+    var cnt = 0
+    var c = candies
+    while (c > 0) {
+      breakable {
+        (0 until num_people).foreach(i => {
+          var t = num_people * cnt + i + 1
+          if (c <= t) t = c
+          res(i) += t
+          c -= t
+          if (c <= 0) break
+        })
+      }
+      cnt += 1
+    }
+    res
+  }
+}
+'''

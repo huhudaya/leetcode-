@@ -18,6 +18,8 @@
 
 链接：https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal
 '''
+
+
 # Definition for a binary tree node.
 class TreeNode:
     def __init__(self, x):
@@ -32,9 +34,10 @@ class TreeNode:
 首先，preorder 中的第一个元素一定是树的根，这个根又将 inorder 序列分成了左右两棵子树。
 现在我们只需要将先序遍历的数组中删除根元素，然后重复上面的过程处理左右两棵子树。
 '''
+from typing import List
 class Solution:
     def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:
-        # 前序 中序 ->树
+        # 前序 中序 -> 树
         if len(inorder) == 0:
             return None
         # 注意 先序遍历的第一个元素一定是树的根，这个根又可以将中序遍历分为左右两颗子树

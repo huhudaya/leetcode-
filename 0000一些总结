@@ -3,7 +3,7 @@
          xxx
       if root.right:
          xxx
-这样的话在最前面一定要有一个判断，即if root is None:
+这样的话在最前面（递归外面）一定要有一个判断，即if root is None:
                                     return
 
 
@@ -96,3 +96,88 @@ min(A[1],B[1]) > max(A[0],B[0])   !!!!!请牢记 两点最大值的最小值必�
     这样只需要在最上面判断一下if root.left and root.right:
     不需要先判断if root:
     可以在递归函数外进行一次判断就可以
+
+
+java中一切皆对象
+Java中的动态代理类似于Python中的装饰器，类似于Scala中的隐式转换函数！本质上都是为了OCP原则，即开放封闭原则
+
+
+在Java中，面向接口开发很重要！面向接口开发，实际上就是满足多态性！多态性就是为了实现方法的复用，继承是为了实现代码的复用
+面向接口初级版本:
+ISkill iskill;
+switch (name){
+case "Diana" :
+       iskill = new Diana()
+       break
+case "Irelia":
+        iskill = new Irelia()
+        break
+default:
+        thrown new Exception
+    iskill.r()
+}
+面向接口高级版本
+ISkill iskill = HeroFactory.getHero(name)
+iskill.r()
+class HeroFactory{
+ISkill getHero(name){
+ISkill iskill;
+Class<?> cla = Class.forname(name);
+Object obj = cla.newInstance();
+return (ISkill)Obj;
+}
+}
+
+
+java中的try catch用来捕获异常，如果当前发生异常不处理，可以在类中throw一个异常，让上级去处理，如果都处理不了，就直接over
+
+一个很棒的点
+在Scala中，函数可以被直接注册为udf！！这点很棒啊!
+在Scala中，方法转函数只需要在方法后面加一个下划线就可以
+比如
+    import spark.implicits._
+
+    // 注册UDF
+    spark.udf.register("timezoneToTimestamp", timezoneToTimestamp _)
+
+使用的时候
+    // ResultTable
+    val resultTable = inputTable
+      .select(from_json(col("value").cast("string"), DataType.fromJson(jsonSchema)).as("value"))
+      .select($"value.*")
+      .withColumn("timestamp", functions.callUDF("timezoneToTimestamp", functions.col("eventTime"),lit("yyyy-MM-dd HH:mm:ss"),lit("GMT+8")))
+      .filter($"timestamp".isNotNull && $"eventType".isNotNull && $"userID".isNotNull)
+      // 重复记录到达的时间上限
+      .withWatermark("timestamp", "10 seconds")
+      .dropDuplicates("timestamp","eventType","userID")
+      .select($"eventTime",$"eventType",$"userID")
+
+
+注意
+spark中mapWithState只会输出当前批次有更新的数据的结果，不会全部显示
+其实就减轻了state的压力
+相当于sparkstructured中的 update模式！
+这里要说一个structured中的几个模式
+（1）完全模式（Complete Mode）
+
+        整个更新的结果表（Result Table）将被写入到外部存储。这取决于外部连接决定如何操作整个表的写入。
+
+（2）追加模式（Append Mode）
+
+        只有从上一次触发后追加到结果表中新行会被写入到外部存储。适用于已经存在结果表中的行不期望被改变的查询。
+
+（3）更新模式（Update Mode）
+       只有从上一次触发后在结果表中更新的行将会写入外部存储（Spark 2.1.1之后才可用）。这种模式不同于之前的完全模式，它仅仅输出上一次触发后改变的行。如果查询中不包含聚合，这种模式与追加模式等价的。
+
+mapWtihState相当于update
+这里要再说一下flink中的几个更新模式！
+flink中的upsert和restract流
+restract会有两个消息，一个是false一个是true
+upsert只有一条消息，一个true
+我们可以在下流中处理这些消息，比如对于restact消息，可以在下游中过滤掉false中的语句
+
+
+Java中的反射和动态代理
+比如一个类，这个类中的方法有100，可以用来做权限控制，现在我们有一个需求是要在权限控制之前加一个验证码短信的功能
+总不能每一个方法前面都去加一个验证功能吧？
+这个时候我们就需要使用动态代理，来动态增强一些功能！

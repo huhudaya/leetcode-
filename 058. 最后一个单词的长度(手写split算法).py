@@ -50,7 +50,6 @@ class Solution:
         # 自己编写一个split算法吧。。。
         # 去掉最后面的空格，很简单，就不写了，直接用库吧
         s = s.rstrip()
-
         def splitFun(str, char):
             res = []
             slow = 0
