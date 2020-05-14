@@ -134,3 +134,60 @@ class Solution:
 
     def sortEnvelopes(self, cur, pre):
         return pre[1] - cur[1] if cur[0] == pre[0] else cur[0] - pre[0]
+
+
+
+
+
+
+
+
+
+class Solution:
+    def maxEnvelopes(self, envelopes: List[List[int]]) -> int:
+        # 转换为求最长递增子序列
+        import functools
+        length = len(envelopes)
+        envelopes.sort(key = functools.cmp_to_key(self.sortEnvelopes))
+        # 求LIS
+        heigh = [envelope[1] for envelope in envelopes]
+        return self.lengthOfLIS(heigh)
+    # def lengthOfLIS(self, heigh):
+    #     length = len(heigh)
+    #     if len(heigh) == 0:
+    #         return 0
+    #     dp = [1 for i in range(length)]
+    #     for i in range(length):
+    #         for j in range(i):
+    #             if heigh[i] > heigh[j]:
+    #                 dp[i] = max(dp[j] + 1, dp[i])
+    #     return max(dp)
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        n = len(nums)
+        top = [-float('inf') for _ in range(n)]
+        piples = 0
+        for i in range(n):
+            poker = nums[i]
+            left = 0
+            right = piples
+            # 当前 i 要进入的堆的索引
+            index = 0
+            # log(N) 找左边界
+            while left + 1 < right:
+                mid = left + (right - left) // 2
+                if top[mid] >= poker:
+                    right = mid
+                else:
+                    left = mid
+            if top[left] >= poker:
+                index = left
+            elif top[right] >= poker:
+                index = right
+            # 否则新建一个堆  注意这里的piples实际上是right = len(nums),一般我们做题的时候应该是right = len(nums)-1
+            else:
+                index = piples
+                piples += 1
+            top[index] = poker
+        return piples
+    def sortEnvelopes(self, cur, pre):
+        return pre[1] - cur[1] if cur[0] == pre[0] else cur[0] - pre[0]

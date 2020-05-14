@@ -152,12 +152,67 @@ class Solution:
                     left = mid
             if top[left] >= poker:
                 index = left
-            elif top[left] >= poker:
+            else:
+                index = right
+            # 否则新建一个堆  注意这里的piples实际上是right = len(nums),一般我们做题的时候应该是right = len(nums)-1
+            if index == piples:
+                piples += 1
+            top[index] = poker
+        return piples
+
+# 二分 O(NlogN)
+class Solution:
+    def lengthOfLIS1(self, nums: List[int]) -> int:
+        n = len(nums)
+        top = [0 for _ in range(n)]
+        piples = 0
+        for i in range(n):
+            poker = nums[i]
+            left = 0
+            right = piples
+            # 当前 i 要进入的堆的索引
+            index = 0
+            # log(N) 找左边界
+            while left + 1 < right:
+                mid = left + (right - left) // 2
+                if top[mid] >= poker:
+                    right = mid
+                else:
+                    left = mid
+            if top[left] >= poker:
+                index = left
+            else:
+                index = right
+            # 否则新建一个堆
+            if index == piples:
+                piples += 1
+            top[index] = poker
+        return piples
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        n = len(nums)
+        top = [-float('inf') for _ in range(n)]
+        piples = 0
+        for i in range(n):
+            poker = nums[i]
+            left = 0
+            right = piples
+            # 当前 i 要进入的堆的索引
+            index = 0
+            # log(N) 找左边界
+            while left + 1 < right:
+                mid = left + (right - left) // 2
+                if top[mid] >= poker:
+                    right = mid
+                else:
+                    left = mid
+            if top[left] >= poker:
+                index = left
+            elif top[right] >= poker:
                 index = right
             # 否则新建一个堆  注意这里的piples实际上是right = len(nums),一般我们做题的时候应该是right = len(nums)-1
             else:
+                index = right
                 piples += 1
-                index = piples
             top[index] = poker
         return piples
-print(Solution().lengthOfLIS([5,6,7]))
+print(Solution().lengthOfLIS([10,9,2,5,3,7,101,18]))
