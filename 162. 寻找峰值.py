@@ -25,6 +25,7 @@
 
 链接：https://leetcode-cn.com/problems/find-peak-element
 '''
+from typing import List
 class Solution:
     def findPeakElement(self, nums: List[int]) -> int:
         #题目要求O(logn),一定是要求二分

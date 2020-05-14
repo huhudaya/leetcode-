@@ -26,12 +26,13 @@ target = 13
 
 链接：https://leetcode-cn.com/problems/search-a-2d-matrix
 '''
-from typing import  List
+from typing import List
 
 
 class Solution:
     def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
-        if not matrix: return False
+        if not matrix:
+            return False
         row = len(matrix)
         col = len(matrix[0])
         left = 0

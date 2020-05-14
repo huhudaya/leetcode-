@@ -21,7 +21,7 @@
 链接：https://leetcode-cn.com/problems/search-in-rotated-sorted-array
 '''
 
-
+# 注意此题不存在重复元素
 class Solution:
     def search(self, nums, target: int) -> int:
         # 二分法模板

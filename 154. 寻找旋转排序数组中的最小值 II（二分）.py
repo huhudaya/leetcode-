@@ -38,7 +38,6 @@ class Solution:
                 right = right - 1  # key
         return nums[left]
 
-
 # 自己的版本
 class Solution:
     def findMin(self, nums: List[int]) -> int:
@@ -46,6 +45,7 @@ class Solution:
         right = len(nums) - 1
         while left + 1 < right:
             mid = left + ((right - left) >> 1)
+            # 这一步很关键，用来排除相同的元素
             if nums[mid] == nums[right]:
                 right -= 1
             elif nums[mid] < nums[right]:
@@ -56,12 +56,8 @@ class Solution:
             return nums[left]
         else:
             return nums[right]
-
-
 # 分治
 from typing import List
-
-
 class Solution:
     def findMin(self, nums: List[int]) -> int:
         size = len(nums)

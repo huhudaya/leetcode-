@@ -20,7 +20,7 @@
 
 至此，这道题就解决了，时间复杂度 O(N^2)。总结一下动态规划的设计流程：
 首先明确 dp 数组所存数据的含义。这步很重要，如果不得当或者不够清晰，会阻碍之后的步骤
-然后根据 dp 数组的定义，运用数学归纳法的思想，假设 $dp[0...i-1]$ 都已知，想办法求出 $dp[i]$
+然后根据 dp 数组的定义，运用数学归纳法的思想，假设 dp[0...i-1] 都已知，想办法求出 dp[i]
 一旦这一步完成，整个题目基本就解决了
 但如果无法完成这一步，很可能就是 dp 数组的定义不够恰当，需要重新定义 dp 数组的含义
 或者可能是 dp 数组存储的信息还不够，不足以推出下一步的答案，需要把 dp 数组扩大成二维数组甚至三维数组
@@ -83,6 +83,7 @@ a = [1, 1, 2, 2, 4]
 
 
 # 二分法
+# 核心思路是找见第一个大于等于当前元素的索引
 # Dynamic programming + Dichotomy.
 class Solution:
     def lengthOfLIS(self, nums: [int]) -> int:
@@ -130,6 +131,7 @@ class Solution:
 
 # 自己的版本
 # 二分 O(NlogN)
+# 核心思路是找见第一个大于等于当前元素的索引
 class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:
         n = len(nums)
@@ -150,11 +152,12 @@ class Solution:
                     left = mid
             if top[left] >= poker:
                 index = left
-            else:
+            elif top[left] >= poker:
                 index = right
             # 否则新建一个堆  注意这里的piples实际上是right = len(nums),一般我们做题的时候应该是right = len(nums)-1
-            if index == piples:
+            else:
                 piples += 1
+                index = piples
             top[index] = poker
         return piples
 print(Solution().lengthOfLIS([5,6,7]))

@@ -16,10 +16,12 @@
 输出: [-1,-1]
 链接：https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array
 '''
+from typing import List
 # 典型的二分法
 class Solution:
     import bisect
-    def searchRange(self, nums: List[int], target: int) -> List[int]:
+    @staticmethod
+    def searchRange(nums: List[int], target: int) -> List[int]:
         # 二分模板
         def findFirst(nums, target):
             if len(nums) == 0 or nums is None:

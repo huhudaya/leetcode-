@@ -49,13 +49,11 @@ from functools import reduce
 
 '''
 1.对所有数字异或,一样的数字抵消,出现一次的两个数字异或运算后必定不为0;
-2.这个数字和相反数做与运算得到一个二进制位最右边一位为1的数字;
+2.这个数字和相反数做与运算得到一个二进制位最右边一位为1的数字，因为异或之后为1，则表示两个数在这一位上一定是不同的，由此可以用来区分;
 3.mask和数组的每个数字做与运算,等于0的分为一组,等于mask的分为一组,同时也将两个不一样的数字分开;
 4.完结
 '''
 from typing import List
-
-
 class Solution:
     def singleNumber(self, nums: List[int]) -> List[int]:
         n = len(nums)
@@ -63,7 +61,7 @@ class Solution:
         # 任意数 和 0 异或不变
         for i in nums:
             tmp ^= i
-        # 等价于 tmp ^ tmp & (tmp-1),得到最右边的1对应的十进制数
+        # 等价于 tmp ^ tmp & (tmp - 1),得到最右边的1对应的十进制数
         tmp = tmp & (-tmp)
         num1 = 0
         num2 = 0
