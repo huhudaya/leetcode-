@@ -20,10 +20,13 @@
 
 链接：https://leetcode-cn.com/problems/implement-strstr
 '''
+
+
 # 使用库函数
 class Solution:
     def strStr(self, haystack: str, needle: str) -> int:
         return haystack.find(needle)
+
 
 # 暴力算法
 class Solution:
@@ -31,7 +34,8 @@ class Solution:
         # 子串是needle,主串是haystack
         n = len(haystack)
         m = len(needle)
-        if needle == "":return 0
+        if needle == "":
+            return 0
         for i in range(0, n - m + 1):
             index = i
             for j in range(m):
@@ -42,14 +46,18 @@ class Solution:
             if j == m - 1:
                 return i
         return -1
+
+
 # 简练的方法
 class Solution:
     def strStr(self, haystack: 'str', needle: 'str') -> 'int':
         for i in range(0, len(haystack) - len(needle) + 1):
-            if haystack[i:i+len(needle)] == needle:
+            if haystack[i:i + len(needle)] == needle:
                 return i
         return -1
 
+
 from collections import Counter
-a = ["a","asdf","asfaf"]
+
+a = ["a", "asdf", "asfaf"]
 print(Counter(a))

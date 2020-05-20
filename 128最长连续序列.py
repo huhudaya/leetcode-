@@ -69,8 +69,9 @@ class Solution3:
             return n
         for i in range(n):
             hashSet.add(nums[i])
-        # 计数法
+        # 计数法 注意这里为什么是O(N)的时间复杂度：因为下面的循环是常数级别的循环，所以常数倍的O(N)仍然是O(N)
         for i in range(n):
+            # 如果不在Set中，就需要重新遍历，重新计数
             if nums[i] - 1 not in hashSet:
                 cnt = 1
                 tmp = nums[i]
@@ -80,9 +81,7 @@ class Solution3:
                 res = max(res, cnt)
         return res
 
-    # 简约版 O(N)
-
-
+# 简约版 O(N)
 class Solution3(object):
     def longestConsecutive(self, nums):
         """
@@ -95,6 +94,7 @@ class Solution3(object):
             if x - 1 not in nums:
                 y = x + 1
                 while y in nums:
+                    # 计数
                     y += 1
                 res = max(res, y - x)
         return res

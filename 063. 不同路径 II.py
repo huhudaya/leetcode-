@@ -28,6 +28,7 @@
 2. 向下 -> 向下 -> 向右 -> 向右
 链接：https://leetcode-cn.com/problems/unique-paths-ii
 '''
+from typing import List
 class Solution:
     def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -> int:
         # dp思想 和上一道题差不多

@@ -30,6 +30,7 @@ class Solution:
                 # 中心扩散
                 left -= 1
                 right += 1
+                # 每循环一次，回文子串的个数都会加1
                 self.res += 1
 
         for i in range(length):

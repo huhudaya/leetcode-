@@ -17,11 +17,8 @@ HammingDistance(4, 14) + HammingDistance(4, 2) + HammingDistance(14, 2) = 2 + 2 
 
 数组中元素的范围为从 0到 10^9。
 数组的长度不超过 10^4。
-
-来源：力扣（LeetCode）
-链接：https://leetcode-cn.com/problems/total-hamming-distance
-著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 '''
+from typing import List
 from collections import defaultdict
 class Solution:
     def totalHammingDistance(self, nums: List[int]) -> int:

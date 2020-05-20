@@ -27,7 +27,7 @@ class Solution:
         count = Counter(s)
         for v in count.values():
             ans += v // 2 * 2
-            # 保证只有一个中心元素
+            # 保证只有一个中心元素，这里保证只有一个中心元素
             if ans % 2 == 0 and v % 2 == 1:
                 ans += 1
         return ans

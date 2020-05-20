@@ -37,9 +37,9 @@ vector<int> nextGreaterElements(vector<int>& nums) {
         while (!s.empty() && s.top() <= nums[i % n])
             s.pop();
         # 加if判断，节省时间
-        if(i<n){
-        res[i] = s.empty() ? -1 : s.top();
-        s.push(nums[i % n]);
+        if(i < n){
+            res[i] = s.empty() ? -1 : s.top();
+            s.push(nums[i % n]);
         }
     }
     return res;
@@ -90,8 +90,7 @@ public class Solution {
     }
 }
 '''
-
-
+from typing import List
 class Solution:
     def nextGreaterElements(self, nums: List[int]) -> List[int]:
         stack = []

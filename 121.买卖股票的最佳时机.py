@@ -30,19 +30,36 @@ for buy in range(len(price)):
         res = max(res, price[sell] - price[buy])
 return res 
 '''
-
-
-# O（N）
+import sys
 from typing import List
 class Solution:
-    def maxProfit(self, prices: List[int]) -> int:
+    def maxProfit1(self, prices: List[int]) -> int:
+        if not prices:
+            return 0
+        # 固定卖出的时间，用一个for循环，然后与卖出时间之前的最小值比较！
         # 思想其实就是单调栈的思想
         res = 0
         cur_min = prices[0]
         n = len(prices)
         # 卖出时间必须从 1 开始,因为第一条肯定不能卖啊，还没买怎么卖
-        # 固定卖出的时间，即用一个for循环，然后于卖出时间之前的最小值比较！ prices[i]表示当前i时刻卖出
         for i in range(1, n):
             cur_min = min(cur_min, prices[i])
             res = max(res, prices[i] - cur_min)
         return res
+    # 状态转移动态规划
+    # https://mp.weixin.qq.com/s?__biz=MzAxODQxMDM0Mw==&mid=2247484508&idx=1&sn=42cae6e7c5ccab1f156a83ea65b00b78&chksm=9bd7fa54aca07342d12ae149dac3dfa76dc42bcdd55df2c71e78f92dedbbcbdb36dec56ac13b&scene=21#wechat_redirect
+    def maxProfit(self, prices: List[int]) -> int:
+        if not prices:
+            return 0
+        # dp
+        n = len(prices)
+        # 我们这里特殊处理一下，dp[0][0],dp[0][1]表示base case即第0天
+        dp = [[0, 0] for i in range(n + 1)]
+        # dp[-1][1]无法表示，我们需要另外想办法解决这个case
+        # base case
+        dp[0][0] = 0
+        dp[0][1] = -sys.maxsize
+        for i in range(1, n + 1):
+            dp[i][0] = max(dp[i - 1][0], dp[i - 1][1] + prices[i - 1])#卖出，所以需要加
+            dp[i][1] = max(dp[i - 1][1], -prices[i - 1])#买入，所以需要减
+        return dp[n][0]

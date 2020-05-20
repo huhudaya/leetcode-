@@ -34,10 +34,10 @@ class Solution:
         #使用二分模板
         while start + 1 < end:
             mid = start + (end-start)//2
-            #上升区间
+            #下降区间
             if nums[mid] < nums[mid+1]:
                 start = mid
-            #下降区间
+            #上升区间
             elif nums[mid] < nums[mid-1]:
                 end = mid
             else:

@@ -30,15 +30,18 @@ class Solution:
             return 0
         # 初始化dp
         dp = [1 for i in range(n)]
+        # 定义一个一维的辅助dc数组
         dc = [1 for i in range(n)]
         for i in range(n):
             for j in range(i):
                 if nums[i] > nums[j]:
+                    # 在初始化的dc表基础上，正常都是length前面的值小于等于length后面的值（初始化为1）
                     if dp[j] + 1 > dp[i]:
                         dp[i] = dp[j] + 1
-                        dc[i] = dc[j]  # 组合数不变
+                        dc[i] = dc[j]  # 组合数不变,更新辅助数组
+                    # 如果这个i前面有两个相同的值，第二次进入这个条件时，这个i已经是做过length[i] = length[j] + 1，即有两个长度相同的子序列
                     elif dp[j] + 1 == dp[i]:
-                        dc[i] += dc[j]  # 找到新的组合数
+                        dc[i] += dc[j]  # 找到新的组合数，更新辅助数组
             # dp[i] = max(dp[i],dp[j]+1)  
         _max = max(dp)
         res = 0

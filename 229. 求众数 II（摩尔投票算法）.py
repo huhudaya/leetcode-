@@ -46,7 +46,7 @@ class Solution:
 # 自己的版本
 class Solution:
     def majorityElement(self, nums: List[int]) -> List[int]:
-        # 摩尔投票法 最多有两个数超过n//3
+        # 摩尔投票法 最多有两个数超过n//3，相当于摆两个擂台
         cnt1 = 0
         cnt2 = 0
         candiate1 = None

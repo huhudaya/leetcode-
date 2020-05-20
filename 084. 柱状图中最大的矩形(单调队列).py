@@ -19,12 +19,14 @@ class Solution:
     def largestRectangleArea(self, heights: List[int]) -> int:
         if heights is None or len(heights) == 0:
             return 0
-        # 单调栈 min
+        # 单调栈min
         stack = []
         maxArea = 0
         n = len(heights)
         for i in range(n):
+            # 维护一个min栈 大于等于就弹出
             while stack and heights[stack[-1]] >= heights[i]:
+                # 注意 本题的核心逻辑就是在弹出当前值的时候需要判断当前值向左和向右所能达到的最远的距离
                 j = stack.pop()
                 k = stack[-1] if stack else -1
                 curArea = (i - k - 1) * heights[j]

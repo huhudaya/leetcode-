@@ -25,7 +25,8 @@ class Solution:
         res = 0
         n = len(nums)
         if nums == [] or nums is None:
-            return 0
+            return -1
+        # right为读指针
         while right < n - 1:
             if nums[right] >= nums[right + 1]:
                 res = max(res, right - left + 1)
@@ -67,7 +68,62 @@ class Solution:
 #     }
 # }
 
+
+from typing import List
+class Solution:
+    def findLengthOfLCIS(self, nums: List[int]) -> int:
+        # left = 0
+        # right = 0
+        # res = 0
+        # n = len(nums)
+        # if nums == [] or nums is None:
+        #     return 0
+        # while right < n-1:
+        #     if nums[right] >= nums[right+1]:
+        #         res = max(res,right - left + 1)
+        #         left = right + 1
+        #     right += 1
+        # return max(res,right - left + 1)
+        # 计数法更好一点？
+        ans = anchor = 0
+        for i in range(len(nums)):
+            if i and nums[i-1] >= nums[i]:
+                anchor = i
+            ans = max(ans, i-anchor+1)
+        return ans
+
+        # res = 1
+        # cnt = 1
+        # n = len(nums)
+        # if n < 1:
+        #     return 0
+        # for i in range(n-1):
+        #     if nums[i] < nums[i+1]:
+        #         cnt += 1
+        #         res = cnt if res < cnt else res
+        #     else:
+        #         cnt = 1
+        # return res
+
 a = list(set([1, 2, 4, 3, 2, 4]))
 a.sort()
 a.reverse()
 print(a)
+
+class Solution:
+    def findLengthOfLCIS(self, nums: List[int]) -> int:
+        # 计数法
+        if not nums or nums is None:
+            return 0
+        n = len(nums)
+        cnt = 1
+        res = 1
+        if n == 1:
+            return 1
+        for i in range(1, n):
+            if nums[i-1] < nums[i]:
+                cnt += 1
+                res = max(res, cnt)
+            else:
+                cnt = 1
+        return res

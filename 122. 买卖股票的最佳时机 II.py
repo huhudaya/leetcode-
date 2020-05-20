@@ -48,6 +48,7 @@ def maxProfit(prices):
         # 这里的for循环指固定 sell
         for sell in range(start + 1, n):
             curMin = min(curMin, prices[sell])
+            # 这里指找到第一次卖出去的时候，然后后面的受益为dp[i+1]，递归的时候，需要有从上往下的思维，而动态规划是从底向上的思维
             res = max(res, dp(sell + 1) + prices[sell] - curMin)
             memo[start] = res
         return res
@@ -65,3 +66,20 @@ class Solution:
             if prices[i] > prices[i - 1]:
                 res += prices[i] - prices[i - 1]
         return res
+
+# 动态规划
+import sys
+class Solution:
+    # 动态规划
+    def maxProfit(self, prices: List[int]) -> int:
+        n = len(prices)
+        # dp数组
+        dp = [[0, 0] for _ in range(n + 1)]
+        # base case 因为k是无限的，所以k次和k-1次效果一样
+        dp[0][0] = 0
+        dp[0][1] = -sys.maxsize
+        # 标准dp模板
+        for i in range(1, n + 1):
+            dp[i][0] = max(dp[i - 1][0], dp[i - 1][1] + prices[i - 1]) #当前卖出
+            dp[i][1] = max(dp[i - 1][1], dp[i - 1][0] - prices[i - 1]) #当前买入
+        return dp[n][0]

@@ -17,14 +17,18 @@ B: [3,2,1,4,7]
 
 链接：https://leetcode-cn.com/problems/maximum-length-of-repeated-subarray
 """
+'''
+动态规划思路:
+1.明确dp数组的含义
+2.明确base case
+3.找状态转义方程
+'''
 from typing import List
-
-
 class Solution:
     def findLength(self, A: List[int], B: List[int]) -> int:
         # 最长公共子串
         m, n = len(A), len(B)
-        dp = [[0] * (n + 1) for i in range(m + 1)]
+        dp = [[0] * (n + 1) for _ in range(m + 1)]
         res = 0
         for i in range(1, m + 1):
             for j in range(1, n + 1):

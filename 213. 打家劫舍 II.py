@@ -18,6 +18,18 @@
 
 链接：https://leetcode-cn.com/problems/house-robber-ii
 '''
+from typing import List
+
+# 首先，首尾房间不能同时被抢，那么只可能有三种不同情况：
+# 要么都不被抢；
+# 要么第一间房子被抢最后一间不抢；
+# 要么最后一间房子被抢第一间不抢。
+'''
+那就简单了啊，这三种情况，哪种的结果最大，就是最终答案呗！
+不过，其实我们不需要比较三种情况，只要比较情况二和情况三就行了
+因为这两种情况对于房子的选择余地比情况一大呀
+房子里的钱数都是非负数，所以选择余地大，最优决策结果肯定不会小
+'''
 class Solution:
     def rob(self, nums: List[int]) -> int:
         if nums is None or len(nums) == 0:
@@ -25,13 +37,14 @@ class Solution:
         if len(nums) == 1:
             return nums[0]
         n = len(nums)
-        res = max(self.rob1(nums[0 : n - 1]), self.rob1(nums[1 : n]))  
-        return res   
+        res = max(self.rob1(nums[0: n - 1]), self.rob1(nums[1: n]))
+        return res
+
     def rob1(self, nums):
         if nums is None or len(nums) == 0:
             return 0
         n = len(nums)
-        dp = [ 0 for i in range(n + 1)]
+        dp = [0 for i in range(n + 1)]
         dp[1] = nums[0]
         # 这里必须是小于n+1
         for i in range(2, n + 1):

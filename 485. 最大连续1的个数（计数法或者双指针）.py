@@ -40,12 +40,13 @@ def findMaxConsecutiveOnes(self, nums):
     return max(map(len, ''.join(map(str, nums)).split('0')))
 
 
-# 双指针
+# 双指针 本质上就是读写指针
 class Solution:
     def findMaxConsecutiveOnes(self, nums: List[int]) -> int:
         res = 0
         left = 0
         for i in range(len(nums)):
+            # 此时重置left写指针
             if nums[i] == 0:
                 left = i + 1
             res = max(res, i - left + 1)
