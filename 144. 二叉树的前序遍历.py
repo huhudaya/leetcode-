@@ -29,6 +29,7 @@ class Solution:
         if root is None:
             return None
         res = []
+        # BFS的常规套路，先将根节点压栈
         stack.append(root)
         while stack:
             node = stack.pop()

@@ -50,8 +50,6 @@ class Solution:
                     used[i] = False
                     path.pop()
         size = len(nums)
-
-
         if size == 0:
             return []
         # 必须要使用排序算法

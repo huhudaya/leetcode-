@@ -69,7 +69,7 @@ class Solution:
                 path.append(str(root.right.val))
                 helper(root.right, path, result)
                 path.pop()
-
+        # 这里第一次已经提交了一次[str(root.val)],所以在helper中就可以在使用标准的回溯模板，即选择和撤销选择的操作都在for循环内部完成
         helper(root, [str(root.val)], result)
         return result
 
@@ -224,3 +224,21 @@ class Solution:
             self.dfs(node.right, path, result)
         # 这里需要思考一下为什么需要pop()，这是因为当left和right都执行完之后，一定会弹出当前的值，即出栈!
         path.pop()
+
+# BFS
+class Solution:
+    def binaryTreePaths(self, root: TreeNode) -> List[str]:
+        from collections import deque
+        if not root: return []
+        res = []
+        queue = deque()
+        queue.appendleft([root, []])
+        while queue:
+            node, tmp = queue.pop()
+            if not node.left and not node.right:
+                res.append("->".join(tmp + [str(node.val)]))
+            if node.left:
+                queue.appendleft([node.left, tmp + [str(node.val)]])
+            if node.right:
+                queue.appendleft([node.right, tmp + [str(node.val)]])
+        return res

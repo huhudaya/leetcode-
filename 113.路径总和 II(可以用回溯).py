@@ -53,11 +53,12 @@ def pathSum(self, root: TreeNode, sum: int) -> List[List[int]]:
     return res
 
 
-# 非递归
+# 非递归 BFS
 class Solution:
     def pathSum(self, root: TreeNode, sum: int) -> List[List[int]]:
         if not root:
             return []
+        # 第一次已经添加了root.val，这个是一般bfs的常规做法，需要一个栈来辅助，同时第一次就需要压栈
         stack = [([root.val], root)]
         res = []
         while stack:

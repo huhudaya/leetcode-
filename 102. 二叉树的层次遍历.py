@@ -68,11 +68,12 @@ class Solution:
         :rtype: List[List[int]]
         """
         levels = []
+        # 在最外层进行一次非空判断
         if not root:
             return levels
 
         def helper(node, level):
-            # start the current level
+            # 如果递归函数外面进行了非空判断，里面就不用再进行非空判断了
             if len(levels) == level:
                 levels.append([])
 

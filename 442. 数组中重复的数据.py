@@ -41,7 +41,7 @@ def find(arr):
     for i in range(len(arr)):
         # 如果不在自己的位置，就去交换，直到arr[i]在自己的位置，因为题目要求一定会满足这个条件的
         while arr[i] != i:
-            # 找到重复的数字
+            # 找到重复的数字 arr[arr[i]] = arr[i]表示当前索引i应该在索引arr[i]的位置
             if arr[arr[i]] == arr[i]:
                 return arr[arr[i]]
             # 换到本来的位置

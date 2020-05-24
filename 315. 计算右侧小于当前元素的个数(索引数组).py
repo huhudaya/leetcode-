@@ -14,6 +14,7 @@
 链接：https://leetcode-cn.com/problems/count-of-smaller-numbers-after-self
 '''
 # 技巧 使用索引数组 索引数组index记录数组中第i位置的索引，根据原数组nums可以调整索引数组的位置
+from typing import List
 class Solution:
     def countSmaller(self, nums: List[int]) -> List[int]:
         # 使用索引数组

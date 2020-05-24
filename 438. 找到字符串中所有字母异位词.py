@@ -44,9 +44,11 @@ class Solution:
             hash[sArr[r]] -= 1
             if hash[sArr[r]] >= 0:
                 count += 1
-            # 移动左指针
+            # 超过固定窗口大小，移动左指针
             if r > n - 1:
+                # 移动左指针的时候需要维护好窗口内的数据
                 hash[sArr[l]] += 1
+                # 前面已经hash[left]+=1了，所以这里只要判断hash[left]是否大于0即可
                 if hash[sArr[l]] > 0:
                     count -= 1
                 l += 1

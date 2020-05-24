@@ -15,15 +15,19 @@
 1 <= target <= 10^5
 '''
 from typing import List
+
+
 class Solution:
     from math import sqrt
     def findContinuousSequence(self, target: int) -> List[List[int]]:
         size = target // 2 + 1
-        nums = [i for i in range(1,size+1)]
+        nums = [i for i in range(1, size + 1)]
         print(nums)
+        # left其实为写指针
         left = 0
         sum = 0
         res = []
+        # 双指针，right为读指针
         for right in range(size):
             # 大于等于left移动，小于target的话right移动
             sum += nums[right]
@@ -31,18 +35,20 @@ class Solution:
                 sum -= nums[left]
                 left += 1
             if sum == target:
-                res.append(nums[left:right+1])
+                res.append(nums[left:right + 1])
                 sum -= nums[left]
                 left += 1
 
         return res
+
+
 print(Solution().findContinuousSequence(15))
 
 
 def findContinuousSequence(self, target: int) -> List[List[int]]:
-    i = 1 # 滑动窗口的左边界
-    j = 1 # 滑动窗口的右边界
-    sum = 0 # 滑动窗口中数字的和
+    i = 1  # 滑动窗口的左边界
+    j = 1  # 滑动窗口的右边界
+    sum = 0  # 滑动窗口中数字的和
     res = []
 
     while i <= target // 2:
@@ -90,7 +96,6 @@ class Solution:
         return res
 
 
-
 # 求根法
 class Solution:
     def findContinuousSequence(self, target: int):
@@ -106,6 +111,8 @@ class Solution:
                 res.append(list(range(int(x), y + 1)))
 
         return res
+
+
 # 间隔法
 class Solution:
     def findContinuousSequence(self, target: int) -> List[List[int]]:

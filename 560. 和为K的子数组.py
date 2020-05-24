@@ -14,6 +14,32 @@
 链接：https://leetcode-cn.com/problems/subarray-sum-equals-k
 '''
 
+# 未优化版本
+'''
+回到这个子数组问题，我们想求有多少个子数组的和为 k，借助前缀和技巧很容易写出一个解法：
+
+int subarraySum(int[] nums, int k) {
+    int n = nums.length;
+    // 构造前缀和
+    int[] sum = new int[n + 1];
+    sum[0] = 0; 
+    for (int i = 0; i < n; i++)
+        sum[i + 1] = sum[i] + nums[i];
+
+    int ans = 0;
+    // 穷举所有子数组
+    for (int i = 1; i <= n; i++)
+        for (int j = 0; j < i; j++)
+            // sum of nums[j..i-1]
+            if (sum[i] - sum[j] == k)
+                ans++;
+
+    return ans;
+}
+'''
+
+
+
 from typing import List
 
 
