@@ -229,7 +229,8 @@ class Solution:
 class Solution:
     def binaryTreePaths(self, root: TreeNode) -> List[str]:
         from collections import deque
-        if not root: return []
+        if not root:
+            return []
         res = []
         queue = deque()
         queue.appendleft([root, []])

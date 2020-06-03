@@ -93,6 +93,7 @@ class Solution:
         for i in range(n, -1, -1):
             for j in range(i + 1, n):
                 if s[i] == s[j]:
+                    # dp 数组的定义是：在子串s[i..j]中，最长回文子序列的长度为dp[i][j]
                     dp[i][j] = dp[i + 1][j - 1] + 2
                 else:
                     dp[i][j] = max(dp[i + 1][j], dp[i][j - 1])

@@ -49,7 +49,12 @@ string multiply(string num1, string num2) {
 '''
 
 
-
+# https://mp.weixin.qq.com/s?__biz=MzAxODQxMDM0Mw==&mid=2247484466&idx=1&sn=0281340cc1f41230e4512e905b9d27dd&chksm=9bd7fa3aaca0732c95d25c637d42ad8d9b80f8165098ded837f83791c673b5d6a71721c738a3&scene=21#wechat_redirect
+'''
+整个计算过程大概是这样，有两个指针i，j在num1和num2上游走，计算乘积，同时将乘积叠加到res的正确位置：
+现在还有一个关键问题，如何将乘积叠加到res的正确位置，或者说，如何通过i，j计算res的对应索引呢？
+其实，细心观察之后就发现，num1[i]和num2[j]的乘积对应的就是res[i+j]和res[i+j+1]这两个位置。
+'''
 class Solution:
     def multiply(self, num1: str, num2: str) -> str:
         m = len(num1)

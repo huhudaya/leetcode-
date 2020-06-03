@@ -70,6 +70,7 @@ class Solution:
 
 
 # intervals 形如 [[1,3],[2,6]...]
+# 联想到图片，如果当前元素的start<res中的end,就比较当前元素的end和res的end,然后更新res的end。如果不小于res的end,则将当前元素添加到res中
 def merge(intervals):
     if not intervals: return []
     # 按区间的 start 升序排列

@@ -159,6 +159,25 @@ public class BinaryTreePathSum {
 }
 '''
 
+# 版本0
+def pathSum(self, root: TreeNode, sum: int) -> List[List[int]]:
+    res = []
+    if not root:
+        return []
+
+    def helper(root, sum, tmp):
+        if not root:
+            return
+        if not root.left and not root.right and sum - root.val == 0:
+            # 每次都新new一个列表是不是不好啊
+            tmp += [root.val]
+            res.append(tmp)
+            return
+        helper(root.left, sum - root.val, tmp + [root.val])
+        helper(root.right, sum - root.val, tmp + [root.val])
+
+    helper(root, sum, [])
+    return res
 
 # 自己的版本1
 class Solution:
@@ -193,8 +212,9 @@ class Solution:
         res = []
 
         def helper(root, sum, tmp):
-            if root is None:
-                return
+            # 下面这两行可以不需要
+            # if root is None:
+            #     return
             sum -= root.val
             if root.left is None and root.right is None:
                 if sum == 0:

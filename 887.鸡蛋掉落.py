@@ -150,6 +150,7 @@ def dp(K, N):
 
 '''
 # https://mp.weixin.qq.com/s?__biz=MzAxODQxMDM0Mw==&mid=2247484690&idx=1&sn=eea075701a5d96dd5c6e3dc6a993cac5&chksm=9bd7fb1aaca0720c58c9d9e02a8b9211a289bcea359633a95886d7808d2846898d489ce98078&scene=21#wechat_redirect
+# 二分搜索优化
 def superEggDrop(K: int, N: int):
 
     memo = dict()

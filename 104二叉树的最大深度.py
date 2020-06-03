@@ -68,3 +68,28 @@ class Solution2:
         # 相当于后序遍历，自底向上
         res = max(left, right)
         return res + 1
+# BFS
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+from collections import deque
+class Solution:
+    def maxDepth(self, root: TreeNode) -> int:
+        if root is None:
+            return 0
+        q = deque([root])
+        level = 0
+        while q:
+            n = len(q)
+            level += 1
+            for i in range(n):
+                node = q.popleft()
+                if node.left is not None:
+                    q.append(node.left)
+                if node.right is not None:
+                    q.append(node.right)
+        return level

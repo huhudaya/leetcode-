@@ -53,6 +53,26 @@ class Solution:
         helper(root, 0)
         return res
 
+# 自己的版本
+class Solution:
+    def levelOrder(self, root: TreeNode) -> List[List[int]]:
+        if not root:
+            return []
+        res = [[root.val]]
+        def helper(root, depth):
+            if not root.left and not root.right:
+                return
+            if len(res) == depth:
+                res.append([])
+            if root.left:
+                res[depth].append(root.left.val)
+                helper(root.left, depth + 1)
+            if root.right:
+                res[depth].append(root.right.val)
+                helper(root.right, depth + 1)
+        helper(root, 1)
+        return res
+
 
 # 方法 1：递归
 # 算法
