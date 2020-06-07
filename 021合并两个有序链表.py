@@ -58,27 +58,3 @@ class Solution:
 #     def __init__(self, x):
 #         self.val = x
 #         self.next = None
-class Solution:
-    def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
-        # 链表类的题一定注意边界特殊值的判断
-        if l1 == None or l2 == None:
-            return l1 if l1 != None else l2
-        head =l1 if l1.val < l2.val else l2
-        cur1 = l1 if head == l1 else l2
-        cur2 = l2 if head == l1 else l1
-        pre = None
-        next = None
-        while cur1 and cur2:
-            if cur1.val <= cur2.val:
-                pre = cur1
-                cur1 = cur1.next
-            else:
-                next = cur2.next
-                pre.next = cur2
-                cur2.next = cur1
-                # pre始终指向cur1的前一个指针
-                pre = cur2 
-                cur2 = next
-        # 若cur1不为空，即cur2为空，则pre指向cur1
-        pre.next = cur1 if cur1 else cur2
-        return head

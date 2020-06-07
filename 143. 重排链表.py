@@ -39,15 +39,18 @@ class Solution:
 			slow = slow.next
 			fast = fast.next.next
 		p = slow.next
+		# 将上半部分的终点置为None
 		slow.next = None
 		# 对中间节点过后的链表进行反转
 		pre = None
 		cur = p
+		# 翻转
 		while cur:
 			next = cur.next
 			cur.next = pre
 			pre = cur
 			cur = next
+		# 翻转之后的pre是后半部分链表的head
 		# 交叉合并
 		cur = pre  #cun此时是后半部分反转后的首节点
 		p = head   #p此时是前半部分的首节点

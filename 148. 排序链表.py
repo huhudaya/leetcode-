@@ -24,7 +24,7 @@
 然后分别对链表的左右两边进行归并排序,最后进行 merge 操作
 和并两个有序链表，可以用 O(N) 的时间复杂度完成。
 '''
-
+from typing import List
 
 # Definition for singly-linked list.
 class ListNode:
@@ -59,8 +59,12 @@ class Solution(object):
         :type head: ListNode
         :rtype: ListNode
         """
+        newHead = ListNode(0)
+        newHead.next = head
+        self.quicksort(newHead, None)
+        return newHead.next
 
-    def partition(start, end):
+    def partition(self, start, end):
         node = start.next.next
         pivotPrev = start.next
         pivotPrev.next = end
@@ -80,16 +84,12 @@ class Solution(object):
         node = temp
         return [pivotPrev, pivotPost]
 
-    def quicksort(start, end):
+    def quicksort(self, start, end):
         if start.next != end:
-            prev, post = partition(start, end)
-        quicksort(start, prev)
-        quicksort(post, end)
+            prev, post = self.partition(start, end)
+        self.quicksort(start, prev)
+        self.quicksort(post, end)
 
-    newHead = ListNode(0)
-    newHead.next = head
-    quicksort(newHead, None)
-    return newHead.next
 
 
 # Definition for singly-linked list.

@@ -26,6 +26,8 @@ ans.val = 3, ans.next.val = 4, ans.next.next.val = 5, 以及 ans.next.next.next 
 
 链接：https://leetcode-cn.com/problems/middle-of-the-linked-list
 '''
+
+
 # Definition for singly-linked list.
 class ListNode:
     def __init__(self, x):
@@ -35,7 +37,7 @@ class ListNode:
 
 class Solution:
     def middleNode(self, head: ListNode) -> ListNode:
-        if head == None or head.next==None:
+        if head is None or head.next is None:
             return head
         # 快慢指针
         slow = head
@@ -45,6 +47,7 @@ class Solution:
             slow = slow.next
         return slow.next
 
+
 # 下边界
 class Solution(object):
     def middleNode(self, head):
@@ -53,5 +56,3 @@ class Solution(object):
             slow = slow.next
             fast = fast.next.next
         return slow
-
-

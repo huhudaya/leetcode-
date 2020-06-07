@@ -85,14 +85,37 @@ class Solution:
         # 核心思想是找到第K-N个节点，然后删除下一个节点，即K-N+1的节点
         # 这里使用dummy节点的话会很方便,因为最后还有None节点，所以其实总共需要遍历K+1次
         # 为了找到K-N个节点，即遍历K-N次，需要先找到N+1个几点，然后遍历K+1-(N-1)次
+        # '''''''''''''
+        # 第一个指针从列表的开头向前移动 n+1 步，而第二个指针将从列表的开头出发
+        # 现在，这两个指针被 n 个结点分开
+        # '''''''''''''
         dummy = ListNode(-1)
         fast = dummy
         slow = dummy
         dummy.next = head
-        for i in range(n + 1):
+        for i in range(n):
             fast = fast.next
         while fast:
             fast = fast.next
             slow = slow.next
         slow.next = slow.next.next
         return dummy.next
+'''
+public ListNode removeNthFromEnd(ListNode head, int n) {
+    ListNode dummy = new ListNode(0);
+    dummy.next = head;
+    ListNode first = dummy;
+    ListNode second = dummy;
+    // Advances first pointer so that the gap between first and second is n nodes apart
+    for (int i = 1; i <= n + 1; i++) {
+        first = first.next;
+    }
+    // Move first to the end, maintaining the gap
+    while (first != null) {
+        first = first.next;
+        second = second.next;
+    }
+    second.next = second.next.next;
+    return dummy.next;
+}
+'''

@@ -208,6 +208,7 @@ class Solution:
                 # 注意 这里需要从头部开始pop
                 char = sDeque.popleft()
                 if char.isdigit():
+                    # 如果遇见345 + 23，这个时候需要进行((0*10+5)*10+4)*10+3
                     num = num * 10 + int(char)
                 if char == '(':
                     num = helper(sDeque)

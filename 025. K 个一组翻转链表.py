@@ -96,7 +96,8 @@ class Solution:
             while count and tail:
                 count -= 1
                 tail = tail.next
-            if not tail: break
+            if not tail:
+                break
             head = pre.next
             while pre.next != tail:
                 cur = pre.next  # 获取下一个元素
@@ -125,6 +126,7 @@ class Solution:
             cur = cur.next
             count += 1
         if count == k:
+            # cur充当为翻转链表中的pre
             cur = self.reverseKGroup(cur, k)
             while count:
                 tmp = head.next
@@ -190,17 +192,22 @@ class Solution:
             # p 保存下一组的首节点
             p = cur
             while cnt < k and p:
+                # p用来保存下一组链表的头结点
                 p = p.next
                 cnt += 1
             if cnt == k:
+                # 此时cur为待翻转的一组链表的头节点，start=cur表示start为这一组翻转后的尾节点
                 start = cur
                 # 对 [cur, p)节点反转
+                # q作为待翻转的一组链表的pre
                 q = None
+                # 翻转这一组节点，q作为这一组的pre
                 for i in range(1, k + 1):
                     next = cur.next
                     cur.next = q
                     q = cur
                     cur = next
+                # 翻转之后cur为
                 start.next = p
                 pre.next = q
                 pre = start

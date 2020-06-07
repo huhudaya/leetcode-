@@ -18,11 +18,12 @@
 from typing import List
 class Solution:
     def triangleNumber(self, nums: List[int]) -> int:
-        # 有效三角形，任意两边之和大于第三边 a < b < c and (a + b) > c
+        # 有效三角形，任意两边之和大于第三边 a < b < c and (a + b) > c   ==> c - b < a and c - a < b
         # 排序之和双指针
         n = len(nums)
         if nums is None or n == 0:
             return 0
+        # 先排序
         nums.sort()
         res = 0
         # 从后往前，判断前两个元素的值

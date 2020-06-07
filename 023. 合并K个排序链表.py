@@ -137,6 +137,7 @@ class Solution:
         dummy = ListNode(0)
         p = dummy
         head = []
+        # 先将所有链表的头结点加入到堆中
         for i in range(len(lists)):
             if lists[i]:
                 heapq.heappush(head, (lists[i].val, i))
@@ -146,10 +147,11 @@ class Solution:
             # 一定要注意，每个链表都是有序的
             val, idx = heapq.heappop(head)
             p.next = ListNode(val)
+            # p是当前节点的指针
             p = p.next
-            if lists[idx]:
+            if lists[idx] is not None:
                 heapq.heappush(head, (lists[idx].val, idx))
-                # 这一步骤很关键，必须要指向下一个节点，因为当前节点以及入堆了
+                # 这一步骤很关键，必须要指向下一个节点，因为当前节点已经入堆了
                 lists[idx] = lists[idx].next
         return dummy.next
 
