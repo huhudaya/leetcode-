@@ -124,6 +124,13 @@ public class Foo03 {
     //声明两个 Semaphore变量
     private Semaphore spa,spb;
     public Foo03() {
+        //semaphore初始化为0的时候，当acquire
+        '''
+        1.acquire();
+            该方法主要是将初始化Semaphore里面的信号量数量-1。0为界限，此时不会在执行该方法。
+        2.release();
+            该方法主要是将初始化Semaphore里面的信号量数量+1。
+        '''
         //初始化Semaphore为0的原因：如果这个Semaphore为零，如果另一线程调用(acquire)这个Semaphore就会产生阻塞，便可以控制second和third线程的执行
         spa = new Semaphore(0);
         spb = new Semaphore(0);
