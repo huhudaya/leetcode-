@@ -119,10 +119,6 @@ class Solution:
                 if ord(strs[0][index]) ^ ord(strs[i][index]) != 0:
                     return strs[0][0:index]
         return strs[0][0:min_len]
-
-
-
-
 a = ["adf","dadf","adf"]
 # print(list(zip(*a)))
 a = "asdaf"

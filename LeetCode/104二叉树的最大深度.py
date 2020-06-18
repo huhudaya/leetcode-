@@ -56,18 +56,6 @@ class Solution:
         # 相当于后序遍历，自底向上
         res = max(left, right)
         return res + 1
-
-
-class Solution2:
-    def maxDepth(self, root: TreeNode) -> int:
-        if root:
-            left = self.maxDepth(root.left)
-            right = self.maxDepth(root.right)
-        else:
-            return 0
-        # 相当于后序遍历，自底向上
-        res = max(left, right)
-        return res + 1
 # BFS
 # Definition for a binary tree node.
 # class TreeNode:

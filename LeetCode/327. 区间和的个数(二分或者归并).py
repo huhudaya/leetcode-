@@ -27,58 +27,6 @@ lower <= S[i] - S[j] <= upper，j <= i (S[i]属于黄色右边区域，S[j]属�
 
 '''
 from typing import List
-class Solution:
-    def countSmaller(self, nums):
-        # 使用索引数组
-        n = len(nums)
-        index = [i for i in range(n)]
-        res = [0 for i in range(n)]
-        # 归并
-        self.__merge(nums, index, res)
-        return res
-
-    def __merge(self, nums, index, res):
-        if len(index) <= 1:
-            return
-        mid = len(index) // 2
-        left = index[:mid]
-        right = index[mid:]
-        # 相当于归并排序，先将两边排好序，然后进行归并的操作
-        self.__merge(nums, left, res)
-        self.__merge(nums, right, res)
-        i = 0
-        j = 0
-        k = 0
-        # 归并逻辑处理
-        while i < mid:
-            while j < len(right) and nums[left[i]] > nums[right[j]]:
-                j += 1
-            res[left[i]] += j
-            i += 1
-        # 归并排序过程
-        i = 0
-        j = 0
-        k = 0
-        while i < len(left) and j < len(right):
-            if nums[left[i]] < nums[right[j]]:
-                index[k] = left[i]
-                k += 1
-                i += 1
-            else:
-                index[k] = right[j]
-                k += 1
-                j += 1
-            # 总有一个越界
-        while i < len(left):
-            index[k] = left[i]
-            k += 1
-            i += 1
-        while j < len(right):
-            index[k] = right[j]
-            k += 1
-            j += 1
-
-
 # 自己的版本
 import bisect
 
@@ -116,7 +64,7 @@ class Solution:
     def countRangeSum(self, nums: List[int], lower: int, upper: int) -> int:
         # 构造前缀和数组
         n = len(nums)
-        preSum = [0 for i in range(n + 1)]
+        preSum = [0 for _ in range(n + 1)]
         if nums is None or len(nums) == 0:
             return 0
         for i in range(n):
@@ -147,7 +95,7 @@ class Solution:
         low = 0
         up = 0
         # 归并过程
-        while i < mid:
+        while i < mid:  # 这一层循环是为了遍历右边区域中的每一个元素，每一次i都加1
             # 高能，我这里原来吧len(right)写成了len(left)，上班时间单点调试了半天。。。一定要小心哦，fuck!
             while low < len(right) and right[low] - left[i] < lower:
                 low += 1
@@ -186,6 +134,7 @@ class Solution:
         p = [0]  # 前缀和初始化，前缀和p[x]，就是区间数组[0, x)的和
         for i in nums:
             p += [p[-1] + i]  # 前缀和计算
+        # p = [0 for _ in range(len(nums) + 1)]
         # for i in range(1,len(nums)):
         #     p[i] += p[i-1] + nums[i]
         ans = 0
@@ -196,6 +145,24 @@ class Solution:
             r = bisect.bisect_right(q, j)  # 找到对应边界的在前缀和数组里的插入位置
             ans += r - l  # 序号大于自己的前缀和里有多少个前缀和在边界里面，就是以当前区间为起点，符合区间和条件的个数
             bisect.insort(q, pi)  # 二分插入更新队列
+        return ans
+
+print(Solution().countRangeSum([-2,5,-1],-2,2))
+
+import bisect
+from itertools import accumulate
+
+
+class Solution:
+    def countRangeSum(self, nums: List[int], lower: int, upper: int) -> int:
+        prefix_sorted_sums = [0]
+
+        ans = 0
+        for sums in accumulate(nums):
+            left = bisect.bisect_left(prefix_sorted_sums, sums - upper)
+            right = bisect.bisect_right(prefix_sorted_sums, sums - lower)
+            ans += right - left
+            bisect.insort(prefix_sorted_sums, sums)
         return ans
 
 
@@ -255,8 +222,10 @@ def cntSum(self, nums, lower, upper):
         count = sort(lo, mid) + sort(mid, hi)
         i = j = mid  # 放在for 循环的外面，已经计算过的就不再重复，减少计算量
         for left in sums[lo:mid]:  # 对于 lo:mid 和 mid:hi 的所有情况已经在递归中全部计算过了，现在只有右边减去左边的可能没有出现过
-            while i < hi and sums[i] - left < lower: i += 1
-            while j < hi and sums[j] - left <= upper: j += 1
+            while i < hi and sums[i] - left < lower:
+                i += 1
+            while j < hi and sums[j] - left <= upper:
+                j += 1
             count += j - i
         sums[lo:hi] = sorted(sums[lo:hi])  # 如果不排序，就会出现前面较大的数sums[h] (h >=mid)
         # 在索引低位的数 left计算失败后，left后移，而后面较小的数 sums[h+1] 计算不到 left 的情况的情况

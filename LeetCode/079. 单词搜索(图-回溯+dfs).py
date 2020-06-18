@@ -89,9 +89,8 @@ class Solution(object):
                     mark[i][j] = 1
                     if not True != self.backtrack(i, j, mark, board, word[1:]):
                         return True
-                    else:
-                        # 回溯
-                        mark[i][j] = 0
+                    # 回溯
+                    mark[i][j] = 0
         return False
 
     def backtrack(self, i, j, mark, board, word):
@@ -111,7 +110,6 @@ class Solution(object):
                 mark[cur_i][cur_j] = 1
                 if self.backtrack(cur_i, cur_j, mark, board, word[1:]) == True:
                     return True
-                else:
                     # 回溯
-                    mark[cur_i][cur_j] = 0
+                mark[cur_i][cur_j] = 0
         return False

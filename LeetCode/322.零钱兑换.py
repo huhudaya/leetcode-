@@ -98,7 +98,9 @@ class Solution:
         # dp[i] = x表示，当目标金额为i时，至少需要x枚硬币。
         for i in range(amount + 1):
             for coin in coins:
+                # 处理边界情况，防止数组越界问题
                 if i - coin < 0:
+                    # 子问题无解，跳过
                     continue
                 dp[i] = min(dp[i], 1 + dp[i - coin])
         return dp[amount] if dp[amount] != amount + 1 else -1

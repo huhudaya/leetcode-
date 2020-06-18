@@ -28,12 +28,13 @@ class Solution:
         n = len(nums)
         if n < 1:
             return 0
-        # 初始化dp
-        dp = [1 for i in range(n)]
-        # 定义一个一维的辅助dc数组
-        dc = [1 for i in range(n)]
+        # 初始化dp dp[i]表示以nums[i]结尾的最长递增子序列的长度
+        dp = [1 for _ in range(n)]
+        # 定义一个一维的dc辅助数组，表示以i结尾的这个位置有几个序列
+        dc = [1 for _ in range(n)]
         for i in range(n):
             for j in range(i):
+                # 大的限制条件
                 if nums[i] > nums[j]:
                     # 在初始化的dc表基础上，正常都是length前面的值小于等于length后面的值（初始化为1）
                     if dp[j] + 1 > dp[i]:

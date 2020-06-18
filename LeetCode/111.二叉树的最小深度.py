@@ -59,5 +59,3 @@ class Solution:
         else:
             res = min(left, right)
         return res + 1
-
-

@@ -35,7 +35,7 @@ class Solution:
             return 0
         # dp思想
         n = len(nums)
-        # basecase为1
+        # base case为1
         dp = [1 for _ in range(n)]
         for i in range(n):
             for j in range(i):
@@ -79,6 +79,8 @@ public int lengthOfLIS(int[] nums) {
 from bisect import bisect_left
 
 a = [1, 1, 2, 2, 4]
+
+
 # print(bisect_left(a, 2))
 
 
@@ -102,7 +104,9 @@ class Solution:
                 res += 1
         return res
 
+
 import bisect
+
 
 class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:
@@ -113,6 +117,7 @@ class Solution:
             else:
                 q[bisect.bisect_left(q, i)] = i
         return len(q) - 1
+
 
 # dp
 # class Solution:
@@ -160,6 +165,7 @@ class Solution:
             top[index] = poker
         return piples
 
+
 # 二分 O(NlogN)
 class Solution:
     def lengthOfLIS1(self, nums: List[int]) -> int:
@@ -188,6 +194,7 @@ class Solution:
                 piples += 1
             top[index] = poker
         return piples
+
     def lengthOfLIS(self, nums: List[int]) -> int:
         n = len(nums)
         top = [-float('inf') for _ in range(n)]
@@ -215,4 +222,6 @@ class Solution:
                 piples += 1
             top[index] = poker
         return piples
-print(Solution().lengthOfLIS([10,9,2,5,3,7,101,18]))
+
+
+print(Solution().lengthOfLIS([10, 9, 2, 5, 3, 7, 101, 18]))

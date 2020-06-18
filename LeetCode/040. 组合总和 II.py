@@ -72,6 +72,7 @@ candidates 中的每个数字在每个组合中只能使用一次。
 from typing import List
 class Solution:
     def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        # 这类问题先排序，然后要考虑剪枝
         candidates.sort()
         n = len(candidates)
         res = []

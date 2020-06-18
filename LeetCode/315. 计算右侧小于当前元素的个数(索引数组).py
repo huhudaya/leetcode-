@@ -15,6 +15,9 @@
 '''
 # 技巧 使用索引数组 索引数组index记录数组中第i位置的索引，根据原数组nums可以调整索引数组的位置
 from typing import List
+
+
+# 归并排序的思想
 class Solution:
     def countSmaller(self, nums: List[int]) -> List[int]:
         # 使用索引数组
@@ -24,6 +27,7 @@ class Solution:
         # 归并
         self.__merge(nums, index, res)
         return res
+
     def __merge(self, nums, index, res):
         if len(index) <= 1:
             return
@@ -37,8 +41,9 @@ class Solution:
         j = 0
         k = 0
         # 归并逻辑处理
-        while i < mid:
-            while j < len(right) and nums[left[i]] > nums[right[j]]:
+        while i < mid:  # 遍历左边的区域，这里的前提是左右两边都是有序的，然后处理本题的逻辑过程，准备一个j指针
+            # 假设左右两边都是排好序的
+            while j < len(right) and nums[right[j]] < nums[left[i]]:  # 直到右边的指针指向的元素大于左边的i指针指向的元素
                 j += 1
             res[left[i]] += j
             i += 1

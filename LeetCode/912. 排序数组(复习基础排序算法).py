@@ -16,11 +16,16 @@
 # 快排
 from typing import List
 import random
+
+
 class Solution:
     def randomized_partition(self, nums, l, r):
+        # 找一个随机数
         pivot = random.randint(l, r)
+        # 和最后一个元素进行交换
         nums[pivot], nums[r] = nums[r], nums[pivot]
         i = l - 1
+        # 从小到大进行排序，将值小于nums[r]的值放在左边
         for j in range(l, r):
             if nums[j] < nums[r]:
                 i += 1
@@ -39,6 +44,7 @@ class Solution:
     def sortArray(self, nums: List[int]) -> List[int]:
         self.randomized_quicksort(nums, 0, len(nums) - 1)
         return nums
+
 
 # 堆排序
 class Solution:
@@ -69,6 +75,7 @@ class Solution:
     def sortArray(self, nums: List[int]) -> List[int]:
         self.heap_sort(nums)
         return nums
+
 
 # 归并排序
 class Solution:
