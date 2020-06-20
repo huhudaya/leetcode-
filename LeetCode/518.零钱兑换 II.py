@@ -22,3 +22,60 @@
 硬币种类不超过 500 种
 结果符合 32 位符号整数
 '''
+from typing import List
+class Solution:
+    def change(self, amount: int, coins: List[int]) -> int:
+        n = len(coins)
+        '''
+        第二步要明确dp数组的定义。
+        首先看看刚才找到的「状态」，有两个，也就是说我们需要一个二维dp数组。
+        dp[i][j]的定义如下：
+        若只使用前i个物品，当背包容量为j时，有dp[i][j]种方法可以装满背包。
+        换句话说，翻译回我们题目的意思就是：
+        若只使用coins中的前i个硬币的面值，若想凑出金额j，有dp[i][j]种凑法。
+        '''
+        dp = [[0] * (amount + 1) for _ in range(n + 1)]
+        for i in range(n + 1):
+            dp[i][0] = 1
+        for i in range(1, n + 1):
+            for j in range(1, amount + 1):
+                if j - coins[i - 1] >= 0:
+                    # 注意这里和0/1背包的区别，完全背包中的元素是可以重复利用的，所以这里不用算dp[i-1],用dp[i]就可以
+                    dp[i][j] = dp[i - 1][j] + dp[i][j - coins[i-1]]
+                else:
+                    dp[i][j] = dp[i - 1][j]
+        return dp[n][amount]
+
+
+class Solution:
+    # 状态未压缩
+    def change1(self, amount: int, coins: List[int]) -> int:
+        n = len(coins)
+        '''
+        第二步要明确dp数组的定义。
+        首先看看刚才找到的「状态」，有两个，也就是说我们需要一个二维dp数组。
+        dp[i][j]的定义如下：
+        若只使用前i个物品，当背包容量为j时，有dp[i][j]种方法可以装满背包。
+        '''
+        dp = [[0] * (amount + 1) for _ in range(n + 1)]
+        for i in range(n + 1):
+            dp[i][0] = 1
+        for i in range(1, n + 1):
+            for j in range(1, amount + 1):
+                if j - coins[i - 1] >= 0:
+                    dp[i][j] = dp[i - 1][j] + dp[i][j - coins[i-1]]
+                else:
+                    dp[i][j] = dp[i - 1][j]
+        return dp[n][amount]
+    # 状态压缩
+    def change(self, amount: int, coins: List[int]) -> int:
+        n = len(coins)
+        dp = [0 for _ in range(amount + 1)]
+        dp[0] = 1
+        for i in range(n):
+            for j in range(1, amount + 1):
+                if j - coins[i] >= 0:
+                    # 因为i是从0开始的，所以不用coins[i-1]
+                    dp[j] = dp[j] + dp[j - coins[i]]
+        print(dp)
+        return dp[amount]

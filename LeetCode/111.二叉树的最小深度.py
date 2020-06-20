@@ -17,6 +17,9 @@
    15   7
 返回它的最小深度  2.
 '''
+
+
+# BFS用来解决最短路径问题，这类问题如果使用DFS时间复杂度会比较高
 # Definition for a binary tree node.
 class TreeNode:
     def __init__(self, x):
@@ -40,7 +43,7 @@ class Solution:
                 node = q.popleft()
                 #/* 判断是否到达终点 */
                 if not node.right and not node.left:
-                    res = min(res, level)
+                    return level
                 if node.left:
                     q.append(node.left)
                 if node.right:
@@ -48,11 +51,10 @@ class Solution:
         return res
     # 递归
     def minDepth(self, root: TreeNode) -> int:
-        if root:
-            left = self.minDepth(root.left)
-            right = self.minDepth(root.right)
-        else:
+        if not root:
             return 0
+        left = self.minDepth(root.left)
+        right = self.minDepth(root.right)
         # 相当于后序遍历，自底向上
         if right == 0 or left == 0:
             res = left if right == 0 else right

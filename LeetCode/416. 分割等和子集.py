@@ -158,6 +158,40 @@ class Solution:
 # 如果是倒序的话，就不会出现这种情况
 # 如果是倒序，则j-num[i]，这个时候j是递减的，此时j-num[i]的值也是递减的，这样就可以确保j只会使用到上一层循环得到的dp数组！如果进行更新dp数组，是不影响结果的，因为循环的时候只看左上角区域的值，倒着遍历的时候j减小的过程中，不会使用到本轮更新的dp数组
 
+
+# 不压缩
+'''
+bool canPartition(vector<int>& nums) {
+    int sum = 0;
+    for (int num : nums) sum += num;
+    // 和为奇数时，不可能划分成两个和相等的集合
+    if (sum % 2 != 0) return false;
+    int n = nums.size();
+    sum = sum / 2;
+    vector<vector<bool>> 
+        dp(n + 1, vector<bool>(sum + 1, false));
+    // base case
+    for (int i = 0; i <= n; i++)
+        dp[i][0] = true;
+
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= sum; j++) {
+            if (j - nums[i - 1] < 0) {
+               // 背包容量不足，不能装入第 i 个物品
+                dp[i][j] = dp[i - 1][j]; 
+            } else {
+                // 装入或不装入背包,注意0/1背包和完全背包的区别，0/1背包问题中nums数组中的元素不可以重复利用！所以必须是dp[i-1]表示使用前N个物品
+                dp[i][j] = dp[i - 1][j] | dp[i - 1][j-nums[i-1]];
+            }
+        }
+    }
+    return dp[n][sum];
+}
+'''
+
+# 压缩后
+# dp[i][j] = x表示，对于前i个物品
+# 当前背包的容量为j时，若x为true，则说明可以恰好将背包装满，若x为false，则说明不能恰好将背包装满。
 class Solution:
     def canPartition(self, nums: List[int]) -> bool:
         _sum = sum(nums)

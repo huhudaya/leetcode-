@@ -77,7 +77,7 @@ class Solution:
                     num = num * 10 + int(c)
                 # 当c不是数字或者遍历到了尽头，就执行入栈的操作
                 if (not c.isdigit() and c != ' ') or len(s) == 0:
-                    # 判断之前的sign标志服
+                    # 判断之前的sign标志位
                     if sign == "+":
                         stack.append(num)
                     elif sign == "-":
