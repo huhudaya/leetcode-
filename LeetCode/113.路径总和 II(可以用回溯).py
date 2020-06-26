@@ -39,8 +39,10 @@ def pathSum(self, root: TreeNode, sum: int) -> List[List[int]]:
         return []
 
     def helper(root, sum, tmp):
+        # 我们只看左节点和右节点都是None的叶子节点
         if not root:
             return
+        # 这里相当于是提前终止，不要遍历到None节点才终止
         if not root.left and not root.right and sum - root.val == 0:
             # 每次都新new一个列表是不是不好啊
             tmp += [root.val]
@@ -190,6 +192,7 @@ class Solution:
         def helper(root, sum, tmp):
             if root is None:
                 return
+            # 提前减好
             sum -= root.val
             if root.left is None and root.right is None:
                 if sum == 0:
@@ -224,7 +227,7 @@ class Solution:
                 helper(root.left, sum, tmp + [root.left.val])
             if root.right:
                 helper(root.right, sum, tmp + [root.right.val])
-
+        # 提前传入root.val
         helper(root, sum, [root.val])
         return res
 
@@ -238,8 +241,6 @@ class Solution:
         res = []
 
         def helper(root, sum, tmp):
-            if root is None:
-                return
             sum -= root.val
             if root.left is None and root.right is None:
                 if sum == 0:

@@ -212,7 +212,7 @@ class Solution:
         # 在这里一直使用的就是一个path，相当于是一个全局变量!
         # 直接加就好了
         path.append(str(node.val))
-        # 这里先判断左右孩子
+        # 这里先判断左右孩子的边界条件
         if node.left is None and node.right is None:
             result.append('->'.join(path))
             path.pop()

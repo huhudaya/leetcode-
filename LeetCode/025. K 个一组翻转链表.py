@@ -79,7 +79,7 @@ dummy    3     2    1     4     5
 		cur
 '''
 
-
+# 尾插
 # Definition for singly-linked list.
 class ListNode:
     def __init__(self, x):
@@ -122,9 +122,11 @@ class Solution:
     def reverseKGroup(self, head: ListNode, k: int) -> ListNode:
         cur = head
         count = 0
+        # 每次先遍历前k个节点
         while cur and count != k:
             cur = cur.next
             count += 1
+        # 如果这一组的个数等于K,进行反转
         if count == k:
             # cur充当为翻转链表中的pre
             cur = self.reverseKGroup(cur, k)

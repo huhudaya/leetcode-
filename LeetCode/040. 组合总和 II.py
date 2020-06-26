@@ -98,3 +98,4 @@ class Solution:
             self.__dfs(candidates, target - candidates[i], i + 1, res, path, size)
             # 撤销选择
             path.pop()
+Solution().combinationSum2([1,1],2)

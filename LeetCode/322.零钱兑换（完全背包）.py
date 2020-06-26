@@ -102,16 +102,42 @@ class Solution:
                 if i - coin < 0:
                     # 子问题无解，跳过
                     continue
+                # 每一种coin都可以选择或者不选择
                 dp[i] = min(dp[i], 1 + dp[i - coin])
         return dp[amount] if dp[amount] != amount + 1 else -1
 
 
 class Solution:
-    def change(self, amount: int, coins: List[int]) -> int:
-        dp = [0] * (amount + 1)
-        dp[0] = 1
-
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        dp = [float('inf')] * (amount + 1)
+        dp[0] = 0
+        # dp[i] = x表示，当目标金额为i时，至少需要x枚硬币。
         for coin in coins:
             for x in range(coin, amount + 1):
-                dp[x] += dp[x - coin]
-        return dp[amount]
+                dp[x] = min(dp[x], dp[x - coin] + 1)
+        return dp[amount] if dp[amount] != float('inf') else -1
+
+# 套用完全背包
+'''
+import java.util.Arrays;
+
+public class Solution {
+
+    public int coinChange(int[] coins, int amount) {
+        int[] dp = new int[amount + 1];
+        Arrays.fill(dp, amount + 1);
+        dp[0] = 0;
+
+        for (int coin : coins) {
+            for (int i = coin; i <= amount; i++) {
+                dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+            }
+        }
+
+        if (dp[amount] == amount + 1) {
+            dp[amount] = -1;
+        }
+        return dp[amount];
+    }
+}
+'''

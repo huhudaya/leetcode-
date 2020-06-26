@@ -35,14 +35,17 @@ class Solution:
         if len(pre) == k:
             res.append(pre[:])
             return
-
+        # len(pre)越大，size越大
+        size = n - (k - len(pre)) + 2
         # 注意：这里 i 的上限是归纳得到的  剪枝
+        # 这里的for循环，实际上是在判断起始点的位置是否合法！
         for i in range(start, n - (k - len(pre)) + 2):
             pre.append(i)
             self.__dfs(i + 1, k, n, pre, res)
             pre.pop()
 
 
+Solution().combine(5, 2)
 # 未优化版
 from typing import List
 
@@ -66,7 +69,7 @@ class Solution:
         for i in range(start, n + 1):
             pre.append(i)
             # 因为已经把 i 加入到 pre 中，下一轮就从 i + 1 开始
-            # 注意和全排列问题的区别，因为按顺序选择，因此无须使用 used 数组
+            # 注意和全排列问题的区别，因为按顺序选择，并且没有重复的元素，因此无须使用 used 数组
             self.__dfs(i + 1, k, n, pre, res)
             # 回溯的时候，状态重置
             pre.pop()
@@ -108,6 +111,7 @@ class Solution:
         if len(path) == k:
             res.append(path[:])
             return
+        # 提前结束，即剪枝
         for i in range(start, n - (k - len(path)) + 1):
             # 选择列表
             path.append(i + 1)
@@ -115,6 +119,8 @@ class Solution:
             self._dfs(n, k, i + 1, path, res)
             # 撤销选择
             path.pop()
+
+
 '''
 上面的代码中，我们发现：其实如果 pre 已经选择到 [1,4,5] 或者 [2,4,5] 或者 [3,4,5] ，后序的代码就没有必要执行，继续走也不能发现新的满足题意的组合。干了类似于下面事情，其实有很多步骤是多余的：选择了 [1,4,5] 以后， 5 弹出 [1,4,5] 成为 [1,4] , 4 弹出 [1,4] 成为 4 ，然后 5 进来，成为 [1,5]，在进来发现 for 循环都进不了（因为没有可选的元素），然后 5 又弹出，接着 1 弹出。
 
@@ -149,3 +155,8 @@ max(i) = n - (k - pre.size()) + 1
 所以，我们的剪枝过程就是：把 i <= n 改成 i <= n - (k - pre.size()) + 1 ：
 
 '''
+
+import itertools
+class Solution:
+    def combine(self, n: int, k: int):
+        return list(itertools.combinations(range(1, n + 1), k))

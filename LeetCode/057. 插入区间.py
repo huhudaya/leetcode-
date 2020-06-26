@@ -30,7 +30,7 @@
 如何证明你的贪心思想具有全局最优的效果：可以使用反证法来证明。
 '''
 
-
+from typing import List
 # 类比合并区间!
 class Solution:
     def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:

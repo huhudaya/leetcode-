@@ -91,6 +91,8 @@ int calculate(string s) {
 '''
 # 中缀表达式转后缀表达式
 from pythonds.basic.stack import Stack
+
+
 def infixToPostfix(infixexpr):
     prec = {}
     prec["*"] = 3
@@ -120,6 +122,7 @@ def infixToPostfix(infixexpr):
         postfixList.append(opStack.pop())
     return " ".join(postfixList)
 
+
 print(infixToPostfix("A + B * C"))
 # print(infixToPostfix("( A + B ) * C - ( D - E ) * ( F + G )"))
 # 后缀表达式求值
@@ -141,6 +144,8 @@ print(infixToPostfix("A + B * C"))
 4. 当输入的表达式被完全处理后，结果就在栈上，弹出 operandStack 并返回值。
 '''
 from pythonds.basic.stack import Stack
+
+
 def postfixEval(postfixExpr):
     operandStack = Stack()
     tokenList = postfixExpr.split()
@@ -153,6 +158,8 @@ def postfixEval(postfixExpr):
             result = doMath(token, operand1, operand2)
             operandStack.push(result)
         return operandStack.pop()
+
+
 def doMath(op, op1, op2):
     if op == "*":
         return op1 * op2
@@ -162,12 +169,14 @@ def doMath(op, op1, op2):
         return op1 + op2
     else:
         return op1 - op2
+
+
 print(postfixEval('7 8 + 3 2 + /'))
 
-
 from typing import List
-def calculate(s: str) -> int:
 
+
+def calculate(s: str) -> int:
     def helper(s: List) -> int:
         stack = []
         sign = '+'
@@ -192,14 +201,19 @@ def calculate(s: str) -> int:
                 sign = c
 
         return sum(stack)
+
     # 需要把字符串转成列表方便操作
     return helper(list(s))
 
+
 # 自己的版本
 from collections import deque
+
+
 class Solution:
     def calculate(self, s: str) -> int:
         sDeque = deque(s)
+
         def helper(sDeque) -> int:
             num = 0
             sign = "+"
@@ -223,7 +237,9 @@ class Solution:
                 if char == ")":
                     break
             return sum(stack)
+
         return helper(sDeque)
+
 
 # 官方题解 好办法啊！！！！
 class Solution:
@@ -231,8 +247,8 @@ class Solution:
 
         stack = []
         operand = 0
-        res = 0 # For the on-going result
-        sign = 1 # 1 means positive, -1 means negative
+        res = 0  # For the on-going result
+        sign = 1  # 1 means positive, -1 means negative
 
         for ch in s:
             if ch.isdigit():
@@ -257,7 +273,7 @@ class Solution:
                 res += sign * operand
                 sign = -1
                 operand = 0
-
+            # 如果遇见了"("，需要将符号位和当前的运算结果保存到栈中，知道遇见了")"
             elif ch == '(':
 
                 # Push the result and sign on to the stack, for later
@@ -278,17 +294,20 @@ class Solution:
                 # ')' marks end of expression within a set of parenthesis
                 # Its result is multiplied with sign on top of stack
                 # as stack.pop() is the sign before the parenthesis
-                res *= stack.pop() # stack pop 1, sign
+                # 弹出标志位
+                res *= stack.pop()  # stack pop 1, sign
 
                 # Then add to the next operand on the top.
                 # as stack.pop() is the result calculated before this parenthesis
                 # (operand on stack) + (sign on stack * (result from parenthesis))
-                res += stack.pop() # stack pop 2, operand
+                # 弹出上一次的结果
+                res += stack.pop()  # stack pop 2, operand
 
                 # Reset the operand
                 operand = 0
 
         return res + sign * operand
+
 
 '''
 class Solution {

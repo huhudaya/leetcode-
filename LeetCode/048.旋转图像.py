@@ -40,6 +40,8 @@
   [16, 7,10,11]
 ]
 '''
+
+
 # 简单的思路 转置+反转
 # 方法 1 ：转置加翻转
 # 转置是行变列
@@ -51,14 +53,16 @@ class Solution:
         :rtype: void Do not return anything, modify matrix in-place instead.
         """
         n = len(matrix[0])
-        # transpose matrix
+        # transpose matrix  这里的i表示第几行
         for i in range(n):
-            for j in range(i, n):
+            for j in range(i, n):  # 这里的j表示第几列开始
                 matrix[j][i], matrix[i][j] = matrix[i][j], matrix[j][i]
 
                 # reverse each row
         for i in range(n):
             matrix[i].reverse()
+
+
 # 思路二
 '''
 思路二: 翻转
@@ -75,6 +79,8 @@ class Solution:
 这道题是顺时针的,那么逆时针呢?也是一样的
 '''
 from typing import List
+
+
 class Solution:
     def rotate(self, matrix: List[List[int]]) -> None:
         """
@@ -82,8 +88,8 @@ class Solution:
         """
         n = len(matrix)
         matrix[:] = matrix[::-1]
-        #print(matrix)
+        # print(matrix)
         for i in range(0, n):
-            for j in range(i+1, n):
-                #print(i, j)
+            for j in range(i + 1, n):
+                # print(i, j)
                 matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]

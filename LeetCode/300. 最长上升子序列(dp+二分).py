@@ -118,22 +118,6 @@ class Solution:
                 q[bisect.bisect_left(q, i)] = i
         return len(q) - 1
 
-
-# dp
-# class Solution:
-#     def lengthOfLIS(self, nums: List[int]) -> int:
-#         if nums is None or nums == []:
-#             return 0
-#         # dp思想
-#         n = len(nums)
-#         # basecase为1
-#         dp = [1 for i in range(n)]
-#         for i in range(n):
-#             for j in range(i):
-#                 if nums[j] < nums[i]:
-#                     dp[i] = max(dp[j]+1, dp[i])
-#         return  max(dp)
-
 # 自己的版本
 # 二分 O(NlogN)
 # 核心思路是找见第一个大于等于当前元素的索引
@@ -197,9 +181,11 @@ class Solution:
 
     def lengthOfLIS(self, nums: List[int]) -> int:
         n = len(nums)
+        # 牌堆，默认值为最小值
         top = [-float('inf') for _ in range(n)]
         piples = 0
         for i in range(n):
+            # 当前牌
             poker = nums[i]
             left = 0
             right = piples
@@ -222,6 +208,4 @@ class Solution:
                 piples += 1
             top[index] = poker
         return piples
-
-
 print(Solution().lengthOfLIS([10, 9, 2, 5, 3, 7, 101, 18]))

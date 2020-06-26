@@ -20,7 +20,7 @@ class ListNode:
         self.val = x
         self.next = None
 
-
+#递归，记录使用后继节点
 class Solution:
     # 递归版本
     def reverseBetween(self, head: ListNode, m: int, n: int) -> ListNode:
@@ -87,12 +87,13 @@ class Solution:
         dummy = ListNode(-1)
         dummy.next = head
         pre = dummy
+        # 先找到第m个节点的上一个节点
         for _ in range(m - 1):
             pre = pre.next
 
         node = pre
         cur = pre.next
-
+        # 反转m到n之间的节点
         for _ in range(n - m + 1):
             cur.next = pre
             cur = cur.next

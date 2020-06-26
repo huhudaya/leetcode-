@@ -82,6 +82,7 @@ class Solution:
                         stack.append(num)
                     elif sign == "-":
                         stack.append(-num)
+                    # 如果遇见乘除法，需要弹出栈顶的元素先进行一次运算操作
                     elif sign == "*":
                         stack.append(stack.pop() * num)
                         # stack[-1] = stack[-1] * num

@@ -104,7 +104,7 @@ class Solution(object):
             for j in range(i + 1, len(nums) - 2):  # 固定两个数
                 left = j + 1  # 左指针
                 right = len(nums) - 1  # 右指针
-                while (right > left):
+                while (left < right):
                     temp = nums[i] + nums[j] + nums[left] + nums[right]
                     if temp == target:
                         ans.add((nums[i], nums[j], nums[left], nums[right]))
@@ -117,3 +117,56 @@ class Solution(object):
         for i in ans:
             rec.append(list(i))
         return rec
+
+
+
+class Solution:
+    def fourSum(self, nums: List[int], target: int) -> List[List[int]]:
+        n = len(nums)
+        if n < 4:
+            return []
+        # 先排序
+        nums.sort()
+        res = []
+        # 最小值大于target return
+        if nums[0] + nums[1] + nums[2] + nums[3] > target:
+            return res
+        # 最小值小于target return
+        if nums[n-1] + nums[n-2] + nums[n-3] + nums[n-4] < target:
+            return res
+        for i in range(n - 3):
+            # 固定第一个数防止重复
+            if i > 0 and nums[i] == nums[i - 1]:
+                continue
+            #当前轮 最小的都比target大 跳出
+            if nums[i] + nums[i + 1] + nums[i + 2] + nums[i + 3] > target:
+                break
+            #当前轮 当数组最大值和都小于target,说明i这个数还是太小,遍历下一个
+            if nums[i] + nums[n-1] + nums[n-2] + nums[n-3] < target:
+                continue
+            # 固定两个数 i 和 j
+            for j in range(i + 1, n -2):
+                if j - i > 1 and nums[j] == nums[j - 1]:
+                    continue
+                if nums[i] + nums[j] + nums[j + 1] + nums[j + 2] > target:
+                    break
+                if nums[i] + nums[j] + nums[n - 1] + nums[n - 2] < target:
+                    continue
+                # 双指针
+                left = j + 1
+                right = n - 1
+                while left < right:
+                    tmp = nums[i] + nums[j] + nums[left] + nums[right]
+                    if tmp == target:
+                        res.append([nums[i], nums[j], nums[left], nums[right]])
+                        while left < right and nums[left] == nums[left + 1]:
+                            left += 1
+                        while left < right and nums[right] == nums[right - 1]:
+                            right -= 1
+                        left += 1
+                        right -= 1
+                    elif tmp > target:
+                        right -= 1
+                    elif tmp <= target:
+                        left += 1
+        return res

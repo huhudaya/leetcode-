@@ -112,7 +112,8 @@ class Solution(object):
                 for r in range(r2, r1, -1):
                     yield r, c1
 
-        if not matrix: return []
+        if not matrix:
+            return []
         ans = []
         r1, r2 = 0, len(matrix) - 1
         c1, c2 = 0, len(matrix[0]) - 1
@@ -213,6 +214,52 @@ class Solution:
 
             m = m - 1
             n = n - 1
+            # 每一轮横向和纵向遍历完之后，需要拐点，即col方向减少
             judge *= -1
 
         return ans
+# 好方法
+def solution(matrix):
+    r, i, j, di, dj = [], 0, 0, 0, 1
+    if matrix != []:
+        m = len(matrix)
+        n = len(matrix[0])
+        for _ in range(m * n):
+            r.append(matrix[i][j])
+            matrix[i][j] = 0
+            if matrix[(i + di) % m][(j + dj) % n] == 0:
+                di, dj = dj, -di
+            i += di
+            j += dj
+    return r
+# solution([[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]])
+
+
+# 回溯
+class Solution:
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        # 这里多加一个上的方向
+        directions = [[-1,0],[0, 1], [1, 0], [0, -1], [-1, 0]]
+        if not matrix or not matrix[0]:
+            return []
+        m = len(matrix)
+        n = len(matrix[0])
+        marked = [[False] * n for i in range(m)]
+        res = []
+        def flag(x, y):
+            return 0 <= x < m and 0 <= y < n and not marked[x][y]
+        def dfs(matrix, i, j, m, n, marked):
+            marked[i][j] = True
+            res.append(matrix[i][j])
+            start = 1
+            # 向左 和 向下 都不能使用的话，说明是最左边的那一列，优先搜索 上 即可
+            if not flag(i, j - 1) and not flag(i + 1, j):
+                start = 0
+            for di in range(start, 5):
+                x = i + directions[di][0]
+                y = j + directions[di][1]
+                if 0 <= x < m and 0 <= y < n and not marked[x][y]:
+                    dfs(matrix, x, y, m, n, marked)
+        dfs(matrix, 0, 0, m, n, marked)
+        return res
+Solution().spiralOrder([[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]])

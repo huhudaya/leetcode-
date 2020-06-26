@@ -23,6 +23,8 @@
 结果符合 32 位符号整数
 '''
 from typing import List
+
+
 class Solution:
     def change(self, amount: int, coins: List[int]) -> int:
         n = len(coins)
@@ -41,7 +43,7 @@ class Solution:
             for j in range(1, amount + 1):
                 if j - coins[i - 1] >= 0:
                     # 注意这里和0/1背包的区别，完全背包中的元素是可以重复利用的，所以这里不用算dp[i-1],用dp[i]就可以
-                    dp[i][j] = dp[i - 1][j] + dp[i][j - coins[i-1]]
+                    dp[i][j] = dp[i - 1][j] + dp[i][j - coins[i - 1]]
                 else:
                     dp[i][j] = dp[i - 1][j]
         return dp[n][amount]
@@ -49,7 +51,7 @@ class Solution:
 
 class Solution:
     # 状态未压缩
-    def change1(self, amount: int, coins: List[int]) -> int:
+    def change(self, amount: int, coins: List[int]) -> int:
         n = len(coins)
         '''
         第二步要明确dp数组的定义。
@@ -63,12 +65,14 @@ class Solution:
         for i in range(1, n + 1):
             for j in range(1, amount + 1):
                 if j - coins[i - 1] >= 0:
-                    dp[i][j] = dp[i - 1][j] + dp[i][j - coins[i-1]]
+                    # 不同于01背包问题，这里物品是可以无限选择的，所以如果这次选择了这个物品，上一个状态也可以选择这个物品的
+                    dp[i][j] = dp[i - 1][j] + dp[i][j - coins[i - 1]]
                 else:
                     dp[i][j] = dp[i - 1][j]
         return dp[n][amount]
+
     # 状态压缩
-    def change(self, amount: int, coins: List[int]) -> int:
+    def change2(self, amount: int, coins: List[int]) -> int:
         n = len(coins)
         dp = [0 for _ in range(amount + 1)]
         dp[0] = 1
@@ -79,3 +83,53 @@ class Solution:
                     dp[j] = dp[j] + dp[j - coins[i]]
         print(dp)
         return dp[amount]
+
+
+Solution().change(2, [1, 2])
+
+
+# 可以使用的一个模板，注意，因为反正加的都是同一行的左边，所以不用倒序就可以了
+class Solution:
+    def change(self, amount: int, coins: List[int]) -> int:
+        dp = [0] * (amount + 1)
+        dp[0] = 1
+
+        for coin in coins:
+            for j in range(coin, amount + 1):
+                dp[j] = dp[j] + dp[j - coin]
+        return dp[amount]
+
+
+# 回溯
+'''
+import java.util.Arrays;
+
+public class Solution {
+
+    // 该解法超时，问题规模小的时候可用
+
+    private int res = 0;
+
+    public int change(int amount, int[] coins) {
+        int len = coins.length;
+        Arrays.sort(coins);
+
+        backtracking(amount, coins, 0, len);
+        return res;
+    }
+
+    private void backtracking(int residue, int[] coins, int start, int len) {
+        if (residue == 0) {
+            res++;
+            return;
+        }
+
+        for (int i = start; i < len; i++) {
+            if (residue - coins[i] < 0) {
+                break;
+            }
+            backtracking(residue - coins[i], coins, i, len);
+        }
+    }
+}
+'''

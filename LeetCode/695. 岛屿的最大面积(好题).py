@@ -25,7 +25,7 @@
 注意: 给定的矩阵grid 的长度和宽度都不超过 50。
 '''
 
-# 方法一:官方 dfs
+# 方法一:官方 DFS
 '''
 我们想知道网格中每个连通形状的面积，然后取最大值。
 
@@ -36,12 +36,14 @@
 这样我们就不会多次访问同一土地。
 '''
 from typing import List
+
+# BFS
 class Solution:
     def dfs(self, grid, cur_i, cur_j):
         # 有返回值的递归一定要先写递归结束条件，注意这里会判断一下grid[cur_i][cur_j]是否为0，如果为0就return 0
         if cur_i < 0 or cur_j < 0 or cur_i == len(grid) or cur_j == len(grid[0]) or grid[cur_i][cur_j] != 1:
             return 0
-        # 这里置0，避免重复遍历
+        # 这里置0，避免重复遍历 这种方式其实不好，因为改变了传入的grid数组，最好应该使用一个marked数组来标记是否已经遍历过
         grid[cur_i][cur_j] = 0
         ans = 1
         for di, dj in [[0, 1], [0, -1], [1, 0], [-1, 0]]:
@@ -55,6 +57,7 @@ class Solution:
             for j, n in enumerate(l):
                 ans = max(self.dfs(grid, i, j), ans)
         return ans
+
 
 # java
 '''
@@ -88,10 +91,13 @@ class Solution {
     }
 }
 '''
-# 方法一：自己的版本 dfs
+
+
+# 方法一：自己的版本 DFS
 class Solution:
     # 上右下左4个方向
     directions = [[-1, 0], [0, 1], [1, 0], [0, -1]]
+
     def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
         if not grid and not grid[0]:
             return -1
@@ -106,6 +112,7 @@ class Solution:
                 if marked[i][j] == 0 and grid[i][j] == 1:
                     res = max(self.dfs(grid, i, j, m, n, marked), res)
         return res
+
     def dfs(self, grid, i, j, m, n, marked):
         res = 1
         # 标记marked数组
@@ -121,7 +128,7 @@ class Solution:
         return res
 
 
-# 方法二：栈实现dfs
+# 方法二：栈实现DFS
 '''
 法
 
@@ -134,6 +141,8 @@ class Solution:
 
 另外，只要栈 stack 不为空，就说明我们还有土地待访问，那么就从栈中取出一个元素并访问。
 '''
+
+
 class Solution:
     def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
         ans = 0
@@ -156,14 +165,18 @@ class Solution:
                 ans = max(ans, cur)
         return ans
 
-# 方法三：广度优先搜索
+
+# 方法三：广度优先搜索 BFS
 '''
 算法
 我们把方法二中的栈改为队列，每次从队首取出土地，并将接下来想要遍历的土地放在队尾，就实现了广度优先搜索算法。
 '''
 from collections import deque
+
+
 class Solution:
-    directions = [[-1,0],[0, 1], [1, 0], [0, -1]]
+    directions = [[-1, 0], [0, 1], [1, 0], [0, -1]]
+
     def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
         # 使用BFS
         if not grid or not grid[0]:
@@ -183,7 +196,7 @@ class Solution:
                         continue
                     # 每遍历一次，次数都+1
                     cur += 1
-                    # 置0，防止重复遍历
+                    # 置0，防止重复遍历，这里改变了grid数组，没有使用marked数组
                     grid[cur_i][cur_j] = 0
                     # 遍历四个方向
                     for di in self.directions:
@@ -194,4 +207,4 @@ class Solution:
         return ans
 
 
-print(Solution().maxAreaOfIsland([[1,1],[1,0]]))
+print(Solution().maxAreaOfIsland([[1, 1], [1, 0]]))

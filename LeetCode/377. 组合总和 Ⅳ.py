@@ -27,3 +27,14 @@ target = 4
 致谢：
 特别感谢 @pbrother 添加此问题并创建所有测试用例。
 '''
+from typing import List
+class Solution:
+    def combinationSum4(self, nums: List[int], target: int) -> int:
+        n = len(nums)
+        dp = [0 for _ in range(target + 1)]
+        dp[0] = 1
+        for i in range(1, target + 1):
+            for j in range(n):
+                if nums[j] <= i:
+                    dp[i] = dp[i] + dp[i - nums[j]]
+        return dp[target]

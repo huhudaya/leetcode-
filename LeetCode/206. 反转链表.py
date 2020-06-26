@@ -32,7 +32,7 @@ class Solution:
     def reverseList2(self, head: ListNode) -> ListNode:
         if head is None or head.next is None:
             return head
-        new_head = self.reverseList(head.next)
+        new_head = self.reverseList2(head.next)
         head.next.next = head
         head.next = None
         return new_head

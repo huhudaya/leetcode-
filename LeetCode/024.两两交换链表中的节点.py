@@ -18,7 +18,8 @@ class Solution(object):
         # 递归的终止条件
         # if head == None or head.next == None:
         #  not AB <====> A + B
-        if not (head and head.next):
+        # if not (head and head.next):
+        if head is None or head.next is None:
             return head
         # 假设链表是 1->2->3->4
         # 这句就先保存节点2
