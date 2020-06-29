@@ -25,10 +25,12 @@ class Solution:
             return False
         n = len(arr)
         for i in range(n):
+            # 遍历，然后要求arr[i] = i
             while arr[i] != i:
                 if arr[arr[i]] == arr[i]:
                     return arr[i]
                 else:
+                    # 物归原位
                     arr[arr[i]], arr[i] = arr[i], arr[arr[i]]
         return False
 

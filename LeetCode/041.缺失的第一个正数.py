@@ -100,6 +100,7 @@ from typing import List
 '''
 
 class Solution:
+    # 要找的数在[1, N]
     # 3 应该放在索引为 2 的地方
     # 4 应该放在索引为 3 的地方
     def firstMissingPositive(self, nums: List[int]) -> int:
@@ -108,6 +109,8 @@ class Solution:
             # 先判断这个数字是不是在适合的索引区间，比如在[1,len(nums)]，然后判断这个数字是不是放在了正确的地方
             while 1 <= nums[i] <= size and nums[i] != nums[nums[i] - 1]:
                 # self.__swap(nums, i, nums[i] - 1)
+                # 下面这种交换是错误的交换！！！！！一定要注意，先交换到nums[nums[i] - 1]
+                # nums[i], nums[nums[i] - 1] = nums[nums[i] - 1], nums[i]
                 nums[nums[i] - 1], nums[i] = nums[i], nums[nums[i] - 1]
         for i in range(size):
             if i + 1 != nums[i]:

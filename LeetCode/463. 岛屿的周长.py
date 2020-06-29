@@ -27,8 +27,7 @@
 最后相加即可
 '''
 from typing import List
-
-
+# 直接遍历
 class Solution:
     def islandPerimeter(self, grid: List[List[int]]) -> int:
         res = 0
@@ -42,7 +41,7 @@ class Solution:
                         res -= 2
         return res
 
-
+#dfs
 class Solution:
     def islandPerimeter(self, grid: List[List[int]]) -> int:
         row = len(grid)
@@ -50,15 +49,18 @@ class Solution:
         res = 0
         for i in range(row):
             for j in range(col):
+                # 因为题目说只有一个岛屿
                 if grid[i][j] == 1:
                     # 看四个方向 边界或者 邻居是水 周长 + 1
                     for x, y in [[-1, 0], [1, 0], [0, -1], [0, 1]]:
                         tmp_i, tmp_j = i + x, j + y
+                        # 水域边界或者是网格边界 + 1
                         if not (0 <= tmp_i < row and 0 <= tmp_j < col) or grid[tmp_i][tmp_j] == 0:
                             res += 1
+                return res
         return res
 
-# dfs
+# DFS
 '''
 public int islandPerimeter(int[][] grid) {
     for (int r = 0; r < grid.length; r++) {

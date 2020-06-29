@@ -53,7 +53,7 @@ from random import randint
 class Solution:
     def findKthLargest(self, nums, k: int) -> int:
         if k > len(nums):
-            return
+            return -1
         index = randint(0, len(nums) - 1)
         pivot = nums[index]
         less_part = [i for i in nums[:index] + nums[index + 1:] if i < pivot]
@@ -224,9 +224,49 @@ def topK(arr, k, low, high):
 
 
 
+# 随机因子
+from typing import List
+import random
+
+
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        size = len(nums)
+
+        target = size - k
+        left = 0
+        right = size - 1
+        while True:
+            index = self.__partition(nums, left, right)
+            if index == target:
+                return nums[index]
+            elif index < target:
+                # 下一轮在 [index + 1, right] 里找
+                left = index + 1
+            else:
+                right = index - 1
+
+    #  循环不变量：[left + 1, j] < pivot
+    #  (j, i) >= pivot
+    def __partition(self, nums, left, right):
+        # 随机化切分元素
+        # randint 是包括左右区间的
+        random_index = random.randint(left, right)
+        nums[random_index], nums[left] = nums[left], nums[random_index]
+
+        pivot = nums[left]
+        j = left
+        # 可能会存在不必要的交换
+        for i in range(left + 1, right + 1):
+            if nums[i] < pivot:
+                j += 1
+                nums[i], nums[j] = nums[j], nums[i]
+
+        nums[left], nums[j] = nums[j], nums[left]
+        return j
 
 # 自己的版本 一定要加随机因子
-
+# 挖坑法
 from typing import List
 class Solution:
     def findKthLargest(self, nums: List[int], k: int) -> int:
@@ -257,3 +297,35 @@ class Solution:
             # 填坑
         arr[low] = index
         return low
+
+# 随机快排
+import random
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        n = len(nums)
+        if k > n:
+            return -1
+        left = 0
+        right = n - 1
+        def partition(nums, left, right):
+            index = random.randint(left, right)
+            nums[index], nums[left] = nums[left], nums[index]
+            index = nums[left]
+            while left < right:
+                while left < right and nums[right] <= index:
+                    right -= 1
+                nums[left] = nums[right]
+                while left < right and nums[left] > index:
+                    left += 1
+                nums[right] = nums[left]
+            # 填坑
+            nums[left] = index
+            return left
+        while True:
+            pos = partition(nums, left, right)
+            if pos == k - 1:
+                return nums[pos]
+            elif pos > k:
+                right = pos - 1
+            elif pos < k:
+                left = pos + 1

@@ -22,7 +22,7 @@
 import sys
 
 for line in sys.stdin:
-    a, b = list(map(int, line.split()))
+    # a, b = list(map(int, line.split()))
     a, b = [int(i) for i in line.split()]
     if a == 0 and b == 0:
         break

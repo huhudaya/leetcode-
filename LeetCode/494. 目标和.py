@@ -37,21 +37,62 @@ public class Solution {
 }
 '''
 # 递归
+import functools
 from typing import List
+
+
 class Solution:
     def findTargetSumWays(self, nums: List[int], S: int) -> int:
         # 递归
         if not nums:
             return -1
         n = len(nums)
-        def helper(i, target):
+
+        @functools.lru_cache(None)
+        def dfs(i, target):
             res = 0
             if i == n:
                 if target == 0:
                     return 1
                 return 0
-            res += helper(i + 1, target - nums[i])
-            res += helper(i + 1, target + nums[i])
+            res += dfs(i + 1, target - nums[i])
+            res += dfs(i + 1, target + nums[i])
             return res
-        return helper(0, S)
-print(Solution().findTargetSumWays([0,38,42,31,13,10,11,12,44,16,38,17,22,28,9,27,20,35,34,39],2))
+
+        return dfs(0, S)
+
+
+print(Solution().findTargetSumWays([0, 38, 42, 31, 13, 10, 11, 12, 44, 16, 38, 17, 22, 28, 9, 27, 20, 35, 34, 39], 2))
+
+# 注意 这道题和其他背包问题最大的不同就是这道题数组中的每一个数字都必须使用一次
+# 迭代
+from collections import defaultdict
+class Solution:
+    def findTargetSumWays(self, nums: List[int], S: int) -> int:
+        # dp 注意这道题和其它背包问题的不同，这道题要求数组中的每一个元素都必须使用到
+        if not nums:
+            return -1
+        # dp[i]表示当目标为 i 时有几种解法
+        dp = defaultdict(int)
+        dp[0] = 1
+        # 每一轮num更新一次dp
+        for num in nums:
+            tmp = defaultdict(int)
+            for k, v in dp.items():
+                tmp[k - num] += v
+                tmp[k + num] += v
+            dp = tmp
+        return dp[S]
+
+
+# 动态规划
+class Solution:
+    def findTargetSumWays(self, nums: List[int], S: int) -> int:
+        if sum(nums) < S or (sum(nums) + S) % 2 == 1:
+            return 0
+        P = (sum(nums) + S) // 2
+        dp = [1] + [0 for _ in range(P)]
+        for num in nums:
+            for j in range(P, num - 1, -1):
+                dp[j] += dp[j - num]
+        return dp[P]

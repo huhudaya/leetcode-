@@ -37,7 +37,7 @@
 '''
 from typing import List
 
-# BFS
+# DFS
 class Solution:
     def dfs(self, grid, cur_i, cur_j):
         # 有返回值的递归一定要先写递归结束条件，注意这里会判断一下grid[cur_i][cur_j]是否为0，如果为0就return 0

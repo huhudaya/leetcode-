@@ -60,6 +60,7 @@ class Solution:
     def addBinary(self, a: str, b: str) -> str:
         ans, extra = '', 0
         i, j = len(a) - 1, len(b) - 1
+        # 倒着遍历
         while i >= 0 or j >= 0:
             if i >= 0:
                 extra += ord(a[i]) - ord('0')
@@ -133,7 +134,7 @@ class Solution:
 
 
 
-# 第一次，将x看成是一个数，然后和y要相加，这个时候y就相当于是一个进位
+# 第一次，将x看成是一个数，然后和y要相加，这个时候y就相当于是一个进位，相当于每次都考虑最后一位，直到进位为0
 class Solution:
     def addBinary(self, a, b) -> str:
         # 先计算出十进制的值

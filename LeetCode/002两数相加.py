@@ -110,3 +110,23 @@ class Solution:
             pre.next = node
             node.next = None
         return head
+
+# 使用dummyNode
+class Solution:
+    def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
+        dummy = ListNode(-1)
+        cur = dummy
+        ca = 0
+        while l1 or l2 or ca:
+            if l1:
+                ca += l1.val
+                l1 = l1.next
+            if l2:
+                ca += l2.val
+                l2 = l2.next
+            k = ca % 10
+            cur.next = ListNode(k)
+            ca = ca // 10
+            # 进位
+            cur = cur.next
+        return dummy.next

@@ -191,6 +191,7 @@ bool canPartition(vector<int>& nums) {
 }
 '''
 
+
 # 压缩后
 # dp[i][j] = x 表示，对于前i个物品
 # 当前背包的容量为j时，若x为true，则说明可以恰好将背包装满，若x为false，则说明不能恰好将背包装满。
@@ -216,15 +217,16 @@ class Solution:
     def canPartition(self, nums: List[int]) -> bool:
         _sum = sum(nums)
         n = len(nums)
-        if _sum & 1: #是奇数
+        if _sum & 1:  # 是奇数
             return False
         target = _sum // 2
         dp = [False for _ in range(target + 1)]
-        dp[0] = True #dp[0][0]
+        dp[0] = True  # dp[0][0]
         for i in range(n):
             # 这里只需要判断到 i-1 即可
             for j in range(target, i - 1, -1):
                 # 相当于剪枝
                 if j - nums[i] >= 0:
-                    dp[j] = dp[j] or dp[j - nums[i]] # 保证本轮的dp值的更新不影响后面的结果
+                    # 思考 如果要求的是方案的个数呢？ 这里只需要dp[j] = dp[j] + dp[j - nums[i]]
+                    dp[j] = dp[j] or dp[j - nums[i]]  # 保证本轮的dp值的更新不影响后面的结果
         return dp[target]

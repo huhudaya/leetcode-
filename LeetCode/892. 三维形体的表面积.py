@@ -66,15 +66,15 @@ public class Solution {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 sum += grid[i][j];
-
+                // 垂直
                 if (grid[i][j] > 1) {
                     verticalOverlap += (grid[i][j] - 1);
                 }
-
+                // 行
                 if (j > 0) {
                     rowOverlap += Math.min(grid[i][j - 1], grid[i][j]);
                 }
-
+                // 列
                 if (i > 0) {
                     colOverlap += Math.min(grid[i - 1][j], grid[i][j]);
                 }
@@ -97,6 +97,8 @@ public class Solution {
     }
 }
 '''
+
+
 # 思路主要有两个
 #     1.直接计算有效面积
 #     2.计算重叠的个数，然后总表面积-重叠部分的面积
@@ -111,7 +113,7 @@ class Solution(object):
                 if grid[r][c]:
                     ans += 2
                     # 计算四周
-                    for nr, nc in ((r-1, c), (r+1, c), (r, c-1), (r,c+1)):
+                    for nr, nc in ((r - 1, c), (r + 1, c), (r, c - 1), (r, c + 1)):
                         # 注意边界
                         if 0 <= nr < N and 0 <= nc < N:
                             # 垂直方向上

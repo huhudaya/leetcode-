@@ -29,6 +29,8 @@
 '''
 # 官方解
 from typing import List
+
+
 class Solution:
     def canThreePartsEqualSum(self, A: List[int]) -> bool:
         s = sum(A)
@@ -50,6 +52,8 @@ class Solution:
                 return True
             j += 1
         return False
+
+
 '''
 双指针
 数组元素的总和 sum 不是3的倍数，直接返回false
@@ -122,3 +126,40 @@ class Solution {
     }
 }
 '''
+
+'''
+答疑
+疑问一：
+
+评论区好多人对 count == 3 有疑问， count == 3 之后还没有遍历完数组，怎么就能判断为 true 了？
+
+解答：
+
+首先 count == 3 就说明找到了三个和为 sum / 3 的子数组，那剩下元素的和就只能为 0 了，把它们合并到最后一个子数组就 OK 啦。
+
+疑问二：
+
+那 count == 2 不就可以返回 true 了吗？ 因为已经找到了两个和为 sum / 3 的子数组，那剩下的不就是第三个了嘛！
+
+解答：
+
+其实不是这样的，因为找到了两个子数组后可能恰好到达了数组末尾，此时就不符合要求了，例如: [1, -1, 1, -1] .
+'''
+
+
+class Solution:
+    def canThreePartsEqualSum(self, A: List[int]) -> bool:
+        amount = sum(A)
+        if amount % 3 != 0:
+            return False
+        res = amount // 3
+        temp, count = 0, 0
+        for i in A:
+            # 还有剩余元素，已经和为target的有两组了，所以一定可以返回true
+            if count == 2:
+                return True
+            temp += i
+            if temp == res:
+                count += 1
+                temp = 0
+        return False

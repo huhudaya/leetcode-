@@ -15,6 +15,8 @@
 链接：https://leetcode-cn.com/problems/largest-rectangle-in-histogram
 '''
 from typing import List
+
+
 class Solution:
     def largestRectangleArea(self, heights: List[int]) -> int:
         if heights is None or len(heights) == 0:
