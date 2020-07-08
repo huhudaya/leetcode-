@@ -71,7 +71,7 @@ class Solution3:
             hashSet.add(nums[i])
         # 计数法 注意这里为什么是O(N)的时间复杂度：因为下面的循环是常数级别的循环，所以常数倍的O(N)仍然是O(N)
         for i in range(n):
-            # 如果不在Set中，就需要重新遍历，重新计数
+            # 如果不在Set中，则将当前元素作为起始点开始寻找最长连续序列
             if nums[i] - 1 not in hashSet:
                 cnt = 1
                 tmp = nums[i]

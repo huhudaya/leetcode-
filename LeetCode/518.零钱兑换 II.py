@@ -1,5 +1,6 @@
 '''
-给定不同面额的硬币和一个总金额。写出函数来计算可以凑成总金额的硬币组合数。假设每一种面额的硬币有无限个。 
+给定不同面额的硬币和一个总金额。
+写出函数来计算可以凑成总金额的硬币组合数。假设每一种面额的硬币有无限个。 
 示例 1:
 输入: amount = 5, coins = [1, 2, 5]
 输出: 4
@@ -39,6 +40,7 @@ class Solution:
         dp = [[0] * (amount + 1) for _ in range(n + 1)]
         for i in range(n + 1):
             dp[i][0] = 1
+        # 相当于nums数组在外循环
         for i in range(1, n + 1):
             for j in range(1, amount + 1):
                 if j - coins[i - 1] >= 0:
@@ -48,6 +50,8 @@ class Solution:
                     dp[i][j] = dp[i - 1][j]
         return dp[n][amount]
 
+print(Solution().change(4, [1,2,3]))
+# 3
 
 class Solution:
     # 状态未压缩
@@ -66,6 +70,7 @@ class Solution:
             for j in range(1, amount + 1):
                 if j - coins[i - 1] >= 0:
                     # 不同于01背包问题，这里物品是可以无限选择的，所以如果这次选择了这个物品，上一个状态也可以选择这个物品的
+                    # 这个信息体现在当使用压缩的滚动数组后，可以从前向后，不用非得从后向前
                     dp[i][j] = dp[i - 1][j] + dp[i][j - coins[i - 1]]
                 else:
                     dp[i][j] = dp[i - 1][j]
@@ -85,7 +90,6 @@ class Solution:
         return dp[amount]
 
 
-Solution().change(2, [1, 2])
 
 
 # 可以使用的一个模板，注意，因为反正加的都是同一行的左边，所以不用倒序就可以了
@@ -96,7 +100,7 @@ class Solution:
 
         for coin in coins:
             for j in range(coin, amount + 1):
-                dp[j] = dp[j] + dp[j - coin]
+                dp[j] += dp[j - coin]
         return dp[amount]
 
 

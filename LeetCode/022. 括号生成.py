@@ -184,7 +184,7 @@ class Solution:
         # 标准回溯模板
         def dfs(cur_str, used, left, right, n):
             if len(cur_str) == n:
-                res.appedn(cur_str)
+                res.append(cur_str)
             for i in range(n):
                 if not used[i]:
                     if i > 0 and used[i - 1] is False and candidates[i - 1] == candidates[i]:
@@ -209,6 +209,27 @@ dp[i] = "(dp[p]的所有有效组合)+【dp[q]的组合】"，其中 1 + p + q =
 
 '''
 
+'''
+首先，面向小白：什么是动态规划？在此题中，动态规划的思想类似于数学归纳法，当知道所有 i<n 的情况时，我们可以通过某种算法算出 i=n 的情况。
+本题最核心的思想是，考虑 i=n 时相比 n-1 组括号增加的那一组括号的位置。
+
+'''
+'''
+第 1 步：
+    定义状态 dp[i]：使用 i 对括号能够生成的组合。
+第 2 步：状态转移方程：
+    i 对括号的一个组合，在 i - 1 对括号的基础上得到，这是思考 “状态转移方程” 的基础；
+    i 对括号的一个组合，一定以左括号 "(" 开始，不一定以 ")" 结尾。为此，我们可以枚举新的右括号 ")" 可能所处的位置，得到所有的组合；
+    枚举的方式就是枚举左括号 "(" 和右括号 ")" 中间可能的合法的括号对数，而剩下的合法的括号对数在与第一个左括号 "(" 配对的右括号 ")" 的后面，这就用到了以前的状态。
+    状态转移方程是：
+        dp[i] = "(" + dp[可能的括号对数] + ")" + dp[剩下的括号对数]
+    整理得：
+        dp[i] = "(" + dp[j] + ")" + dp[i- j - 1] , j = 0, 1, ..., i - 1
+    
+'''
+
+
+# 动态规划
 class Solution:
     def generateParenthesis(self, n: int) -> List[str]:
         dp = [[] for _ in range(n + 1)]  # dp[i]存放i组括号的所有有效组合
@@ -221,4 +242,26 @@ class Solution:
                     for k2 in l2:
                         dp[i].append("({0}){1}".format(k1, k2))
 
+        return dp[n]
+
+
+# 动态规划
+from typing import List
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        # 动态规划
+        if n == 0:
+            return []
+        # 使用 i 对括号能够生成的组合
+        dp = [[] for i in range(n + 1)]
+        dp[0] = [""]
+        # 每遍历一次要添加一对括号
+        for i in range(1, n + 1):
+            for j in range(i):
+                left = dp[j]
+                right = dp[i - j - 1]
+                # 两两拼接组合
+                for s1 in left:
+                    for s2 in right:
+                        dp[i].append("(" + s1 + ")" + s2)
         return dp[n]

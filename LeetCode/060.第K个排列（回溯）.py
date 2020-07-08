@@ -27,9 +27,10 @@
 链接：https://leetcode-cn.com/problems/permutation-sequence
 '''
 
-
 '''
-比较容易想到的是，使用同「力扣」第 46 题： “全排列” ，即使用回溯搜索的思想，依次得到全排列，输出所求的第 k 个全排列即可。但事实上，我们不必求出所有的全排列。基于以下几点考虑：
+比较容易想到的是，使用同「力扣」第 46 题： “全排列” 
+即使用回溯搜索的思想，依次得到全排列，输出所求的第 k 个全排列即可。
+但事实上，我们不必求出所有的全排列。基于以下几点考虑：
 
 1、我们知道所求排列一定在叶子结点处得到。
 事实上，进入每一个分支的时候，我们都可以通过递归的层数，直接计算这一分支可以得到的叶子结点的个数；
@@ -50,32 +51,52 @@
 
 下面以示例 2：输入: n = 4,k=9，介绍如何使用“回溯 + 剪枝” 的思想得到输出 "2314"。
 '''
-
-
+# 总体思路，在子树中吗？不在就到下一个子树去判断
 class Solution:
     def getPermutation(self, n: int, k: int) -> str:
         def dfs(n, k, index, path):
             if index == n:
                 return
+            # 这里和字典序的思想一样，计算step步长！
+            # 这里是根据层数计算当前节点下有多少个节点
             cnt = factorial[n - 1 - index]
+            # 这个for循环用来判断是不是在当前子树中，如果在当前子树中，就要进入递归判断是当前子树中的哪一层
             for i in range(1, n + 1):
                 if used[i]:
                     continue
+                # 注意这里的剪枝，如果step小于k,说明不在这个子树中，这样就不会进入到后面的path.append和used[i]=True
                 if cnt < k:
                     k -= cnt
                     continue
+                # 如果走到这里，说明结果一定是在当前节点的子树中，这样就进入到递归去查找
                 path.append(i)
                 used[i] = True
+                # 如果执行到这里，说明一定在当前的子树下，所以需要index+1,表示第几层！
                 dfs(n, k, index + 1, path)
+
         if n == 0:
             return ""
         used = [False for _ in range(n + 1)]
         path = []
         factorial = [1 for _ in range(n + 1)]
+        # 计算1-n的阶乘然后用一个列表保存
         for i in range(2, n + 1):
             factorial[i] = factorial[i - 1] * i
         dfs(n, k, 0, path)
         return ''.join([str(num) for num in path])
 
 
-print(Solution().getPermutation(1,1))
+print(Solution().getPermutation(1, 1))
+
+
+class Solution:
+    def getPermutation(self, n: int, k: int) -> str:
+        from itertools import permutations
+        # 构造[1,2,3,4....n]
+        list_n = list(range(n+1))
+        list_n.pop(0)
+        #构造全排列list
+        arr = list(permutations(list_n))
+        #返回第k个
+        return ''.join(map(str, list(arr[k-1])))
+

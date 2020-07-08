@@ -20,6 +20,8 @@ HammingDistance(4, 14) + HammingDistance(4, 2) + HammingDistance(14, 2) = 2 + 2 
 '''
 from typing import List
 from collections import defaultdict
+
+
 class Solution:
     def totalHammingDistance(self, nums: List[int]) -> int:
         # 在纸上画一画 数学思维降维打击!
@@ -40,13 +42,14 @@ class Solution:
         n = len(nums)
         d = defaultdict(int)
         for num in nums:
-        # 对每一个数字n,进行循环判断，判断这个数字转换为二进制之后相应位置是1还是0，对相应的map进行增加。判断是否为0，当终止时候，二进制的所有位数都变成0
+            # 对每一个数字n,进行循环判断，判断这个数字转换为二进制之后相应位置是1还是0，对相应的map进行增加。
+            # 判断是否为0，当终止时候，二进制的所有位数都变成0
             while num != 0:
                 # 计数，map中的key是翻译为int之后的值，value是对应的数量
-                d[num ^ num & (num - 1)] += 1
-                num &= num - 1
-        return sum( j * (n - j) for i, j in d.items())
-                
+                d[num ^ num & (num - 1)] += 1 # 相当于记录每一个数二进制位上为1时候相应的位置的个数，key为二进制的第几位，value为个数，此时就统计了这一个位置上有多少个1
+                num &= num - 1  # 消除最右边的1
+        return sum(j * (n - j) for i, j in d.items())  # 这一位置上有x个1，所以有n-x个0，组合的个数为x(n-x),这些组合的异或值都是1，这样就统计了汉明距离
+
 # 注意上面这段代码，n ^ n & (n - 1)，这样可以在先消除了最右边的1之后，然后与之前的数字相异或，就可以得到转换为二进制之后的数字最右边为1的位置对应为int时的值
 # 比如n = 1001  1001 & 1000 = 1000 此时消除了最右边的1,1001^1000 = 1 
 # 然后n &= n-1之后，n=1000, 1000 & 0111 = 0000,1000^0000 = 8

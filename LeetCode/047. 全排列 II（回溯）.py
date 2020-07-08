@@ -30,7 +30,7 @@ def permuteUnique(nums):
 
 from typing import List
 class Solution:
-    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+    def permuteUnique(self, nums) -> List[List[int]]:
         def dfs(nums, size, depth, path, used, res):
             if depth == size:
                 res.append(path.copy())
@@ -46,6 +46,7 @@ class Solution:
                         continue
                     used[i] = True
                     path.append(nums[i])
+                    # print(path)
                     dfs(nums, size, depth + 1, path, used, res)
                     used[i] = False
                     path.pop()
@@ -58,4 +59,4 @@ class Solution:
         res = []
         dfs(nums, size, 0, [], used, res)
         return res
-print(Solution().permuteUnique([1,1,3]))
+print(Solution().permuteUnique([1,1,2]))

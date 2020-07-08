@@ -59,7 +59,7 @@ class Solution:
                         and not marked[new_x][new_y] \
                         and self._search_word(board, word, index + 1, new_x, new_y, marked, m, n):
                     return True
-            # 否则回溯的时候恢复为False，撤销选择
+            # 如果上面不执行，则继续回溯，否则回溯的时候恢复为False，撤销选择
             marked[start_x][start_y] = False
         return False
 
@@ -83,11 +83,12 @@ class Solution(object):
 
         for i in range(len(board)):
             for j in range(len(board[0])):
+                # 注意，这里第一个元素已经判断过了
                 if board[i][j] == word[0]:
                     # 即第一次已经将该元素标记为已使用，所以可以使用标准的回溯模板，如果第一次，即调用dfs之前并没有标记使用，这个时候需要在dfs递归函数中的for循环外面先进行一次标记使用
                     # 类比于257题目中，在调用dfs之前使用了helper(root, [str(root.val)], result)，这就相当于在dfs之前使用了root.val,所以可以使用标准的回溯模板，如果调用dfs之前传入的是helper(root, [], result)，那么在dfs内部for循环外面需要进行一次判断
                     mark[i][j] = 1
-                    if not True != self.backtrack(i, j, mark, board, word[1:]):
+                    if self.backtrack(i, j, mark, board, word[1:]):
                         return True
                     # 回溯
                     mark[i][j] = 0
@@ -108,6 +109,7 @@ class Solution(object):
                     continue
                 # 将该元素标记为已使用
                 mark[cur_i][cur_j] = 1
+                # 如果找见了，即提前终止，return
                 if self.backtrack(cur_i, cur_j, mark, board, word[1:]) == True:
                     return True
                     # 回溯

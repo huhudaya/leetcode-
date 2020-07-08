@@ -22,7 +22,6 @@ class Solution:
     def findContinuousSequence(self, target: int) -> List[List[int]]:
         size = target // 2 + 1
         nums = [i for i in range(1, size + 1)]
-        print(nums)
         # left其实为写指针
         left = 0
         sum = 0
@@ -32,6 +31,7 @@ class Solution:
             # 大于等于left移动，小于target的话right移动
             sum += nums[right]
             while sum > target:
+                # 将左边第一个元素移出窗口，同时left指针移动一次
                 sum -= nums[left]
                 left += 1
             if sum == target:

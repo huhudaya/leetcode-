@@ -1,5 +1,3 @@
-
-
 # 003无重复最长子串.py
 class Solution:
     # def lengthOfLongestSubstring(self, s: str) -> int:
@@ -36,6 +34,5 @@ class Solution:
             while hash[s[r]] != 1:
                 hash[s[l]] -= 1
                 l += 1
-            result = max(result,r-l+1)
+            result = max(result, r - l + 1)
         return result
-            

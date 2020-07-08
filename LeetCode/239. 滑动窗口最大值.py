@@ -36,8 +36,10 @@
 '''
 
 from collections import deque
+
+
 class Solution:
-    #暴力解法O(N*M)
+    # 暴力解法O(N*M)
     # def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
     #     if k <= 0 or len(nums) < k or nums is None or nums == []:
     #         return []
@@ -75,15 +77,15 @@ class Solution:
     	小于新加入的值全部弹出。
     	最左端即为窗口最大值 python解法：
     '''
+
     def maxSlidingWindow(self, nums, k):
         win, ret = [], []
         for i, v in enumerate(nums):
-            if i >= k and win[0] <= i - k: win.pop(0)
-            while win and nums[win[-1]] <= v: win.pop()
+            if i >= k and win[0] <= i - k:
+                win.pop(0)
+            while win and nums[win[-1]] <= v:
+                win.pop()
             win.append(i)
-            if i >= k - 1: ret.append(nums[win[0]])
+            if i >= k - 1:
+                ret.append(nums[win[0]])
         return ret
-
-
-
-

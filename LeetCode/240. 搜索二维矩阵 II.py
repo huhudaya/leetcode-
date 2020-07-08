@@ -31,7 +31,7 @@ class Solution:
             return False
         m = len(matrix)
         n = len(matrix[0])
-        # 左上角遍历
+        # 右上角遍历
         i = 0
         j = n - 1
         while i < m and j >= 0:

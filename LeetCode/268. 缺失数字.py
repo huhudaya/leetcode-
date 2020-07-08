@@ -96,7 +96,7 @@ class Solution:
         # 新补的索引
         res = n
         for i in range(n):
-            # 对应的索引数组相减
+            # 对应的索引数组相减，最后的相减的结果就是缺失的那个数字
             res += i - nums[i]
         return res
 

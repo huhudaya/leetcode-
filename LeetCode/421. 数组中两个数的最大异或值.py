@@ -34,4 +34,78 @@ class Solution:
                     res = temp
                     break
         return res
+
+
+
+
+# 字典树
+class Solution:
+    def findMaximumXOR(self, nums: List[int]) -> int:
+        # Compute length L of max number in a binary representation
+        L = len(bin(max(nums))) - 2
+        # zero left-padding to ensure L bits for each number
+        nums = [[(x >> i) & 1 for i in range(L)][::-1] for x in nums]
+
+        max_xor = 0
+        trie = {}
+        for num in nums:
+            node = trie
+            xor_node = trie
+            curr_xor = 0
+            for bit in num:
+                # insert new number in trie
+                if not bit in node:
+                    node[bit] = {}
+                node = node[bit]
+
+                # to compute max xor of that new number
+                # with all previously inserted
+                '''
+                如果当前比特值存在互补比特值，访问具有互补比特值的孩子节点，并在异或值最右侧附加一个 1
+                如果不存在，直接访问具有当前比特值的孩子节点，并在异或值最右侧附加一个 0
+                '''
+                toggled_bit = 1 - bit
+                if toggled_bit in xor_node:
+                    curr_xor = (curr_xor << 1) | 1
+                    xor_node = xor_node[toggled_bit]
+                else:
+                    curr_xor = curr_xor << 1
+                    xor_node = xor_node[bit]
+
+            max_xor = max(max_xor, curr_xor)
+
+        return max_xor
+
+# 作者：powcai
+class Solution:
+    def findMaximumXOR(self, nums: List[int]) -> int:
+        if not nums:
+            return 0
+        # 创建前缀树
+        root = {}
+        for num in nums:
+            cur = root
+            for i in range(31, -1, -1):
+                cur_bit = (num >> i) & 1
+                cur.setdefault(cur_bit, {})
+                cur = cur[cur_bit]
+
+        res = float("-inf")
+        # 按位找最大值
+        for num in nums:
+            # 此时的cur为前缀树的根节点
+            cur = root
+            cur_max = 0
+            for i in range(31, -1, -1):
+                # 相当于得到将当前num的二进制的第i位
+                cur_bit = (num >> i) & 1
+                # 因为 a ^ b = max, max ^ a = b,先假设异或的结果是1，看能与之异或的值是否在前缀字典中
+                if cur_bit ^ 1 in cur:
+                    cur_max += (1 << i)
+                    cur = cur[cur_bit ^ 1]
+                else:
+                    cur = cur[cur_bit]
+            res = max(res, cur_max)
+        return res
+
 Solution().findMaximumXOR([3, 10, 5, 25, 2, 8])

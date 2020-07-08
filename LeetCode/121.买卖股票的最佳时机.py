@@ -32,6 +32,8 @@ return res
 '''
 import sys
 from typing import List
+
+
 class Solution:
     def maxProfit1(self, prices: List[int]) -> int:
         if not prices:
@@ -46,6 +48,7 @@ class Solution:
             cur_min = min(cur_min, prices[i])
             res = max(res, prices[i] - cur_min)
         return res
+
     # 状态转移动态规划
     # https://mp.weixin.qq.com/s?__biz=MzAxODQxMDM0Mw==&mid=2247484508&idx=1&sn=42cae6e7c5ccab1f156a83ea65b00b78&chksm=9bd7fa54aca07342d12ae149dac3dfa76dc42bcdd55df2c71e78f92dedbbcbdb36dec56ac13b&scene=21#wechat_redirect
     def maxProfit(self, prices: List[int]) -> int:
@@ -60,6 +63,6 @@ class Solution:
         dp[0][0] = 0
         dp[0][1] = -sys.maxsize
         for i in range(1, n + 1):
-            dp[i][0] = max(dp[i - 1][0], dp[i - 1][1] + prices[i - 1])#卖出，所以需要加
-            dp[i][1] = max(dp[i - 1][1], -prices[i - 1])#买入，所以需要减
+            dp[i][0] = max(dp[i - 1][0], dp[i - 1][1] + prices[i - 1])  # 卖出，所以需要加
+            dp[i][1] = max(dp[i - 1][1], -prices[i - 1])  # 买入，所以需要减
         return dp[n][0]

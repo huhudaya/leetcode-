@@ -118,3 +118,168 @@ public class Main {
 
 }
 '''
+# 二分
+'''
+解题思路：
+自定义一个类Work来描述工作
+所有的Work存入works数组中，根据工作的难度对works从小到大排序
+定义一个dp数组，dp[i]表示难度小于等于works[i]的最大报酬。
+对于输入的能力值，使用二分查找，扫描works数组，找到works数组中小于等于指定能力值，且下标最大的Work。
+记该Work的下标为index
+dp[index]就是结果
+        // dp[i]:记录难度小于等于works[i].difficulty的最大报酬
+        dp[0] = works[0].reward;
+        for (int i = 1; i < works.length; i++) {
+            dp[i] = dp[i - 1] > works[i].reward ? dp[i - 1] : works[i].reward;
+        }
+'''
+# Java
+'''
+import java.util.Scanner;
+import java.util.Arrays;
+import java.util.Comparator;
+class Work {
+    int difficulty;
+    int reward;
+ 
+    public Work(int difficulty, int reward) {
+        super();
+        this.difficulty = difficulty;
+        this.reward = reward;
+    }
+ 
+}
+ 
+public class Main {
+ 
+    public static void main(String[] args) {
+        findwork();
+    }
+ 
+    public static void findwork() {
+        Scanner in = new Scanner(System.in);
+        int n = in.nextInt();// 工作数量
+        int m = in.nextInt();// 人数
+ 
+        Work[] works = new Work[n];// 存储n份工作
+        int[] dp = new int[n];// dp[n]:难度小于等于works[n].difficulty的工作的最高报酬
+        // 读入n份工作
+        for (int i = 0; i < n; i++) {
+            int difficulty = in.nextInt();
+            int reward = in.nextInt();
+            Work work = new Work(difficulty, reward);
+            works[i] = work;
+        }
+        // 根据工作的难度，对n份工作从小到大排序
+        Arrays.sort(works, new Comparator<Work>() {
+ 
+            @Override
+            public int compare(Work o1, Work o2) {
+                return o1.difficulty - o2.difficulty;
+            }
+        });
+        // dp[i]:记录难度小于等于works[i].difficulty的最大报酬
+        dp[0] = works[0].reward;
+        for (int i = 1; i < works.length; i++) {
+            dp[i] = dp[i - 1] > works[i].reward ? dp[i - 1] : works[i].reward;
+        }
+ 
+        for (int i = 0; i < m; i++) {
+            int capability = in.nextInt();
+            // 能力值小于所有的工作的难度
+            if (capability < works[0].difficulty) {
+                System.out.println(0);
+                continue;
+            }
+            // 能力值大于等于所有的工作的难度
+            if (capability >= works[n - 1].difficulty) {
+                System.out.println(dp[n - 1]);
+                continue;
+            }
+            // 二分查找,找到第一个小于capability的work
+            int low = 0;
+            int high = n - 1;
+            while (low <= high) {
+                int middle = (low + high) / 2;
+ 
+                // works[middle]是符合能力值，且难度最大的工作
+                if (works[middle].difficulty <= capability && works[middle + 1].difficulty > capability) {
+                    System.out.println(dp[middle]);
+                    break;
+                }
+                // 找到难度等于能力值，且下标最大的工作
+                if (works[middle].difficulty == capability) {
+                    // 找到最后一个符合capability的工作
+                    int index = middle;
+                    while (index + 1 < n && works[index + 1].difficulty == capability) {
+                        index++;
+                    }
+                    System.out.println(dp[middle]);
+                    break;
+                } else if (capability > works[middle].difficulty) {
+                    low = middle + 1;
+                } else if (capability < works[middle].difficulty) {
+                    high = middle - 1;
+                }
+            }
+        }
+    }  
+}
+'''
+
+# 自己的版本
+import sys
+
+n, m = list(map(int, input().strip().split()))
+di = []
+map = dict()
+for i in range(n):
+    line = sys.stdin.readline()
+    d, p = [int(i) for i in line.strip().split()]
+    di.append(d)
+    map[d] = p
+cap = [int(i) for i in input().strip().split()]
+# cap = [9, 10, 1000000000]
+for i in cap:
+    di.append(i)
+    if i not in map:
+        map[i] = 0
+di.sort()
+# dp
+dp = [0 for i in range(m + n)]
+dp[0] = map[di[0]]
+for i in range(1, m + n):
+    dp[i] = max(map[di[i]], dp[i - 1])
+    map[di[i]] = dp[i]
+for i in cap:
+    print(map[i])
+
+import sys
+
+
+def main():
+    lines = sys.stdin.readlines()
+    lines = [l.strip().split() for l in lines if l.strip()]
+    n, m = int(lines[0][0]), int(lines[0][1])
+    res = [0] * (n + m)
+    abilities = list(map(int, lines[-1]))
+    maps = dict()
+    for index, l in enumerate(lines[1:-1]):
+        d, s = int(l[0]), int(l[1])
+        maps[d] = s
+        res[index] = d
+    for index, ability in enumerate(abilities):
+        res[index + n] = ability
+        if ability not in maps:
+            maps[ability] = 0
+    res.sort()
+    maxSalary = 0
+    for index in range(n + m):
+        maxSalary = max(maxSalary, maps[res[index]])
+        maps[res[index]] = maxSalary
+    for index in range(m):
+        print(maps[abilities[index]])
+
+
+if __name__ == '__main__':
+    main()

@@ -30,6 +30,7 @@ class Solution:
         while right < n - 1:
             if nums[right] >= nums[right + 1]:
                 res = max(res, right - left + 1)
+                # 此时更新left指针
                 left = right + 1
             right += 1
         return max(res, right - left + 1)

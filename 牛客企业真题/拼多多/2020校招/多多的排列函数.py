@@ -101,3 +101,27 @@ public class Main {
   
 }
 '''
+# 找规律
+# 首先F(X)肯定>=0 那么最小值肯定>=0
+# 如果每四个为一组 如5 6 7 8 那么最小值不就是8-6-(7-5)=0
+# 很明显是4个数可以为一组，这样的话我们可以取使得x的最后四位一定为0
+# Fx的最小值=F(x%4)的最小值
+# 即如果x为5 那么1 2 3 4 5 由于2 3 4 5最小值为0则F5最小值=F1
+# 所以我们只要求F1 F2 F3的最小值即可
+# 示例的X=1 2 3时 F(x)min分别为 1 1 0
+# 很重要的一点！说F(X)的最小值不是0就是1
+# 然后 F(x)=|F(x-1)-A[x]| 要想fx最大，F(x-1)肯定要最小或者最大
+# F（x) max不就是在|A(x)-F(x-1)min |和|A(x)-F(x-1)max |取大值吗
+# 看到min只有2种取值：0，1，最大值自然就是N-getmin(N-1)
+n = int(input())
+def get_min(N):
+    tmp = N % 4
+    if tmp == 1 or tmp == 2:
+        return 1
+    else:
+        return 0
+for i in range(n):
+    num = int(input())
+    min_num = get_min(num)
+    max_num = num - get_min(num - 1)
+    print(min_num, max_num)

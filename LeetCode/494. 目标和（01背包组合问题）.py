@@ -1,5 +1,6 @@
 '''
-给定一个非负整数数组，a1, a2, ..., an, 和一个目标数，S。现在你有两个符号 + 和 -。对于数组中的任意一个整数，你都可以从 + 或 -中选择一个符号添加在前面。
+给定一个非负整数数组，a1, a2, ..., an, 和一个目标数，S。现在你有两个符号 + 和 -。
+对于数组中的任意一个整数，你都可以从 + 或 -中选择一个符号添加在前面。
 返回可以使最终数组和为目标数 S 的所有添加符号的方法数。
 示例：
 输入：nums: [1, 1, 1, 1, 1], S: 3
@@ -93,6 +94,46 @@ class Solution:
         P = (sum(nums) + S) // 2
         dp = [1] + [0 for _ in range(P)]
         for num in nums:
+            for j in range(P, num - 1, -1):
+                dp[j] += dp[j - num]
+        return dp[P]
+
+
+
+from collections import defaultdict
+class Solution:
+    # 迭代
+    def findTargetSumWays1(self, nums: List[int], S: int) -> int:
+        # dp 注意这道题和其它背包问题的不同，这道题要求数组中的每一个元素都必须使用到
+        if not nums:
+            return -1
+        # dp[i]表示当目标为 i 时有几种解法
+        dp = defaultdict(int)
+        dp[0] = 1
+        # 每一轮num更新一次dp
+        for num in nums:
+            tmp = defaultdict(int)
+            for k, v in dp.items():
+                tmp[k - num] += v
+                tmp[k + num] += v
+            dp = tmp
+        return dp[S]
+    # 动态规划
+    def findTargetSumWays(self, nums: List[int], S: int) -> int:
+        if not nums:
+            return -1
+        # P + N = S
+        # P + N + P - N = S + P - N
+        # 2P = S + sum(nums)
+        n = len(nums)
+        if sum(nums) < S or (sum(nums) + S) % 2 == 1:
+            return 0
+        P = (sum(nums) + S) // 2
+        dp = [1] + [0 for _ in range(P)]
+        # 0/1背包 顺序不同组合相同，所以nums数组在外循环 因为第一个1 + 1 和 1 + 1是一样的呢
+        for num in nums:
+            # 01背包，所以这里一定要倒序才可以进行空间压缩
+            # 从前往后更新不知道的话前面的状态是否选了num。
             for j in range(P, num - 1, -1):
                 dp[j] += dp[j - num]
         return dp[P]

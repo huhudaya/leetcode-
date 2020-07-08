@@ -33,3 +33,5 @@ n = int(input())
 for line in sys.stdin.readlines():
     value = list(map(int, line.strip().split()))
     print(sum(value))
+
+line = list(map(int, sys.stdin.readline().strip().split))

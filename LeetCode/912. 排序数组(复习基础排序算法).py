@@ -112,14 +112,16 @@ class Solution:
         if len(nums) <= 1:
             return
         mid = len(nums) // 2
+        # 此时为一个新的列表
         left_nums = nums[:mid]
         right_nums = nums[mid:]
-        self.sortArray(left_nums)
-        self.sortArray(right_nums)
+        self.sortHelper(left_nums)
+        self.sortHelper(right_nums)
         i = j = k = 0
         # 归并
         while i < len(left_nums) and j < len(right_nums):
             if left_nums[i] < right_nums[j]:
+                # 注意，此时直接对nums进行修改
                 nums[k] = left_nums[i]
                 i += 1
             else:

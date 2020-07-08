@@ -18,6 +18,7 @@
 '''
 
 
+# 注意，只有出现两次才能用这种方法
 class Solution:
     def findDuplicates(self, nums):
         """

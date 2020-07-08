@@ -56,4 +56,4 @@ class Solution:
             # 从当前元素之后遍历
             self._dfs(nums, size, path, res, i + 1)
             path.pop()
-print(Solution().subsetsWithDup([1,2,2]))
+print(Solution().subsetsWithDup([1,1,0]))

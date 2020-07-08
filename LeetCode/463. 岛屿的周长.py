@@ -27,12 +27,16 @@
 最后相加即可
 '''
 from typing import List
+
+
 # 直接遍历
+# 只看左边和上边 遇见岛屿相邻或者就减2
 class Solution:
     def islandPerimeter(self, grid: List[List[int]]) -> int:
         res = 0
         for i in range(len(grid)):
             for j in range(len(grid[0])):
+                # 如果找见了一个grip为1，则一定从这里入口，因为题目规定了只有一个岛屿
                 if grid[i][j] == 1:
                     res += 4
                     if i - 1 >= 0 and grid[i - 1][j] == 1:
@@ -41,7 +45,8 @@ class Solution:
                         res -= 2
         return res
 
-#dfs
+
+# dfs
 class Solution:
     def islandPerimeter(self, grid: List[List[int]]) -> int:
         row = len(grid)
@@ -60,7 +65,9 @@ class Solution:
                 return res
         return res
 
+
 # DFS
+# // 将这个“相邻关系”对应到 DFS 遍历中，就是：每当在 DFS 遍历中，从一个岛屿方格走向一个非岛屿方格，就将周长加 1。代码如下：
 '''
 public int islandPerimeter(int[][] grid) {
     for (int r = 0; r < grid.length; r++) {
@@ -74,6 +81,7 @@ public int islandPerimeter(int[][] grid) {
     return 0;
 }
 
+// 将这个“相邻关系”对应到 DFS 遍历中，就是：每当在 DFS 遍历中，从一个岛屿方格走向一个非岛屿方格，就将周长加 1。代码如下：
 int dfs(int[][] grid, int r, int c) {
     // 网格边界
     if (!(0 <= r && r < grid.length && 0 <= c && c < grid[0].length)) {
@@ -95,3 +103,25 @@ int dfs(int[][] grid, int r, int c) {
         + dfs(grid, r, c + 1);
 }
 '''
+
+
+class Solution:
+    def islandPerimeter(self, grid: List[List[int]]) -> int:
+        # 顺时针
+        direcitons = [[-1, 0], [0, 1], [1, 0], [0, -1]]
+        if not grid or not grid[0]:
+            return -1
+        m = len(grid)
+        n = len(grid[0])
+        res = 0
+        # 直接遍历
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j] == 1:
+                    for di in direcitons:
+                        row = i + di[0]
+                        col = j + di[1]
+                        # 如果是网格边界或者和水域连接，返回0
+                        if not (0 <= row < m and 0 <= col < n) or grid[row][col] == 0:
+                            res += 1
+        return res

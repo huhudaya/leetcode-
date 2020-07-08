@@ -56,7 +56,7 @@ x 轴默认指向右，y 轴默认指向上。
 # 逆向思维
 class Solution(object):
     def isRectangleOverlap(self, rec1, rec2):
-        return not (rec1[2] <= rec2[0] or  # left
+        return not (rec1[2] <= rec2[0] or  # left 第一个矩形的右上角x小于等于第二个矩形的左下角x
                     rec1[3] <= rec2[1] or  # bottom
                     rec1[0] >= rec2[2] or  # right
                     rec1[1] >= rec2[3])  # top

@@ -19,15 +19,21 @@
 输出: 42
 '''
 import sys
+
+
 class TreeNode:
     def __init__(self, x):
         self.val = x
         self.left = None
         self.right = None
+
+
 class ResultType:
     def __init__(self, root2any, any2any):
         self.root2any = root2any
         self.any2any = any2any
+
+
 class Solution:
     def maxPathSum(self, root: TreeNode) -> int:
         # any2any版本，需要resultType
@@ -46,6 +52,8 @@ class Solution:
 
         res = help(root)
         return res.root2any
+
+
 # 递归 traverse+divide&conquer
 class TreeNode(object):
     """ Definition of a binary tree node."""
@@ -54,12 +62,15 @@ class TreeNode(object):
         self.val = x
         self.left = None
         self.right = None
+
+
 class Solution:
     def maxPathSum(self, root):
         """
         :type root: TreeNode
         :rtype: int
         """
+
         def max_gain(node):
             nonlocal max_sum
             if not node:
@@ -78,6 +89,51 @@ class Solution:
             # for recursion :
             # return the max gain if continue the same path
             return node.val + max(left_gain, right_gain)
+
         max_sum = float('-inf')
         max_gain(root)
         return max_sum
+
+
+class Solution:
+    def __init__(self):
+        self.maxSum = float("-inf")
+
+    def maxPathSum(self, root: TreeNode) -> int:
+        def maxGain(node):
+            if not node:
+                return 0
+
+            # 递归计算左右子节点的最大贡献值
+            # 只有在最大贡献值大于 0 时，才会选取对应子节点
+            leftGain = max(maxGain(node.left), 0)
+            rightGain = max(maxGain(node.right), 0)
+
+            # 节点的最大路径和取决于该节点的值与该节点的左右子节点的最大贡献值
+            priceNewpath = node.val + leftGain + rightGain
+
+            # 更新答案
+            self.maxSum = max(self.maxSum, priceNewpath)
+
+            # 返回节点的最大贡献值
+            return node.val + max(leftGain, rightGain)
+
+        maxGain(root)
+        return self.maxSum
+
+
+# DFS 和二叉树的直径差不多，看看那道题！通过一个全局变量记录最好的结果
+class Solution:
+    def maxPathSum(self, root: TreeNode) -> int:
+        self.maxVal = root.val
+
+        def dfs(root):
+            if not root:
+                return 0
+            left = max(0, dfs(root.left))
+            right = max(0, dfs(root.right))
+            self.maxVal = max(self.maxVal, root.val + left + right)
+            return root.val + max(left, right)
+
+        dfs(root)
+        return self.maxVal

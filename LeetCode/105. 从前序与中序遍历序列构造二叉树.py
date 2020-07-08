@@ -27,6 +27,7 @@ class TreeNode:
         self.left = None
         self.right = None
 
+
 '''
 核心思想
 如上文所提到的，先序遍历的顺序是 Root -> Left -> Right，这就能方便的从根开始构造一棵树。
@@ -35,6 +36,8 @@ class TreeNode:
 现在我们只需要将先序遍历的数组中删除根元素，然后重复上面的过程处理左右两棵子树。
 '''
 from typing import List
+
+
 class Solution:
     def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:
         # 前序 中序 -> 树

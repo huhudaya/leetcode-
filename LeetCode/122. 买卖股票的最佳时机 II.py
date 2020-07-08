@@ -24,7 +24,9 @@
 输出: 0
 解释: 在这种情况下, 没有交易完成, 所以最大利润为 0。
 '''
-# 暴力法
+
+
+# 暴力法 递归，是个很好的框架
 def maxProfit(prices):
     res = 0
     for buy in range(len(prices)):
@@ -37,6 +39,7 @@ def maxProfit(prices):
 def maxProfit(prices):
     n = len(prices)
     memo = [-1] * n
+
     def dp(start):
         if start >= n:
             return 0
@@ -52,11 +55,15 @@ def maxProfit(prices):
             res = max(res, dp(sell + 1) + prices[sell] - curMin)
             memo[start] = res
         return res
+
     return dp(0)
+
 
 # 贪心
 # 贪心算法是基于动态规划之上的一种特殊方法，对于某些特定问题可以比动态规划更高效
 from typing import List
+
+
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
         # 贪心算法
@@ -67,8 +74,11 @@ class Solution:
                 res += prices[i] - prices[i - 1]
         return res
 
+
 # 动态规划
 import sys
+
+
 class Solution:
     # 动态规划
     def maxProfit(self, prices: List[int]) -> int:
@@ -80,6 +90,6 @@ class Solution:
         dp[0][1] = -sys.maxsize
         # 标准dp模板
         for i in range(1, n + 1):
-            dp[i][0] = max(dp[i - 1][0], dp[i - 1][1] + prices[i - 1]) #当前卖出
-            dp[i][1] = max(dp[i - 1][1], dp[i - 1][0] - prices[i - 1]) #当前买入
+            dp[i][0] = max(dp[i - 1][0], dp[i - 1][1] + prices[i - 1])  # 当前卖出
+            dp[i][1] = max(dp[i - 1][1], dp[i - 1][0] - prices[i - 1])  # 当前买入
         return dp[n][0]

@@ -42,6 +42,7 @@ public int rob(int[] nums) {
 '''
 from typing import List
 
+
 # 这类动态规划的题目都有一个特点，就是需要找状态和选择！！！！！！
 # 状态一般用for循环，选择的时候一般是max,min，或者别的一些比较
 # 动态规划都是自底向上的，要有一种从底向上的思想，这就要求我们在定义dp数组函数的时候就要定义清楚了。
@@ -58,12 +59,13 @@ class Solution:
         # 定义dp数组，这里长度加1
         dp = [0 for _ in range(n + 1)]
         # base case
-        dp[1] = nums[0] #第一天，最多能抢劫num[0]
+        dp[1] = nums[0]  # 第一天，最多能抢劫num[0]
         for i in range(2, n + 1):
-            dp[i] = max(dp[i - 1],#当前不抢劫，然后加上一家的状态
-                        dp[i - 2] + nums[i - 1]#抢劫当前然后加上上一家的值
+            dp[i] = max(dp[i - 1],  # 当前不抢劫，然后加上一家的状态
+                        dp[i - 2] + nums[i - 1]  # 抢劫当前然后加上上一家的值
                         )
         return dp[n]
+
 
 '''
 这就是自顶向下的动态规划解法，我们也可以略作修改，写出自底向上的解法：

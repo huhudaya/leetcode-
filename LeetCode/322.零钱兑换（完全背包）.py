@@ -89,6 +89,7 @@ PS：为啥dp数组初始化为amount + 1呢
 所以初始化为amount + 1就相当于初始化为正无穷，便于后续取最小值
 '''
 # 动态规划
+# 这题是动态规划的最大值最小值问题，不是组合问题，所以nums数组在里面还是外面都不影响！
 class Solution:
     def coinChange(self, coins: List[int], amount: int):
         # 初始化为 amount + 1
@@ -96,6 +97,7 @@ class Solution:
         dp[0] = 0
         # 计算dp的每一个值 从dp[i] i=0开始
         # dp[i] = x表示，当目标金额为i时，至少需要x枚硬币。
+        # 完全背包问题，最大值问题，coins在里面还是外面都不影响
         for i in range(amount + 1):
             for coin in coins:
                 # 处理边界情况，防止数组越界问题
@@ -106,7 +108,7 @@ class Solution:
                 dp[i] = min(dp[i], 1 + dp[i - coin])
         return dp[amount] if dp[amount] != amount + 1 else -1
 
-
+# 完全背包
 class Solution:
     def coinChange(self, coins: List[int], amount: int) -> int:
         dp = [float('inf')] * (amount + 1)

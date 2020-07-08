@@ -53,7 +53,7 @@ class Solution:
         return ans
 
 
-# 快排
+# 快排 平均的时间复杂度为O(N)
 '''
 我们可以借鉴快速排序的思想。
 我们知道快排的划分函数每次执行完后都能将数组分成两个部分
@@ -105,6 +105,7 @@ class Solution:
                 select(left, index - 1)
             elif index < k:
                 select(index + 1, right)
+        #  直到index = k退出递归
 
         if k == 0:
             return []

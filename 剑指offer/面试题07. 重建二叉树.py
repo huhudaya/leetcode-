@@ -52,6 +52,8 @@ class TreeNode:
 现在我们只需要将先序遍历的数组中删除根元素，然后重复上面的过程处理左右两棵子树。
 '''
 
+from typing import List
+
 
 class Solution:
     def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:

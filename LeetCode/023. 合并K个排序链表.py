@@ -129,7 +129,7 @@ class Solution(object):
 #         self.val = x
 #         self.next = None
 
-
+# O(kn×logk)
 # 使用heapq NlogK Python中默认是小根堆
 class Solution:
     def mergeKLists(self, lists: List[ListNode]) -> ListNode:
@@ -141,15 +141,17 @@ class Solution:
         for i in range(len(lists)):
             if lists[i]:
                 heapq.heappush(head, (lists[i].val, i))
-                # 这一步骤很关键
+                # 这一步骤很关键，将列表中的每一个链表指向next链表
                 lists[i] = lists[i].next
         while head:
-            # 一定要注意，每个链表都是有序的
+            # 一定要注意，每个链表都是有序的，这里从堆中弹出一个节点
             val, idx = heapq.heappop(head)
             p.next = ListNode(val)
             # p是当前节点的指针
             p = p.next
+            # 需要将弹出的列表的节点放入堆中
             if lists[idx] is not None:
+                # 需要将弹出的列表的节点放入堆中
                 heapq.heappush(head, (lists[idx].val, idx))
                 # 这一步骤很关键，必须要指向下一个节点，因为当前节点已经入堆了
                 lists[idx] = lists[idx].next
@@ -165,6 +167,7 @@ class Solution:
 
 
 # 分治
+# O(kn×logk)
 class Solution(object):
     def mergeKLists(self, lists):
         """
@@ -199,11 +202,8 @@ class Solution(object):
 
 
 # 递归&分治=========>归并的思想
-# Definition for singly-linked list.
-# class ListNode:
-#     def __init__(self, x):
-#         self.val = x
-#         self.next = None
+# O(kn×logk)
+# 空间复杂度为 O(k)
 class Solution:
     def mergeKLists(self, lists: List[ListNode]) -> ListNode:
         if not lists:
