@@ -53,7 +53,7 @@ class Solution:
                 res[depth].appendleft(root.val)
             helper(root.left, depth + 1)
             helper(root.right, depth + 1)
-
+        res = list(map(list, res))
         helper(root, 0)
         return res
 # 也可以直接按102题的bfs思路来做 不过在最后输出的时候按层数的奇偶性判断一下是否反转

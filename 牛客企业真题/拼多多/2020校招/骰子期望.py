@@ -34,6 +34,14 @@ P(x = k) = P(x <= k) - P(x < k)
 比如2，3
 P(x = 2) = P(2,2) - P(1,1)
 
+以两个筛子，最大值为2,3为例
+可以得出，总概率分布的面积为2*3=6
+对1来说，最大值为1 的概率就是1*1的正方形，概率为cur=1/2*1/3=1/6  
+对2来说，最大值为2的概率就是2*2的正方形减去1*1的正方形，也就是cur-pre=2/2*2/3-1/6 =3/6
+对3来说，最大值为3的概率就是面积为6的长方形减去面积为4的情况2，也就是2/2*3/3-4/6
+综上，求得nums的max值，对其i遍历
+           对于每个i，计算i的概率cur
+           ans=(cur-pre)*i
 '''
 
 def main(n, nums):
@@ -42,10 +50,13 @@ def main(n, nums):
     maxs = max(nums)
     ans = 0
     pre = 0
+    # 遍历，求P(x<=k)
     for i in range(1, maxs + 1):
         cur = 1
+        # 这个for循环即求的P(x<=k)的概率，这个概率为nums数组中min(i,nums[j])的乘积相加，分子每次都是nums[j]相乘，相当于是n个骰子的点数相乘
         for j in range(n):
             cur *= min(i, nums[j]) / nums[j]
+        # ans的值作为当前数i概率期望
         ans += (cur - pre) * i
         pre = cur
     return ans

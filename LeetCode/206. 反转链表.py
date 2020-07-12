@@ -11,23 +11,26 @@
 
 链接：https://leetcode-cn.com/problems/reverse-linked-list
 '''
+
+
 # Definition for singly-linked list.
 class ListNode:
     def __init__(self, x):
         self.val = x
         self.next = None
 
+
 class Solution:
     # 非递归方法
     def reverseList1(self, head: ListNode) -> ListNode:
         pre = None
-        next = None
         while head:
             next = head.next
             head.next = pre
             pre = head
             head = next
         return pre
+
     # 递归方法
     def reverseList2(self, head: ListNode) -> ListNode:
         if head is None or head.next is None:
@@ -36,3 +39,24 @@ class Solution:
         head.next.next = head
         head.next = None
         return new_head
+
+
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
+
+
+class Solution:
+    def reverseList(self, head: ListNode) -> ListNode:
+        # 非递归
+        pre = None
+        dummy = ListNode(-1)
+        dummy.next = head
+        cur = head
+        while cur:
+            tmp = cur.next
+            cur.next = pre
+            pre = cur
+            cur = tmp
+        return head

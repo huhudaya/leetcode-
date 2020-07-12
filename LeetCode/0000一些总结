@@ -217,3 +217,18 @@ bfs和dfs相关问题
 2.一般bfs用来解决最短路径问题，比如求A到B的最短路径，当遇见B就可以直接return，不用全部遍历完，这点是和DFS最大的不同，dfs需要全部遍历完全之后才能确定最小值，比如111题目
 3.如果不涉及到回溯，则一般情况下dfs和bfs都是可以的
 4.二叉树问题中，如果要求最大或者最小值，多考虑用一个全局变量记录比较结果值
+
+
+链表中
+使用了dummy,然后dummy.next = head
+这样取中间节点的时候
+下边界
+fast,slow = head,head
+while fast and fast.next:
+    fast = fast.next.next
+    slow = slow.next
+上边界
+fast,slow = dummy
+while fast and fast.next:
+    fast = fast.next.next
+    slow = slow.next

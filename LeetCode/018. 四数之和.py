@@ -42,6 +42,8 @@ class Solution:
 
 # 双指针
 from typing import List
+
+
 class Solution:
     def fourSum(self, nums: List[int], target: int) -> List[List[int]]:
         n = len(nums)
@@ -119,7 +121,6 @@ class Solution(object):
         return rec
 
 
-
 class Solution:
     def fourSum(self, nums: List[int], target: int) -> List[List[int]]:
         n = len(nums)
@@ -132,20 +133,20 @@ class Solution:
         if nums[0] + nums[1] + nums[2] + nums[3] > target:
             return res
         # 最小值小于target return
-        if nums[n-1] + nums[n-2] + nums[n-3] + nums[n-4] < target:
+        if nums[n - 1] + nums[n - 2] + nums[n - 3] + nums[n - 4] < target:
             return res
         for i in range(n - 3):
-            # 固定第一个数防止重复
+            # 固定的第一个数防止重复
             if i > 0 and nums[i] == nums[i - 1]:
                 continue
-            #当前轮 最小的都比target大 跳出
+            # 当前轮 最小的都比target大 跳出
             if nums[i] + nums[i + 1] + nums[i + 2] + nums[i + 3] > target:
                 break
-            #当前轮 当数组最大值和都小于target,说明i这个数还是太小,遍历下一个
-            if nums[i] + nums[n-1] + nums[n-2] + nums[n-3] < target:
+            # 当前轮 当数组最大值和都小于target,说明i这个数还是太小,遍历下一个
+            if nums[i] + nums[n - 1] + nums[n - 2] + nums[n - 3] < target:
                 continue
             # 固定两个数 i 和 j
-            for j in range(i + 1, n -2):
+            for j in range(i + 1, n - 2):
                 if j - i > 1 and nums[j] == nums[j - 1]:
                     continue
                 if nums[i] + nums[j] + nums[j + 1] + nums[j + 2] > target:
@@ -159,8 +160,10 @@ class Solution:
                     tmp = nums[i] + nums[j] + nums[left] + nums[right]
                     if tmp == target:
                         res.append([nums[i], nums[j], nums[left], nums[right]])
+                        # 小剪枝
                         while left < right and nums[left] == nums[left + 1]:
                             left += 1
+                        # 小剪枝
                         while left < right and nums[right] == nums[right - 1]:
                             right -= 1
                         left += 1

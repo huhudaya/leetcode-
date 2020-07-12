@@ -79,27 +79,46 @@ public ListNode removeNthFromEnd(ListNode head, int n) {
 
 
 # 重点是找见K-N的节点，然后删除K-N+1的节点，这里用dummy节点会方便很多
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
 class Solution:
+    # 这种方法不是很好理解，建议用第二种
     def removeNthFromEnd(self, head: ListNode, n: int) -> ListNode:
-        # 假设总共有K个节点
-        # 核心思想是找到第K-N个节点，然后删除下一个节点，即K-N+1的节点
-        # 这里使用dummy节点的话会很方便,因为最后还有None节点，所以其实总共需要遍历K+1次
-        # 为了找到K-N个节点，即遍历K-N次，需要先找到N+1个几点，然后遍历K+1-(N-1)次
-        # '''''''''''''
-        # 第一个指针从列表的开头向前移动 n+1 步，而第二个指针将从列表的开头出发
-        # 现在，这两个指针被 n 个结点分开
-        # '''''''''''''
+        # 核心思路就是利用双指针，先进行一次循环，将fast和slow两个指针的间隔设置为n,然后同时移动两个指针
+        # 这样相当于两个指针的间隔一直不变，一直是n,然后进行删除操作就可以了
         dummy = ListNode(-1)
         fast = dummy
         slow = dummy
         dummy.next = head
-        for i in range(n):
+        # 这里fast指针先走n + 1步，相当于fast现在指向第n+1个节点，现在fast和slow这两个指针的间隔为n+1
+        for i in range(n + 1):
             fast = fast.next
         while fast:
             fast = fast.next
             slow = slow.next
         slow.next = slow.next.next
         return dummy.next
+    def removeNthFromEnd2(self, head: ListNode, n: int) -> ListNode:
+        # 核心思路就是利用双指针，先进行一次循环，将fast和slow两个指针的间隔设置为n,然后同时移动两个指针
+        # 这样相当于两个指针的间隔一直不变，一直是n,然后进行删除操作就可以了
+        dummy = ListNode(-1)
+        fast = dummy
+        slow = dummy
+        dummy.next = head
+        # 这里fast指针先走n步，相当于fast现在指向第n个节点
+        for i in range(n):
+            fast = fast.next
+        # 注意这里需要判断一下.next指针是否为null
+        while fast.next:
+            fast = fast.next
+            slow = slow.next
+        slow.next = slow.next.next
+        return dummy.next
+
 '''
 public ListNode removeNthFromEnd(ListNode head, int n) {
     ListNode dummy = new ListNode(0);

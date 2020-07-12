@@ -27,6 +27,7 @@ class Solution:
         for i in range(n):
             # 遍历，然后要求arr[i] = i
             while arr[i] != i:
+                # 将要替换到的位置已经存在了，就直接返回
                 if arr[arr[i]] == arr[i]:
                     return arr[i]
                 else:

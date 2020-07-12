@@ -48,8 +48,8 @@ class Solution:
         # 因为是后序遍历，所以这里一定是最近的公共祖先
         if left and right:
             return root
-        elif left is None and right is None:
-            return None
+        # elif left is None and right is None:
+        #     return None
         elif left is None:
             return right
         else:

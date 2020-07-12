@@ -65,6 +65,7 @@ class Solution:
             if len(res) == depth:
                 res.append([])
             if root.left:
+                # 提前就放进去
                 res[depth].append(root.left.val)
                 helper(root.left, depth + 1)
             if root.right:

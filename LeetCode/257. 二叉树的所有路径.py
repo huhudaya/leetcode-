@@ -225,7 +225,7 @@ class Solution:
         # 这里需要思考一下为什么需要pop()，这是因为当left和right都执行完之后，一定会弹出当前的值，即出栈!
         path.pop()
 
-# BFS
+# BFS！！！！！
 class Solution:
     def binaryTreePaths(self, root: TreeNode) -> List[str]:
         from collections import deque

@@ -44,7 +44,7 @@ for( int i=1; i<=n; i++ )
 	    	dp[i][j] = dp[i-1][j-w[i]] + 1;
 	        kry[i][j] = kry[i-1][j-w[i]];
 	    }
-	    	else if( dp[i][j]==dp[i-1][j-w[i]]+1 )
+	    	else if( dp[i][j] == dp[i-1][j-w[i]]+1 )
 	             kry[i][j] = kry[i-1][j] + kry[i-1][j-w[i]];
 	}
     }

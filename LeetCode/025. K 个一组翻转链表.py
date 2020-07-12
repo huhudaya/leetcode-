@@ -122,7 +122,7 @@ class Solution:
     def reverseKGroup(self, head: ListNode, k: int) -> ListNode:
         cur = head
         count = 0
-        # 每次先遍历前k个节点
+        # 每次先遍历前k个节点，遍历完之后cur指向下一组需要反转的的头结点
         while cur and count != k:
             cur = cur.next
             count += 1

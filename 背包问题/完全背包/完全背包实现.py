@@ -19,4 +19,12 @@
                 if(j >= k*C[i])
                      then F[i][k] ← max(F[i][k],F[i-1][j-k*C[i]]+k*W[i])
      return F[N][V]
+
+空间优化
+     F[] = {0}
+     for i←1 to N
+         do for k←C[i] to V
+             F[k] ← max(F[k],F[k-C[i]]+W[i])
+     return F[V]
 '''
+

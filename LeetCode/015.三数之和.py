@@ -35,9 +35,10 @@ class Solution:
                 _sum = nums[i] + nums[l] + nums[r]
                 if _sum == 0:
                     result.append([nums[i], nums[l], nums[r]])
-                    # 去重,注意必须先判断 l < r,否则会出现超出索引
+                    # 小剪枝 去重,注意必须先判断 l < r,否则会出现超出索引
                     while l < r and nums[l] == nums[l + 1]:
                         l += 1
+                    # 小剪枝
                     while l < r and nums[r] == nums[r - 1]:
                         r -= 1
                     # 注意这里，每次循环必须移动指针，否则死循环

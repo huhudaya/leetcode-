@@ -30,6 +30,7 @@ n: 13   k: 2
 当移动步数大于k，说明目标值在节点1和节点2之间，我们要向下移动！即从节点1移动到节点10。
 '''
 
+
 class Solution:
     def findKthNumber(self, n: int, k: int) -> int:
 
@@ -57,6 +58,8 @@ class Solution:
                 cur *= 10
 
         return cur - 1
+
+
 # 自己的版本
 class Solution:
     def findKthNumber(self, n: int, k: int) -> int:
@@ -68,6 +71,7 @@ class Solution:
                 n1 *= 10
                 n2 *= 10
             return step
+
         cur = 1
         # 因为k多走了一步，所以这里需要提前减1
         k -= 0
@@ -75,13 +79,15 @@ class Solution:
             # 计算水平移动的时候需要的步数
             step = cal_step(n, cur, cur + 1)
             # 需要水平移动
-            if step <= k: # 在另外的子树中
+            if step <= k:  # 在另外的子树中
                 k -= step
                 # 这里cur每次都+1，最后会多加一个1
                 cur += 1
             # 需要下沉
-            else: # 在当前子树中
+            else:  # 在当前子树中
                 k -= 1
                 cur *= 10
         return cur
-print(Solution().findKthNumber(100,90))
+
+
+print(Solution().findKthNumber(100, 90))

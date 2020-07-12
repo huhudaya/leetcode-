@@ -16,8 +16,6 @@
 # 快排
 from typing import List
 import random
-
-
 class Solution:
     def randomized_partition(self, nums, l, r):
         # 找一个随机数

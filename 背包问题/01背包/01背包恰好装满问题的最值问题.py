@@ -37,32 +37,44 @@ fill(dp,dp+maxn,INF), dp[0]=0;
 链接：https://www.jianshu.com/p/25f4a183ede5
 '''
 
+# 恰好装满
 '''
-//01背包--不要求正好装满
-#include <iostream>
+#include<stack>
+#include<queue>
+#include<stdio.h>
+#include<string.h>
+#include<algorithm>
+#define Min(a,b) a<b?a:b
 using namespace std;
-#define max(N1,N2) N1>N2?N1:N2
+const int N=507;
+const int maxn=10007;
+int dp[maxn],w[N],v[N];//注意dp爆不爆int 
+int t,n,v1;
 int main()
 {
-	int N, V;
-	while (cin >> V >> N)//这里要求V<1000，N<100,否则后面的数组装不下
-	{
-		int v[100], w[100];//体积和价值
-		int f[1000] = { 0 };//状态转移矩阵，这里将f数组全部初始化为0
-		for (int i = 1; i <= N; i++)
-		{
-			cin >> v[i] >> w[i];//输入原始数据
-		}
-		for (int i = 1; i <= n; i++)
-		{
-			for (int j = V; j >= v[i]; j--)
-			{
-				f[j] = max(f[j], f[j - v[i]] + w[i]);
-			}
-		}
-		cout << f[V] << endl;//输出结果
-	}
-	return 0;
+    scanf("%d",&t);
+    while(t--)
+    {                              //求最大值，初始化为无穷小 
+    	memset(dp,0x3f,sizeof(dp));//求最小值，初始化为无穷大 
+    	dp[0]=0;//恰好装满，只有背包容量为0时满足，其他初始化为无穷表示未被定义 
+        int i,j,w1,w2;
+        scanf("%d%d",&w1,&w2);
+        v1=w2-w1;
+        scanf("%d",&n);
+        for(i=1;i<=n;i++)
+            scanf("%d%d",&w[i],&v[i]);
+        for(i=1;i<=n;i++)
+        {
+            for(j=v[i];j<=v1;j++)//正序，放入第i物品,之前的状态需要进行改变,故需要正序 
+           {                    //（01背包是倒序,因为对之前的状态没影响） 
+                    dp[j]=Min(dp[j],dp[j-v[i]]+w[i]);
+            } 
+        }
+        if(dp[v1]==0x3f3f3f3f) //求最小值时，如果等于无穷大则不能被装满 
+        printf("This is impossible.\n");//求最大值时,if(dp[v1]<0)则不能被装满 
+        else
+         printf("The minimum amount of money in the piggy-bank is %d.\n",dp[v1]);
+    }
+    return 0;
 }
-
 '''

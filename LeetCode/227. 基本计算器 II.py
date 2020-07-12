@@ -54,7 +54,8 @@ def calculate(s: str) -> int:
                 num = 0
                 sign = c
             # 遇到右括号返回递归结果
-            if c == ')': break
+            if c == ')':
+                break
         return sum(stack)
 
     return helper(list(s))
@@ -75,7 +76,7 @@ class Solution:
                 c = s.popleft()
                 if c.isdigit():
                     num = num * 10 + int(c)
-                # 当c不是数字或者遍历到了尽头，就执行入栈的操作
+                # 当c不是数字或者遍历到了尽头，就执行入栈的操作,注意，这里必须是if,因为
                 if (not c.isdigit() and c != ' ') or len(s) == 0:
                     # 判断之前的sign标志位
                     if sign == "+":
@@ -92,3 +93,4 @@ class Solution:
                     sign = c
             return sum(stack)
         return helper(s)
+print(Solution().calculate("14-3/2"))

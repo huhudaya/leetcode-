@@ -57,7 +57,7 @@ class Solution:
         # 找个排头
         dummy = ListNode(-1)
         # 注意不要将dummy.next = head,此时dummy.next = None
-        # 为什么要设置为none呢？因为此时的队尾就是none，要将cur插入到dummy开头的链表中,当前这个链表的终点是none
+        # 为什么要设置为None呢？因为此时的队尾就是none，要将cur插入到dummy开头的链表中,当前这个链表的终点是none
         pre = dummy
         # 依次拿head节点
         cur = head
@@ -70,7 +70,9 @@ class Solution:
             # 进行插入操作
             cur.next = pre.next
             pre.next = cur
+            # 插入完成之后继续将pre移动到dummy位置
             pre = dummy
+            # cur指针指向下一个节点
             cur = tmp
         return dummy.next
 

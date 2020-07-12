@@ -81,24 +81,70 @@ class Solution:
 #         self.val = x
 #         self.next = None
 
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
 class Solution:
     def reverseBetween(self, head: ListNode, m: int, n: int) -> ListNode:
-        # 定义虚拟头结点
+        # 非递归
         dummy = ListNode(-1)
         dummy.next = head
         pre = dummy
-        # 先找到第m个节点的上一个节点
-        for _ in range(m - 1):
+        # 此时pre指针指向第m - 1个节点
+        for i in range(m - 1):
             pre = pre.next
-
-        node = pre
         cur = pre.next
-        # 反转m到n之间的节点
-        for _ in range(n - m + 1):
+        tail = pre.next
+        # 保存这个pre
+        node = pre
+        pre = None
+        # 反转m-n 需要转n-m+1次
+        for i in range(n - m + 1):
+            tmp = cur.next
             cur.next = pre
-            cur = cur.next
             pre = cur
-            # cur.next, cur, pre = pre, cur.next, cur
+            cur = tmp
         node.next.next = cur
         node.next = pre
+        return dummy.next
+
+
+
+'''
+思路二:
+用三个指针,进行插入操作
+例如:
+1->2->3->4->5->NULL, m = 2, n = 4
+将节点3插入节点1和节点2之间
+变成: 1->3->2->4->5->NULL
+再将节点4插入节点1和节点3之间
+变成:1->4->3->2->5->NULL
+实现翻转的效果!
+'''
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def reverseBetween(self, head: ListNode, m: int, n: int) -> ListNode:
+        dummy = ListNode(-1)
+        dummy.next = head
+        pre = dummy
+         # 找到翻转链表部分的前一个节点, 1->2->3->4->5->NULL, m = 2, n = 4 指的是 节点值为1
+        for _ in range(m - 1):
+            pre = pre.next
+        # 用 pre, start, tail三指针实现插入操作
+        # tail 是插入pre,与pre.next的节点
+        start = pre.next
+        tail = start.next
+        for _ in range(n - m):
+            start.next = tail.next
+            tail.next = pre.next
+            pre.next = tail
+            tail = start.next
         return dummy.next
