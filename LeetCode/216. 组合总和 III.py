@@ -17,20 +17,24 @@
 '''
 from typing import List
 from itertools import combinations as com
+
+
 class Solution:
     # 简约版本
     def combinationSum31(self, k: int, n: int) -> List[List[int]]:
-        tmp = list(map(list,list(com(range(1, 10), k))))
+        tmp = list(map(list, list(com(range(1, 10), k))))
         res = []
         for i in tmp:
             if sum(i) == n:
                 res.append(i)
         return res
+
     # 优化版
     def combinationSum3(self, k: int, n: int) -> List[List[int]]:
         candidates = [i for i in range(1, 10)]
         size = 9
         res = []
+
         def dfs(target, path, start):
             if len(path) == k:
                 if target == 0:
@@ -45,13 +49,16 @@ class Solution:
                 path.append(i)
                 dfs(target - i, path, i + 1)
                 path.pop()
+
         dfs(n, [], 1)
         return res
+
     # 未优化版
     def combinationSum32(self, k: int, n: int) -> List[List[int]]:
         candidates = [i for i in range(1, 10)]
         size = 9
         res = []
+
         def dfs(target, path, start):
             if len(path) == k and target == 0:
                 res.append(path[:])
@@ -60,5 +67,6 @@ class Solution:
                 path.append(i)
                 dfs(target - i, path, i + 1)
                 path.pop()
+
         dfs(n, [], 1)
         return res

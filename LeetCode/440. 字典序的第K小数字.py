@@ -74,7 +74,7 @@ class Solution:
 
         cur = 1
         # 因为k多走了一步，所以这里需要提前减1
-        k -= 0
+        k -= 1
         while k > 0:
             # 计算水平移动的时候需要的步数
             step = cal_step(n, cur, cur + 1)

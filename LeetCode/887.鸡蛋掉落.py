@@ -1,7 +1,8 @@
 '''
 你将获得 K 个鸡蛋，并可以使用一栋从 1 到 N  共有 N 层楼的建筑。
 每个蛋的功能都是一样的，如果一个蛋碎了，你就不能再把它掉下去。
-你知道存在楼层 F ，满足 0 <= F <= N 任何从高于 F 的楼层落下的鸡蛋都会碎，从 F 楼层或比它低的楼层落下的鸡蛋都不会破。
+你知道存在楼层 F ，满足 0 <= F <= N 任何从高于 F 的楼层落下的鸡蛋都会碎
+从 F 楼层或比它低的楼层落下的鸡蛋都不会破。
 每次移动，你可以取一个鸡蛋（如果你有完整的鸡蛋）并把它从任一楼层 X 扔下（满足 1 <= X <= N）。
 你的目标是确切地知道 F 的值是多少。
 无论 F 的初始值如何，你确定 F 的值的最小移动次数是多少？
@@ -75,7 +76,7 @@ def superEggDrop(K: int, N: int):
         # 因为我们要求的是最坏情况下扔鸡蛋的次数，所以鸡蛋在第i层楼碎没碎，取决于那种情况的结果更大：
         # 第一次遍历的时候实际上是确定第一次在哪一层楼扔鸡蛋，然后再次递归的遍历，找到最好的策略下最坏的结果
         for i in range(1, N + 1):
-            # 最坏情况下的最少扔鸡蛋次数
+            # 最好的策略下最坏的情况扔鸡蛋次数，相当于比较所有的最坏的结果，取最好的
             res = min(res,
                       # 最坏的情况下
                       max(
@@ -187,3 +188,23 @@ def superEggDrop(K: int, N: int):
         return res
     return dp(K, N)
 print(float("INF"))
+
+
+import sys
+class Solution:
+    def superEggDrop(self, K: int, N: int) -> int:
+        # 迭代
+        @functools.lru_cache(None)
+        def dp(k, n):
+            res = sys.maxsize
+            if k == 1:
+                return n
+            if n == 0:
+                return 0
+            for i in range(1, n + 1):
+               res = min(res, max(dp(k - 1, i - 1), dp(k, n - i)) + 1)
+            return res
+        return dp(K, N)
+
+
+

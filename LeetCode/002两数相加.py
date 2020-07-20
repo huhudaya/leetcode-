@@ -50,7 +50,7 @@ class Solution:
             # n % 10 即最低位
             node = ListNode(n % 10)
             # n // 10 即进位数
-            ca = n//10
+            ca = n // 10
             if pre is None:
                 node.next = pre
                 pre = node

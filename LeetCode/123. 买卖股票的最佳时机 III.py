@@ -23,17 +23,19 @@
 解释: 在这个情况下, 没有交易完成, 所以最大利润为 0。
 '''
 
-
 # dp[i][j][K] ：表示到第 i 天为止，已经交易了 j 次，并且当前持股状态为 K 的最大收益。
 from typing import List
 import sys
 import numpy as np
+
+
 class Solution:
     # 使用递归 备忘录 会超时
     def maxProfit1(self, prices: List[int]) -> int:
         # n = len(prices)
         memo = dict()
         num = 2
+
         def dp(start, k):
             if start >= len(prices):
                 return 0
@@ -51,13 +53,17 @@ class Solution:
                 res = max(dp(sell + 1, k - 1) + prices[sell] - curMin, res)
             memo[(start, k)] = res
             return res
+
         return dp(0, num)
+
     # 使用状态机
     def maxProfit(self, prices: List[int]) -> int:
         n = len(prices)
         k = 2
         # dp数组 需要长度+1
         dp = np.zeros((n + 1, k + 1, 2), dtype=np.int)
+        # dp = [[[0, 0, 0], [0, 0, 0]] for i in range(n)]
+        # dp = [[[0] * 2 for _ in range(3)] for _ in range(n + 1)]
         # base case
         for j in range(k + 1):
             dp[0][j][0] = 0
@@ -67,7 +73,88 @@ class Solution:
             dp[i][0][1] = -sys.maxsize
         for i in range(1, n + 1):
             for j in range(1, k + 1):
-                dp[i][j][0] = max(dp[i-1][j][0], dp[i-1][j][1] + prices[i-1]) #当前卖出
-                dp[i][j][1] = max(dp[i-1][j][1], dp[i-1][j-1][0] - prices[i-1]) #当前买入，所以消耗一次机会
-        return int(dp[n][k][0]) #这里需要转成int类型输出
-print(Solution().maxProfit([1,2,3,4,5]))
+                print("src:"+"i=\t"+str(i)+'\t'+"j=\t"+str(j)+"\t"+"dp=\t"+str(dp[i][0][0]))
+                dp[i][j][0] = max(dp[i - 1][j][0], dp[i - 1][j][1] + prices[i - 1])  # 当前卖出
+                dp[i][j][1] = max(dp[i - 1][j][1], dp[i - 1][j - 1][0] - prices[i - 1])  # 当前买入，所以消耗一次机会
+                print("des:"+"i=\t"+str(i)+'\t'+"j=\t"+str(j)+"\t"+"dp=\t"+str(dp[i][0][0]))
+        return int(dp[n][k][0])  # 这里需要转成int类型输出
+
+
+print(Solution().maxProfit([1, 2, 3, 4, 5]))
+
+'''
+动态规划+股票交易+k=2:dp[i][k][0 or 1]表示第i天，最多可完成k笔交易时，是（1）否（0）持有股票时，的最大利润。
+状态转移方程：
+dp[i][k][0]=max(dp[i-1][k][0],dp[i-1][k][1]+prices[i]) ，第i天未持有：（1）第i-1天未持有，（2）第i-1天持有，第i天卖出,赚钱第i天利润
+dp[i][k][1]=max(dp[i-1][k][1],dp[i-1][k-1][0]-prices[i]) ,第i天持有：（1）第i-1天持有，（2）第i-1天未持有，第i天买入，买入时需要消耗一次k，成本为prices[i]
+k从1开始，因为dp[i][0][0 or 1]表示最多可进行0笔交易，不论什么时候结果都是0
+初始化
+dp[0][k][1]=dp[1][k][1]第0天不可能有一次交易,设为负无穷float("-inf")
+时间复杂度：O（2n） ，每一天都要判断k=2次，一共n天
+空间复杂度：O（2kn） ，dp一共要占用这么2kn个空间
+
+class Solution(object):
+    def maxProfit(self, prices):
+        n = len(prices)
+        if n<1:
+            return 0
+        dp = [[[0]*2 for _ in range(3)] for _ in range(n+1)]
+        for k in range(3):
+            dp[0][k][1] = float('-inf')
+        for i in range(1,n+1):
+            for k in range(1,3):
+                dp[i][k][0] = max(dp[i-1][k][0],dp[i-1][k][1]+prices[i-1])
+                dp[i][k][1] = max(dp[i-1][k][1],dp[i-1][k-1][0]-prices[i-1])
+        return dp[n][2][0]
+
+卖出时算做交易
+上面是在买入时减少k
+如果直接修改成dp[i][k][0] = max(dp[i-1][k][0],dp[i-1][k-1][1]+prices[i-1])结果不对。
+原因在于若买入不消耗交易次数，则可以在k=0时买入，需要对k=0多做一步初始化。其他不变，循环内部修改如下即可。
+
+for i in range(1,n+1):
+    for k in range(3):
+        dp[i][0][0] = 0
+        dp[i][k][0] = max(dp[i-1][k][0],dp[i-1][k-1][1]+prices[i-1])
+        dp[i][k][1] = max(dp[i-1][k][1],dp[i-1][k][0]-prices[i-1])
+return dp[n][2][0]
+代码
+class Solution(object):
+    def maxProfit(self, prices):
+        n = len(prices)
+        if n<1:
+            return 0
+        dp = [[[0]*2 for _ in range(3)] for _ in range(n+1)]
+        for k in range(3):
+            dp[0][k][1] = float('-inf')
+        for i in range(1,n+1):
+            # 卖出时才算交易的话，意味着当k=0的时候，也是可以进行交易的
+            for k in range(3):
+                # 卖出时算一个交易次数
+                dp[i][0][0] = 0
+                dp[i][k][0] = max(dp[i-1][k][0],dp[i-1][k-1][1]+prices[i-1])
+                dp[i][k][1] = max(dp[i-1][k][1],dp[i-1][k][0]-prices[i-1])
+        return dp[n][2][0]
+
+
+
+
+
+优化
+dp[i]仅与dp[i-1]有关，可降维
+dp[k][0] = max(dp[k][0],dp[k][1]+prices[i-1])
+dp[k][1] = max(dp[k][1],dp[k-1][0]-prices[i-1])
+时间复杂度：O（2n），空间复杂度：O（1），只需要6的常数空间。
+代码
+class Solution(object):
+    def maxProfit(self, prices):
+        n = len(prices)
+        dp = [[0]*2 for _ in range(3)]
+        for k in range(3):
+            dp[k][1] = float('-inf')
+        for i in range(1,n+1):
+            for k in range(1,3):
+                dp[k][0] = max(dp[k][0],dp[k][1]+prices[i-1])
+                dp[k][1] = max(dp[k][1],dp[k-1][0]-prices[i-1])
+        return dp[2][0]
+'''

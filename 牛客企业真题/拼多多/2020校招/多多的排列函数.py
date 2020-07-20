@@ -1,12 +1,6 @@
 '''
 数列 {An} 为N的一种排列。
 例如N=3，可能的排列共6种：
-1
-2
-3
-4
-5
-6
 1, 2, 3
 1, 3, 2
 2, 1, 3
@@ -44,6 +38,7 @@
 - 当{An}为2，1，3时可以得到F(N)的最大值2
 '''
 
+
 # 4个一组
 def getmin(n):
     if n % 4 == 0 or n % 4 == 3:
@@ -51,8 +46,10 @@ def getmin(n):
     else:
         return 1
 
+
 def getmax(n):
     return n - getmin(n - 1)
+
 
 if __name__ == "__main__":
     t = int(input())
@@ -65,7 +62,7 @@ if __name__ == "__main__":
 
 每四个数 例如 5，6，7，8，我们把它们两两一组 |||8-6|-7|-5|=0，最小值是0；猜测最小值的变化也是4个一组
 
-看到min只有2种取值。0，1，最大值自然就是N-getmin(N-1)
+看到min只有2种取值:0，1，最大值自然就是N-getmin(N-1)
 '''
 # java
 '''
@@ -115,14 +112,19 @@ public class Main {
 # F（x) max不就是在|A(x)-F(x-1)min |和|A(x)-F(x-1)max |取大值吗
 # 看到min只有2种取值：0，1，最大值自然就是N-getmin(N-1)
 n = int(input())
+
+
 def get_min(N):
     tmp = N % 4
     if tmp == 1 or tmp == 2:
         return 1
     else:
         return 0
+
+
 for i in range(n):
     num = int(input())
+    # 注意，最小值其实就是对所有的元素对4取余
     min_num = get_min(num)
     max_num = num - get_min(num - 1)
     print(min_num, max_num)

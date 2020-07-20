@@ -53,29 +53,34 @@ dp[i][j] |= dp[i - 1][j]
 
 初始化的时候需要考虑单个字符串能否组成 str3 对应的区间，这个比较简单，直接判断前缀是否相等即可。
 '''
+
+
 # dp[i][j] 表示的是 str1(0…i) 和 str2(0…j) 是否可以交错组成 str3(0…i+j)
 # s_{1}s 
 # s1的前i个字符和s2的前j个字符是否能构成s3的前i+j个字符
 class Solution:
     def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
-        len1=len(s1)
-        len2=len(s2)
-        len3=len(s3)
-        if(len1 + len2 != len3):
+        len1 = len(s1)
+        len2 = len(s2)
+        len3 = len(s3)
+        if (len1 + len2 != len3):
             return False
-        dp=[[False]*(len2+1) for i in range(len1+1)]
-        dp[0][0]=True
+        dp = [[False] * (len2 + 1) for i in range(len1 + 1)]
+        dp[0][0] = True
         # 初始化第一列，dp[i][0], 表示s1的前i位是否构成s3的前i位：前i-1位可以构成s3的前i-1位且s1的第i位s1[i-1]等于s3的第i位s3[i-1]
-        for i in range(1,len1+1):
+        for i in range(1, len1 + 1):
             dp[i][0] = (dp[i - 1][0] and s1[i - 1] == s3[i - 1])
         # 初始化第一行，dp[0][j], 表示s2的前j位是否能构成s3的前j位
-        for i in range(1,len2+1):
-            dp[0][i]=(dp[0][i - 1] and s2[i-1] == s3[i - 1])
+        for i in range(1, len2 + 1):
+            dp[0][i] = (dp[0][i - 1] and s2[i - 1] == s3[i - 1])
 
-        for i in range(1,len1+1):
-            for j in range(1,len2+1):
-                dp[i][j]=(dp[i][j-1] and s2[j-1]==s3[i+j-1]) or (dp[i-1][j] and s1[i-1]==s3[i+j-1])
+        for i in range(1, len1 + 1):
+            for j in range(1, len2 + 1):
+                dp[i][j] = (dp[i][j - 1] and s2[j - 1] == s3[i + j - 1]) or (
+                            dp[i - 1][j] and s1[i - 1] == s3[i + j - 1])
         return dp[-1][-1]
+
+
 '''
 public boolean isInterleave(String s1, String s2, String s3) {
     int length1 = s1.length();
@@ -120,6 +125,7 @@ class Solution:
         n1 = len(s1)
         n2 = len(s2)
         n3 = len(s3)
+
         @functools.lru_cache(None)
         def helper(i, j, k):
             if i == n1 and j == n2 and k == n3:
@@ -134,4 +140,5 @@ class Solution:
                 if helper(i, j + 1, k + 1):
                     return True
             return False
+
         return helper(0, 0, 0)

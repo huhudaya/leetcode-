@@ -26,6 +26,7 @@ class FooBar {
 输出: "foobarfoobar"
 解释: "foobar" 将被输出两次。
 **/
+
 //方案一：Semaphore 信号量
 class FooBar {
     private int n;
@@ -33,7 +34,7 @@ class FooBar {
     public FooBar(int n) {
         this.n = n;
     }
-
+    // 哪一个需要先打印，就将哪个semaphore的值置为1
     Semaphore foo = new Semaphore(1);
     Semaphore bar = new Semaphore(0);
 
@@ -94,4 +95,124 @@ class FooBar {
             }
         }
     }
+}
+
+// 方法三：使用一个CountDownLatch和一个CyclicBarrier解决
+
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.CyclicBarrier;
+class FooBar {
+    private int n;
+    private CountDownLatch a;
+    private CyclicBarrier barrier;// 使用CyclicBarrier保证任务按组执行
+    public FooBar(int n) {
+        this.n = n;
+        a = new CountDownLatch(1);
+        barrier = new CyclicBarrier(2);// 保证每组内有两个任务
+    }
+
+    public void foo(Runnable printFoo) throws InterruptedException {
+
+        try {
+            for (int i = 0; i < n; i++) {
+                printFoo.run();
+                a.countDown();// printFoo方法完成调用countDown
+                barrier.await();// 等待printBar方法执行完成
+            }
+        } catch(Exception e) {}
+    }
+
+    public void bar(Runnable printBar) throws InterruptedException {
+
+        try {
+            for (int i = 0; i < n; i++) {
+                a.await();// 等待printFoo方法先执行
+                printBar.run();
+                a = new CountDownLatch(1); // 保证下一次依旧等待printFoo方法先执行
+                barrier.await();// 等待printFoo方法执行完成 当barrier减少到0的时候，才会继续执行
+            }
+        } catch(Exception e) {}
+    }
+}
+
+// 方法四：使用condition实现精确唤醒
+class FooBar {
+    private ReentrantLock lock = new ReentrantLock();
+    private Condition fooCondition = lock.newCondition();
+    private Condition barCondition = lock.newCondition();
+    private int count = 1;
+    private int n;
+
+    public FooBar(int n) {
+        this.n = n;
+    }
+
+    public void foo(Runnable printFoo) throws InterruptedException {
+        for (int i = 0; i < n; i++) {
+            lock.lock();
+            if(count != 1) {
+                fooCondition.await();
+            }
+            // printFoo.run() outputs "foo". Do not change or remove this line.
+        	printFoo.run();
+            barCondition.signal();
+            count=2;
+            lock.unlock();
+        }
+    }
+
+    public void bar(Runnable printBar) throws InterruptedException {
+        for (int i = 0; i < n; i++) {
+            lock.lock();
+            if(count != 2) {
+                barCondition.await();
+            }
+            // printBar.run() outputs "bar". Do not change or remove this line.
+        	printBar.run();
+            fooCondition.signal();
+            count=1;
+            lock.unlock();
+        }
+    }
+}
+
+// 方法五：使用synchronize
+class FooBar {
+        private int n;
+	    private volatile boolean isFoo;
+
+	    public FooBar(int n) {
+	        this.n = n;
+	    }
+
+	    public synchronized void foo(Runnable printFoo) throws InterruptedException {
+
+	        for (int i = 0; i < n; i++) {
+	            // printFoo.run() outputs "foo". Do not change or remove this line.
+	            printFoo.run();
+	            isFoo = true;
+	            this.notify();
+	            if (i < n - 1) {
+	                this.wait();
+	            }
+	            //            }
+	        }
+	    }
+
+	    public synchronized void bar(Runnable printBar) throws InterruptedException {
+	        if (!isFoo) {
+	            this.wait();
+	        }
+	        for (int i = 0; i < n; i++) {
+	            //            synchronized (lock) {
+	            // printBar.run() outputs "bar". Do not change or remove this line.
+	            printBar.run();
+	            this.notify();
+                // 必须先唤醒在阻塞当前线程
+                if (i < n - 1) {
+	                this.wait();
+	            }
+	            //            }
+	        }
+	    }
 }

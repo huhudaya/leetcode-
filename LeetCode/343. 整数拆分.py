@@ -18,7 +18,8 @@
 # 暴力递归
 class Solution:
     def integerBreak(self, n: int) -> int:
-        if n == 2: return 1
+        if n == 2:
+            return 1
         res = 0
         for i in range(1, n):
             res = max(res, max(i * self.integerBreak(n - i), i * (n - i)))

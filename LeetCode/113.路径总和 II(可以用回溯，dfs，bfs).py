@@ -65,6 +65,7 @@ class Solution:
         res = []
         while stack:
             tmp, node = stack.pop()
+            # 这里用到了sum,说明性能就比较差了
             if not node.right and not node.left and sum(tmp) == sum:
                 res.append(tmp)
             if node.right:

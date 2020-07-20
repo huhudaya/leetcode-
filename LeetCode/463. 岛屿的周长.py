@@ -39,6 +39,7 @@ class Solution:
                 # 如果找见了一个grip为1，则一定从这里入口，因为题目规定了只有一个岛屿
                 if grid[i][j] == 1:
                     res += 4
+                    # 这里判断一下左边和上边，如果是岛屿和岛屿连接，则减去2
                     if i - 1 >= 0 and grid[i - 1][j] == 1:
                         res -= 2
                     if j - 1 >= 0 and grid[i][j - 1] == 1:
@@ -62,6 +63,7 @@ class Solution:
                         # 水域边界或者是网格边界 + 1
                         if not (0 <= tmp_i < row and 0 <= tmp_j < col) or grid[tmp_i][tmp_j] == 0:
                             res += 1
+                # 这里直接return就可以了，因为只有一个岛屿
                 return res
         return res
 

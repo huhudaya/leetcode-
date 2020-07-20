@@ -21,6 +21,7 @@
 # 默认是小根堆
 # 时间复杂度 : O(Nlogk)。
 # 空间复杂度 : O(k)，用于存储堆元素。
+# 求前 k 大，用小根堆，求前 k 小，用大根堆。
 import heapq
 
 
@@ -311,6 +312,7 @@ class Solution:
             index = random.randint(left, right)
             nums[index], nums[left] = nums[left], nums[index]
             index = nums[left]
+            # 挖坑法
             while left < right:
                 while left < right and nums[right] <= index:
                     right -= 1

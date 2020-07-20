@@ -26,5 +26,32 @@
          do for k←C[i] to V
              F[k] ← max(F[k],F[k-C[i]]+W[i])
      return F[V]
-'''
+# '''
+# 完全背包问题
+#
+# 描述：
+#
+# 有N件物品和一个容量为V的背包，每件物品都有无限个！。
+#
+# 第i件物品的体积是vi，价值是wi。
+#
+# 求解将哪些物品装入背包，可使这些物品的总体积不超过背包流量，且总价值最大。
+#
+#
+# 一维动态规划
+# 完全背包问题跟01背包问题最大的区别就是每一个物品可以选无数次
+# 因此当我们考虑到第i个物品时，我们应该考虑的情况是：不选这个物品、选一次这个物品、选两次这个物品......，直到不能再选（选的次数k，k*v[i] > j，j为当前背包容量）
+# 然后再从这些情况中选最大的。代码如下：
 
+n, v = map(int, input().split())
+goods = []
+for i in range(n):
+    goods.append([int(i) for i in input().split()])
+dp = [0 for i in range(v + 1)]
+for i in range(n):
+    for j in range(v, -1, -1):  # 从后往前
+        k = j // goods[i][0]  # 能选多少次
+        # 从这些次里面取最大
+        dp[j] = max([dp[j - x * goods[i][0]] + x * goods[i][1] for x in range(k + 1)])
+
+print(dp[-1])

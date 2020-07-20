@@ -86,7 +86,7 @@ class Solution:
         sum_i = 0
         res = -sys.maxsize
         for i in range(n):
-            # 正向增益
+            # 如果可以获取正向增益
             if sum_i > 0:
                 sum_i += nums[i]
             else:

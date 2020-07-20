@@ -19,6 +19,8 @@
 你可以假设所给定的表达式都是有效的。
 请不要使用内置的库函数 eval。
 '''
+
+
 # 逆波兰表达式
 class Solution:
     def calculate(self, s: str) -> int:
@@ -49,14 +51,20 @@ class Solution:
             else:
                 sec = res.pop()
                 fir = res.pop()
-                if i == "+": res.append(fir + sec)
-                if i == "-": res.append(fir - sec)
-                if i == "*": res.append(fir * sec)
-                if i == "/": res.append(fir // sec)
+                if i == "+":
+                    res.append(fir + sec)
+                if i == "-":
+                    res.append(fir - sec)
+                if i == "*":
+                    res.append(fir * sec)
+                if i == "/":
+                    res.append(fir // sec)
         return res[0]
 
 
 import math
+
+
 class Solution:
     def calculate(self, s: str) -> int:
         s = list(s)
@@ -69,6 +77,7 @@ class Solution:
                 num = num * 10 + int(str)
             elif str == "(":
                 self.calculate(s)
+            # 注意，这里必须加上len(s) == 0这个判断条件
             if (not str.isdigit() and str != " ") or len(s) == 0:
                 if sign == "+":
                     res.append(num)
@@ -77,15 +86,18 @@ class Solution:
                 elif sign == "*":
                     res.append(res.pop() * num)
                 elif sign == "/":
-                    if res[-1] < 0:
-                        res.append(math.ceil(res.pop() / num))
-                    else:
-                        res[-1] = (res[-1] // num)
+                    # if res[-1] < 0:
+                    #     res.append(math.ceil(res.pop() / num))
+                    # else:
+                    #     res[-1] = (res[-1] // num)
+                    # 使用int代替各种判断
+                    res[-1] = int(res[-1] / num)
                 sign = str
                 num = 0
             elif str == ")":
                 return
         return sum(res)
+
 
 # java
 '''

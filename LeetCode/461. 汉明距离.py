@@ -50,13 +50,16 @@
 
 由于所有的数都在 [0, 10^9] 的范围内，因此 k 最大为 31。我们只要计算出每一位上的汉明距离的总和，再相加即可。
 '''
+
+
 # 技巧版本
 def totalHammingDistance(nums):
     return sum((b.count('0') * b.count('1')) for b in zip(*map('{:032b}'.format, nums)))
 
+
 # a = *map('{:032b}'.format, [1,2,4])
-print(list(zip(list(map('{:032b}'.format, [1,2,4])))))
-print(*map('{:032b}'.format, [1,2,4]))
+print(list(zip(list(map('{:032b}'.format, [1, 2, 4])))))
+print(*map('{:032b}'.format, [1, 2, 4]))
 
 # print(a)
 
@@ -67,23 +70,28 @@ print(*map('{:032b}'.format, [1,2,4]))
 # 注意这里的n^(n-1)的作用,可以计算两个数对应的位不同的数量
 # 注意这里n&(n-1)的作用，因为 n&(n - 1)可以消除最后一个 1，所以可以用一个循环不停地消除 1 同时计数，直到 n 变成 0 为止。
 import collections
+
+
 class Solution:
     def totalHammingDistance(self, nums) -> int:
         l, d = len(nums), collections.defaultdict(int)
         for n in nums:
             # while n != 0:
-            # 对每一个数字n,进行循环判断，判断这个数字转换为二进制之后相应位置是1还是0，对相应的map进行增加。判断是否为0，当终止时候，二进制的所有位数都变成0
+            # 对每一个数字n,进行循环判断，判断这个数字转换为二进制之后相应位置是1还是0
+            # 对相应的map进行增加。判断是否为0，当终止时候，二进制的所有位数都变成0
             while n:
                 # 计数，计算0和1对应的数量
                 d[n ^ n & (n - 1)] += 1
                 # 不停消除最右边位置的1
-                n &= n - 1 
+                n &= n - 1
             print(d)
         return sum(c * (l - c) for _, c in d.items())
-print(Solution().totalHammingDistance([1,9,191]))
+
+
+print(Solution().totalHammingDistance([1, 9, 191]))
 
 # 注意上面这段代码，n ^ n & (n - 1)，这样可以在先消除了最右边的1之后，然后与之前的数字相异或，就可以得到转换为二进制之后的数字最右边为1的位置对应为int时的值
 # 比如n = 1001  1001 & 1000 = 1000 此时消除了最右边的1,1001^1000 = 1 
 # 然后n &= n-1之后，n=1000, 1000 & 0111 = 0000,1000^0000 = 8
 
-print(bin(0^4))
+print(bin(0 ^ 4))

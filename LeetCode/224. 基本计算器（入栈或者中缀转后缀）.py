@@ -157,7 +157,7 @@ def postfixEval(postfixExpr):
             operand1 = operandStack.pop()
             result = doMath(token, operand1, operand2)
             operandStack.push(result)
-        return operandStack.pop()
+    return operandStack.pop()
 
 
 def doMath(op, op1, op2):

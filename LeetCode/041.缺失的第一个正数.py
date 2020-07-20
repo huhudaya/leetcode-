@@ -124,3 +124,58 @@ class Solution:
 
 
 print(Solution().firstMissingPositive([3, 4, -1, 1]))
+
+from typing import List
+
+
+class Solution:
+    def firstMissingPositive(self, nums: List[int]) -> int:
+        # 抽屉的思想
+        size = len(nums)
+        for i in range(size):
+            # num[i] >= 1,就一定要找到属于自己的位置 而且我们只考虑在1和size之间的范围
+            while 1 <= nums[i] <= size and nums[nums[i] - 1] != nums[i]:
+                # 下面这种交换是错误的交换！！！！！一定要注意，先交换到nums[nums[i] - 1]
+                # nums[i], nums[nums[i] - 1] = nums[nums[i] - 1], nums[i]
+                nums[nums[i] - 1], nums[i] = nums[i], nums[nums[i] - 1]
+        # 遍历，找到第一个不满足的位置的索引即为缺失的第一个正数
+        for i in range(size):
+            if i + 1 != nums[i]:
+                return i + 1
+        return size + 1
+
+
+# 方法二：
+# 原地hash
+'''
+实际上，对于一个长度为 N 的数组，其中没有出现的最小正整数只能在 [1, N+1]中。
+这是因为如果 [1, N] 都出现了，那么答案是 N+1，否则答案是 [1, N][1,N] 中没有出现的最小正整数。
+
+我们将数组中所有小于等于 0 的数修改为 N+1；
+
+我们遍历数组中的每一个数 xx，它可能已经被打了标记，因此原本对应的数为 |x|∣x∣，其中 |\,|∣∣ 为绝对值符号。如果 |x| \in [1, N]∣x∣∈[1,N]，那么我们给数组中的第 |x| - 1∣x∣−1 个位置的数添加一个负号。注意如果它已经有负号，不需要重复添加；
+
+在遍历完成之后，如果数组中的每一个数都是负数，那么答案是 N+1，否则答案是第一个正数的位置加 1。
+'''
+
+
+# 重点是将所有小于等于0的数字变成n+1,这样这个数组中的数就都是大于1了，这样就可以是用绝对值算法，即用负号作为标记是否有这个数的存在
+
+
+class Solution:
+    def firstMissingPositive(self, nums: List[int]) -> int:
+        # 原地hash
+        n = len(nums)
+        # 小于等于0的数置为n+1
+        for i, num in enumerate(nums):
+            if num <= 0:
+                nums[i] = n + 1
+        for i, num in enumerate(nums):
+            # 如果要替换的位置已经存在了，说明重复了
+            if 1 <= abs(nums[i]) <= n and nums[abs(nums[i]) - 1] > 0:
+                nums[abs(nums[i]) - 1] *= -1
+        print(nums)
+        for i, num in enumerate(nums):
+            if num > 0:
+                return i + 1
+        return n + 1

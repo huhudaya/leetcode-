@@ -170,6 +170,7 @@ class MedianFinder:
         self.min_heap = []
 
     def addNum(self, num: int) -> None:
+        # 根据奇偶判断更好一点
         if len(self.max_heap) == len(self.min_heap):  # 先加到大顶堆，再把大堆顶元素加到小顶堆
             heapq.heappush(self.min_heap, -heapq.heappushpop(self.max_heap, -num))
         else:  # 先加到小顶堆，再把小堆顶元素加到大顶堆
@@ -296,3 +297,34 @@ class MedianFinder:
         else:
             # 如果两个堆合起来的元素个数是偶数，数据流的中位数就是各自堆顶元素的平均值
             return (self.min_heap[0] - self.max_heap[0]) / 2
+
+
+
+
+import heapq
+class MedianFinder:
+
+    def __init__(self):
+        """
+        initialize your data structure here.
+        """
+        self.max_heap = []
+        self.min_heap = []
+        self.cnt = 0
+
+    def addNum(self, num: int) -> None:
+        # 偶数个，先放入左边大根堆，再放入右边小根堆
+        if not (self.cnt & 1):
+            heapq.heappush(self.max_heap, -num)
+            heapq.heappush(self.min_heap, -heapq.heappop(self.max_heap))
+        # 奇数个，先放入右边小根堆，再放入左边大根堆
+        else:
+            heapq.heappush(self.min_heap, num)
+            heapq.heappush(self.max_heap, -heapq.heappop(self.min_heap))
+        self.cnt += 1
+    def findMedian(self) -> float:
+        # 奇数个
+        if self.cnt & 1:
+            return self.min_heap[0]
+        else:
+            return (self.min_heap[0] + -self.max_heap[0]) / 2

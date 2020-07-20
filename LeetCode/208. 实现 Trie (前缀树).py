@@ -36,8 +36,6 @@ class Node:
         self.child[ord(ch) - ord('a')] = Node()
 
 
-
-
 # 字典树的构建方式也很简单，就是嵌套哈希表。
 class Trie:
 
@@ -141,6 +139,7 @@ class Trie:
             tree = tree[a]
         return True
 
+
 # 自己的版本
 class Trie:
 
@@ -151,7 +150,6 @@ class Trie:
         # 用字典中的k-v模拟树的父子节点
         # 用hash存储！相当于根节点
         self.lookup = {}
-
 
     def insert(self, word: str) -> None:
         """
@@ -172,7 +170,9 @@ class Trie:
         Returns if the word is in the trie.
         """
         tree = self.lookup
+        # 遍历要找的单词
         for a in word:
+            # 如果要找的单词有一个字母不在字典树中，立即return
             if a not in tree:
                 return False
             tree = tree[a]
@@ -180,7 +180,6 @@ class Trie:
             return True
         else:
             return False
-
 
     def startsWith(self, prefix: str) -> bool:
         """

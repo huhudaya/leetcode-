@@ -13,6 +13,9 @@
 你可以假设给定的 k 总是合理的，且 1 ≤ k ≤ 数组中不相同的元素的个数。
 你的算法的时间复杂度必须优于 O(n log n) , n 是数组的大小。
 '''
+
+# 求前 k 大，用小根堆，求前 k 小，用大根堆。
+
 # 1排序
 # O(Nlog(N))
 
@@ -36,6 +39,38 @@ class Solution:
         count = collections.Counter(nums)
         return heapq.nlargest(k, count.keys(), key=count.get)
 
+
+# 堆排序 Java
+'''
+class Solution {
+  public List<Integer> topKFrequent(int[] nums, int k) {
+    // build hash map : character and how often it appears
+    HashMap<Integer, Integer> count = new HashMap();
+    for (int n: nums) {
+      count.put(n, count.getOrDefault(n, 0) + 1);
+    }
+
+    // init heap 'the less frequent element first'
+    PriorityQueue<Integer> heap =
+            // 小根堆
+            new PriorityQueue<Integer>((n1, n2) -> count.get(n1) - count.get(n2));
+
+    // keep k top frequent elements in the heap
+    for (int n: count.keySet()) {
+      heap.add(n);
+      if (heap.size() > k)
+        heap.poll();
+    }
+
+    // build output list
+    List<Integer> top_k = new LinkedList();
+    while (!heap.isEmpty())
+      top_k.add(heap.poll());
+    Collections.reverse(top_k);
+    return top_k;
+  }
+}
+'''
 
 # 桶排序
 # 时间复杂度O(N),空间复杂度O(N)
@@ -75,9 +110,12 @@ class Solution {
     }
 }
 '''
+# 桶排序
 from typing import List
 
 import collections
+
+
 class Solution:
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
         if nums is None:
@@ -89,6 +127,7 @@ class Solution:
         cnt = 0
         hash = collections.Counter(nums)
         for key in hash:
+            # value作为索引，将key作为value
             bucket[hash.get(key)].append(key)
         # 倒着遍历bucket
         for num in bucket[::-1]:
@@ -97,3 +136,59 @@ class Solution:
             if num:
                 res.extend(num)
                 cnt += len(num)
+
+
+# 堆 排序
+class Solution(object):
+    def topKFrequent(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: List[int]
+        """
+
+        if not nums or len(nums) == 1:
+            return nums
+        freq_dict = collections.Counter(nums)
+        # print(freq_dict)
+        priority_queue = []
+        # 扫描freq，维护当前出现频率最高的k个元素，优先队列（堆）中存放元组（频率，元素）
+        for element, freq in freq_dict.items():
+            # print element, freq
+            if len(priority_queue) == k:
+                # print priority_queue
+                if freq > priority_queue[0][0]:  # 新加入的元素频率比堆中最小频率要大
+                    heapq.heappop(priority_queue)  # 弹出堆顶元素
+                    heapq.heappush(priority_queue, (freq, element))
+            else:
+                heapq.heappush(priority_queue, (freq, element))
+                # print priority_queue
+            # print(priority_queue)
+
+        return [item[1] for item in priority_queue]
+
+
+
+
+import heapq
+from collections import Counter
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        # 求最大的k个数用小根堆
+        # 先构建一个hash映射表
+        hash = Counter(nums)
+        res = []
+        print(hash)
+        for key, val in hash.items():
+            if len(res) < k:
+                # 注意，这里添加到堆的时候需要逆序
+                heapq.heappush(res, (val, key))
+            # 如果当前元素比堆顶的值大，则替换进堆中
+            elif val > res[0][0]:
+                heapq.heapreplace(res, (val, key))
+        ans = []
+        for i in res:
+            ans.append(i[1])
+        return ans
+
+Solution().topKFrequent([4,1,-1,2,-1,2,3],2)

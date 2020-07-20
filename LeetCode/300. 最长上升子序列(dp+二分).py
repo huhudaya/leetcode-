@@ -108,10 +108,12 @@ class Solution:
 import bisect
 
 
+# 好方法
 class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:
         q = [-float('inf')]
         for i in nums:
+            # 如果直接大于牌堆的堆顶，就直接加当前元素，否则就二分插入到牌堆中
             if i > q[-1]:
                 q += [i]
             else:
@@ -207,5 +209,40 @@ class Solution:
                 index = right
                 piples += 1
             top[index] = poker
+        print(top)
         return piples
+
 print(Solution().lengthOfLIS([10, 9, 2, 5, 3, 7, 101, 18]))
+
+
+
+import sys
+class Solution:
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        # 二分
+        if not nums:
+            return 0
+        n = len(nums)
+        piples = 0
+        left = 0
+        right = piples
+        dp = [-sys.maxsize for _ in range(n)]
+        for i in range(n):
+            poker = nums[i]
+            left = 0
+            right = piples
+            while left + 1 < right:
+                mid = left + (right - left) // 2
+                if dp[mid] >= poker:
+                    right = mid
+                else:
+                    left = mid
+            if dp[left] >= poker:
+                dp[left] = poker
+            elif dp[right] >= poker:
+                dp[right] = poker
+            else:
+                dp[right] = poker
+                piples += 1
+        print(dp)
+        return piples

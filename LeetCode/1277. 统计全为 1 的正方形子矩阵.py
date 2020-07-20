@@ -38,18 +38,3 @@
 1 <= arr[0].length <= 300
 0 <= arr[i][j] <= 1
 '''
-from typing import List
-class Solution:
-    def countSquares(self, matrix: List[List[int]]) -> int:
-        if not matrix or not matrix[0]:
-            return -1
-        m = len(matrix)
-        n = len(matrix[0])
-        # dp[i][j]定义为以(i, j)作为右下角的元素的正方形的个数
-        dp = [[0] * (n) for i in range(m)]
-        res = 0
-        for i in range(m):
-            for j in range(n):
-                dp[i][j] = min(dp[i-1][j], dp[i-1][j-1], dp[i][j-1])
-                res += dp[i][j]
-        return res

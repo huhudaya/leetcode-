@@ -108,7 +108,7 @@ class Solution:
                 dp[i] = min(dp[i], 1 + dp[i - coin])
         return dp[amount] if dp[amount] != amount + 1 else -1
 
-# 完全背包
+# 完全背包并且恰好装满的最值问题，除了索引0位置，其它索引需要置为max.size
 class Solution:
     def coinChange(self, coins: List[int], amount: int) -> int:
         dp = [float('inf')] * (amount + 1)

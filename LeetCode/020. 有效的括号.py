@@ -11,6 +11,7 @@
 链接：https://leetcode-cn.com/problems/valid-parentheses
 '''
 
+
 class Solution:
     def isValid(self, s: str) -> bool:
         # 用栈
@@ -25,8 +26,9 @@ class Solution:
                     stack.pop()
                 else:
                     return False
-        return not stack        
-    def helper(self,ch1,ch2):
+        return not stack
+
+    def helper(self, ch1, ch2):
         opens = "([{"
         closers = ")]}"
         return opens.index(ch1) == closers.index(ch2)

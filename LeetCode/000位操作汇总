@@ -76,16 +76,9 @@
         即 如果有三个数，满足其中两个数的异或值等于另一个值，那么这三个数的顺序可以任意调换。
         （说明：利用这条性质，可以不使用第 3 个变量而交换两个变量的值。）
         那么如何理解这个性质呢？因为异或运算 ^ 其实就是 二进制下不进位的加法
-
-作者：liweiwei1419
-链接：https://leetcode-cn.com/problems/maximum-xor-of-two-numbers-in-an-array/solution/li-yong-yi-huo-yun-suan-de-xing-zhi-tan-xin-suan-f/
-来源：力扣（LeetCode）
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
-
-作者：liweiwei1419
-链接：https://leetcode-cn.com/problems/maximum-xor-of-two-numbers-in-an-array/solution/li-yong-yi-huo-yun-suan-de-xing-zhi-tan-xin-suan-f/
-来源：力扣（LeetCode）
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+    7.
+        二进制下的a ^ b相当于无进位下的和
+        二进制下的a & b相当于
 
 与&:
     1.

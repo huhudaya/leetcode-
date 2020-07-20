@@ -20,7 +20,8 @@ class ListNode:
         self.val = x
         self.next = None
 
-#递归，记录使用后继节点
+
+# 递归，记录使用后继节点
 class Solution:
     # 递归版本
     def reverseBetween(self, head: ListNode, m: int, n: int) -> ListNode:
@@ -30,6 +31,7 @@ class Solution:
         # 反转前N个节点函数
         def reverseN(head, n):
             if n == 1:
+                # 注意一定要注意保存这个后继节点
                 self.successor = head.next
                 return head
             last = reverseN(head.next, n - 1)
@@ -112,7 +114,6 @@ class Solution:
         return dummy.next
 
 
-
 '''
 思路二:
 用三个指针,进行插入操作
@@ -124,6 +125,8 @@ class Solution:
 变成:1->4->3->2->5->NULL
 实现翻转的效果!
 '''
+
+
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, x):
@@ -135,7 +138,7 @@ class Solution:
         dummy = ListNode(-1)
         dummy.next = head
         pre = dummy
-         # 找到翻转链表部分的前一个节点, 1->2->3->4->5->NULL, m = 2, n = 4 指的是 节点值为1
+        # 找到翻转链表部分的前一个节点, 1->2->3->4->5->NULL, m = 2, n = 4 指的是 节点值为1
         for _ in range(m - 1):
             pre = pre.next
         # 用 pre, start, tail三指针实现插入操作

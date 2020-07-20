@@ -25,6 +25,7 @@ class ListNode:
 
 import random
 '''
+洗牌算法
 蓄水池抽样算法
 最近经常能看到面经中出现在大数据流中的随机抽样问题
 

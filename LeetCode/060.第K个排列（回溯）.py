@@ -11,7 +11,7 @@
 "321"
 给定 n 和 k，返回第 k 个排列。
 
-说明：
+说明:
 
 给定 n 的范围是 [1, 9]。
 给定 k 的范围是[1,  n!]。
@@ -55,6 +55,7 @@
 class Solution:
     def getPermutation(self, n: int, k: int) -> str:
         def dfs(n, k, index, path):
+            # 这里的index为当前的层数，当层数为n,则return
             if index == n:
                 return
             # 这里和字典序的思想一样，计算step步长！
@@ -66,12 +67,15 @@ class Solution:
                     continue
                 # 注意这里的剪枝，如果step小于k,说明不在这个子树中，这样就不会进入到后面的path.append和used[i]=True
                 if cnt < k:
+                    # 注意，这里我们将 k 减少了，说明不在这个子树中，需要剪枝
                     k -= cnt
                     continue
                 # 如果走到这里，说明结果一定是在当前节点的子树中，这样就进入到递归去查找
                 path.append(i)
+                # 注意，这里只需要标记就可以
                 used[i] = True
                 # 如果执行到这里，说明一定在当前的子树下，所以需要index+1,表示第几层！
+                # 注意，这里的dfs中的index只是为了计算当前的层次
                 dfs(n, k, index + 1, path)
 
         if n == 0:

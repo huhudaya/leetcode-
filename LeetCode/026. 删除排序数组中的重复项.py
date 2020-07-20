@@ -63,6 +63,7 @@ class Solution:
         # 定义为写指针
         slow = 0
         K = 1
+        # 或者for i in range(k, n):
         for num in nums:
             if slow < K or num != nums[slow - K]:
                 nums[slow] = num

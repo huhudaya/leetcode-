@@ -212,13 +212,17 @@ class Solution:
                 i += judge * 1
                 ans.append(matrix[i][j])
 
+            # 没遍历一次，m 和 n 都要减少一次，
             m = m - 1
             n = n - 1
-            # 每一轮横向和纵向遍历完之后，需要拐点，即col方向减少
+            # 每一轮横向和纵向遍历完之后，需要拐点，即col方向减少，row方向减少
             judge *= -1
 
         return ans
+
+
 # 好方法
+# 将已经走过的地方置0，然后拐弯的时候判断一下是不是已经走过了，如果走过了就计算一下新的方向：
 def solution(matrix):
     r, i, j, di, dj = [], 0, 0, 0, 1
     if matrix != []:
@@ -226,12 +230,16 @@ def solution(matrix):
         n = len(matrix[0])
         for _ in range(m * n):
             r.append(matrix[i][j])
+            # 走过了就置为0
             matrix[i][j] = 0
+            # di的初始值是1
             if matrix[(i + di) % m][(j + dj) % n] == 0:
                 di, dj = dj, -di
             i += di
             j += dj
     return r
+
+
 # solution([[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]])
 
 
@@ -239,15 +247,17 @@ def solution(matrix):
 class Solution:
     def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
         # 这里多加一个上的方向
-        directions = [[-1,0],[0, 1], [1, 0], [0, -1], [-1, 0]]
+        directions = [[-1, 0], [0, 1], [1, 0], [0, -1], [-1, 0]]
         if not matrix or not matrix[0]:
             return []
         m = len(matrix)
         n = len(matrix[0])
         marked = [[False] * n for i in range(m)]
         res = []
+
         def flag(x, y):
             return 0 <= x < m and 0 <= y < n and not marked[x][y]
+
         def dfs(matrix, i, j, m, n, marked):
             marked[i][j] = True
             res.append(matrix[i][j])
@@ -260,6 +270,31 @@ class Solution:
                 y = j + directions[di][1]
                 if 0 <= x < m and 0 <= y < n and not marked[x][y]:
                     dfs(matrix, x, y, m, n, marked)
+
         dfs(matrix, 0, 0, m, n, marked)
         return res
-Solution().spiralOrder([[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]])
+
+
+Solution().spiralOrder([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]])
+
+# 按圈遍历
+class Solution:
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        if not matrix or not matrix[0]:
+            return list()
+
+        rows, columns = len(matrix), len(matrix[0])
+        order = list()
+        left, right, top, bottom = 0, columns - 1, 0, rows - 1
+        while left <= right and top <= bottom:
+            for column in range(left, right + 1):
+                order.append(matrix[top][column])
+            for row in range(top + 1, bottom + 1):
+                order.append(matrix[row][right])
+            if left < right and top < bottom:
+                for column in range(right - 1, left, -1):
+                    order.append(matrix[bottom][column])
+                for row in range(bottom, top, -1):
+                    order.append(matrix[row][left])
+            left, right, top, bottom = left + 1, right - 1, top + 1, bottom - 1
+        return order

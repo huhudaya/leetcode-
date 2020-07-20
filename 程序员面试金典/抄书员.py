@@ -22,7 +22,9 @@
 
 '''	
 	思路:
-		注意，如果给定一个分钟数，要求分配的每个人工作的分钟数小于这个给定的分钟，则需要分配的人数是一定的，这里我们通过一个函数实现
+		注意，如果给定一个分钟数，
+		要求分配的每个人工作的分钟数小于这个给定的分钟
+		则需要分配的人数是一定的，这里我们通过一个函数实现
 		注意这里最少需要max(pages)分钟
 		1.计算得到start和end，start=max(list),end=sum(list)
 		2.通过二分法计算得到一个分钟数，计算这个分钟需要分配几个人，这样就将问题划分为OOXX问题
@@ -95,7 +97,7 @@ def countCopier(pages, limit):
     return copiers
 
 
-print(countCopier([9, 2, 3, 6], 10))
+print(countCopier([888, 2], 3))
 
 # 或者也可以从1开始遍历
 # def countCopier(pages,limit):

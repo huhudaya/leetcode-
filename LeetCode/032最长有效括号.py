@@ -14,7 +14,8 @@
 解释: 最长有效括号子串为 "()()"
 '''
 '''
-看了这个题目的标签，动态规划是其的标签之一。这题目我第一反应可以使用栈来解决，但我们偏用动态规划看看解决的是什么样子的。
+看了这个题目的标签，动态规划是其的标签之一。
+这题目我第一反应可以使用栈来解决，但我们偏用动态规划看看解决的是什么样子的。
 
 我们定义一个dp[i]数组，其中i表示字符串的下标，值是目前有效的子字符串。
 
@@ -134,3 +135,96 @@ public class Solution {
 }
 '''
 
+
+# 暴力算法
+# 思路 从长度最大到最小遍历，一旦有效就返回
+class Solution:
+    def longestValidParentheses(self, s: str) -> int:
+        def isValid(x):
+            stack = []
+            for i in range(len(x)):
+                if x[i] == '(':
+                    stack.append('(')
+                elif stack != [] and stack[-1] == '(':
+                    stack.pop()
+                else:
+                    return False
+            return stack == []
+
+        if len(s) < 2:
+            return 0
+        n = len(s)
+        for i in range(n if n % 2 == 0 else n - 1, 0, -2):
+            for j in range(n - i + 1):
+                if isValid(s[j:j + i]):
+                    return i
+        return 0
+
+
+# 动态规划
+class Solution:
+    def longestValidParentheses(self, s: str) -> int:
+        n = len(s)
+        if n == 0:
+            return 0
+        dp = [0] * n
+        for i in range(len(s)):
+            # i-dp[i-1]-1是与当前)对称的位置
+            if s[i] == ')' and i - dp[i - 1] - 1 >= 0 and s[i - dp[i - 1] - 1] == '(':
+                dp[i] = dp[i - 1] + dp[i - dp[i - 1] - 2] + 2
+        return max(dp)
+
+
+# 用栈
+# 核心思路就是初始化栈中元素始终保持一个下标，这样相减的话会比较方便
+import sys
+class Solution:
+    def longestValidParentheses(self, s: str) -> int:
+        # 注意，栈中需要有初始值
+        stack = [-1]
+        length = 0
+        max_length = 0
+        for i in range(len(s)):
+            if s[i] == '(':
+                stack.append(i)
+            else:
+                stack.pop()
+                if stack == []:
+                    stack.append(i)
+                else:
+                    length = i - stack[-1]
+                    max_length = max(max_length, length)
+        return max_length
+
+
+# 正向逆向结合法
+# 核心思路就是在遍历的过程中右边的括号不可以大于左边的括号
+class Solution:
+    def longestValidParentheses(self, s: str) -> int:
+        # 正向和逆向遍历(双指针)
+        n, left, right, res = len(s), 0, 0, 0
+        # 正向遍历
+        for i in range(n):
+            if s[i] == "(":
+                left += 1
+            elif s[i] == ")":
+                right += 1
+            # 匹配成功
+            if left == right:
+                res = max(res, right * 2)
+            # 需要重置
+            elif right > left:
+                left = right = 0
+        # 注意，这里需要重新赋值
+        right, left = 0, 0
+        # 逆向遍历
+        for i in range(n - 1, -1, -1):
+            if s[i] == ")":
+                right += 1
+            else:
+                left += 1
+            if left == right:
+                res = max(res, left * 2)
+            elif right < left:
+                right, left = 0, 0
+        return res

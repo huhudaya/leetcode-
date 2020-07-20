@@ -1,5 +1,9 @@
 '''
-给你一根长度为 n 的绳子，请把绳子剪成整数长度的 m 段（m、n都是整数，n>1并且m>1），每段绳子的长度记为 k[0],k[1]...k[m-1] 。请问 k[0]*k[1]*...*k[m-1] 可能的最大乘积是多少？例如，当绳子的长度是8时，我们把它剪成长度分别为2、3、3的三段，此时得到的最大乘积是18。
+给你一根长度为 n 的绳子
+请把绳子剪成整数长度的 m 段（m、n都是整数，n>1并且m>1）
+每段绳子的长度记为 k[0],k[1]...k[m-1] 。
+请问 k[0]*k[1]*...*k[m-1] 可能的最大乘积是多少？
+例如，当绳子的长度是8时，我们把它剪成长度分别为2、3、3的三段，此时得到的最大乘积是18。
 
 示例 1：
 
@@ -40,7 +44,8 @@
 # 暴力递归
 class Solution:
     def integerBreak(self, n: int) -> int:
-        if n == 2: return 1
+        if n == 2:
+            return 1
         res = 0
         for i in range(1, n):
             res = max(res, max(i * self.integerBreak(n - i), i * (n - i)))
@@ -73,8 +78,21 @@ class Solution:
         return dp[n]
 
 
+# 优化，这里前面切j，后面剩i-j等价于前面切i-j，后面剩j。因此j只需遍历到i//2这里就阔以
+class Solution:
+    def cuttingRope(self, n: int) -> int:
+        dp = [0] * (n + 1)
+        dp[1] = 1
+        for i in range(2, n + 1):
+            for j in range(1, i // 2 + 1):
+                dp[i] = max(dp[i], max(j, dp[j]) * max(i - j, dp[i - j]))
+        return dp[-1]
+
+
 # 完全背包问题
 import sys
+
+
 class Solution:
     def integerBreak(self, n: int) -> int:
         # 完全背包的的恰好装满的最值问题

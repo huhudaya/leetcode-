@@ -44,14 +44,16 @@ def count(W, V):
 print(count(W, V))
 
 # 动态规划
+# 不必恰好装满的个数问题
 import sys
 
 n, w = list(map(int, sys.stdin.readline().strip().split()))
 
 weights = list(map(int, sys.stdin.readline().strip().split()))
 
+# 二维空间优化的时候，初始basecase需要将初始的二维空间压缩成一维，只需要看最后一行就可以了
 d = [1 for i in range(w + 1)]
-
+# 注意，因为是01背包问题，所以在进行空间优化的时候需要逆序遍历
 for i in range(n):
     for j in range(w, weights[i] - 1, -1):
         d[j] += d[j - weights[i]]

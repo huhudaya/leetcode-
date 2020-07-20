@@ -25,6 +25,8 @@
 进阶：
 请选用 C 语言的用户尝试使用 O(1) 额外空间复杂度的原地解法。
 '''
+
+
 class Solution:
     def reverseWords(self, s: str) -> str:
         s = s.strip()
@@ -85,7 +87,6 @@ class Solution:
         return ''.join(l)
 
 
-
 # class Solution:
 #     def reverseWords(self, s: str) -> str:
 #         s = s.strip()
@@ -102,7 +103,8 @@ class Solution:
                 res += s[i]
             elif res[-1] != " ":
                 res += s[i]
-        def splitFun(str,char):
+
+        def splitFun(str, char):
             output = []
             slow = 0
             fast = 0
@@ -113,6 +115,7 @@ class Solution:
                     slow = fast + 1
                 fast += 1
             return output
+
         res = splitFun(res, " ")
         res = " ".join(reversed(res))
         return res

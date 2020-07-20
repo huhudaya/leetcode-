@@ -38,7 +38,7 @@ class Solution:
         # len(pre)越大，size越大
         size = n - (k - len(pre)) + 2
         # 注意：这里 i 的上限是归纳得到的  剪枝
-        # 这里的for循环，实际上是在判断起始点的位置是否合法！
+        # 这里的for循环，实际上是在判断起始点的位置是否合法！ 是在同一层！相当于len(path)越大，size会越大
         for i in range(start, n - (k - len(pre)) + 2):
             pre.append(i)
             self.__dfs(i + 1, k, n, pre, res)

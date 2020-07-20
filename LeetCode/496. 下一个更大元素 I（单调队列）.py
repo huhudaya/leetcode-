@@ -75,16 +75,20 @@ public class Solution {
 }
 '''
 from typing import List
+
+
 class Solution:
     def nextGreaterElement(self, nums1: List[int], nums2: List[int]) -> List[int]:
         stack, hashmap = list(), dict()
         for i in nums2:
-            # 其实相当于维护一个双端队列qmax，只不过在弹出值得时候加到hahsMap中
+            # 其实相当于维护一个双端队列qmax，只不过在弹出值得时候加到hahsMap中 max栈
             while len(stack) != 0 and stack[-1] < i:
                 hashmap[stack.pop()] = i
             stack.append(i)
         # 因为无重复数据
         return [hashmap.get(i, -1) for i in nums1]
+
+
 '''
 这就是单调队列解决问题的模板。for 循环要从后往前扫描元素
 因为我们借助的是栈的结构，倒着入栈
