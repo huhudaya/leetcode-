@@ -51,7 +51,7 @@ class H2O {
 		h.acquire();
         // releaseHydrogen.run() outputs "H". Do not change or remove this line.
         releaseHydrogen.run();
-        o.release(); 351. 安卓系统手势解锁
+        o.release();
     }
 
     public void oxygen(Runnable releaseOxygen) throws InterruptedException {

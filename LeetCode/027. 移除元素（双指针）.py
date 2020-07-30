@@ -59,10 +59,7 @@ public int removeElement(int[] nums, int val) {
 空间复杂度：O(1)。
 '''
 
-
-
-
-# 
+#
 '''
 时间复杂度：O(n)，i 和 n 最多遍历 n 步。
 不用一直赋值操作，效率更高
@@ -88,6 +85,9 @@ public int removeElement(int[] nums, int val) {
 '''
 
 # 优化
+from typing import List
+
+
 class Solution:
     def removeElement(self, nums: List[int], val: int) -> int:
         # 双指针
@@ -101,3 +101,28 @@ class Solution:
                 left += 1
         return n
 
+
+class Solution:
+    def removeElement(self, nums: List[int], val: int) -> int:
+        # 双指针
+        n = len(nums)
+        slow = 0
+        for i in range(n):
+            if nums[i] != val:
+                nums[slow] = nums[i]
+                slow += 1
+        return slow
+
+
+'''
+public int removeElement(int[] nums, int val) {
+    int i = 0;
+    for (int j = 0; j < nums.length; j++) {
+        if (nums[j] != val) {
+            nums[i] = nums[j];
+            i++;
+        }
+    }
+    return i;
+}
+'''

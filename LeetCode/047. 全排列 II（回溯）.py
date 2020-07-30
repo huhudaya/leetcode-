@@ -1,5 +1,6 @@
 '''
 给定一个可包含重复数字的序列，返回所有不重复的全排列。
+注意，列表中数据不可重复使用
 
 示例:
 
@@ -32,6 +33,7 @@ from typing import List
 class Solution:
     def permuteUnique(self, nums) -> List[List[int]]:
         def dfs(nums, size, depth, path, used, res):
+            # 这里的depth只是用来记录层次
             if depth == size:
                 res.append(path.copy())
                 return

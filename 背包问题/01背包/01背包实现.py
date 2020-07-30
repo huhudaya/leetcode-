@@ -30,3 +30,27 @@
                       Path[i][k] ← 1
      return F[V] and Path[][]
 '''
+
+# https://www.acwing.com/problem/content/description/2/
+
+m, target = list(map(int, input().split()))
+values = []
+nums = []
+for i in range(m):
+    temp = list(map(int, input().split()))
+    nums.append(temp[0])
+    values.append(temp[1])
+
+
+def get_max_value(nums, values, target):
+    # 定义dp[i]为背包容量为i时可以装的最大价值
+    dp = [0 for i in range(target + 1)]
+    res = 0
+    # nums在外面，因为是01背包，所以需要倒序
+    for i in range(m):
+        for j in range(target, nums[i] - 1, -1):
+            dp[j] = max(dp[j], dp[j - nums[i]] + values[i])
+    return dp[target]
+
+
+print(get_max_value(nums, values, target))

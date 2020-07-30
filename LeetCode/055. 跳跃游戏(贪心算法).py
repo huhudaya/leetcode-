@@ -74,10 +74,12 @@ class Solution:
         max_bound = 0
         n = len(nums)
         end = 0
+        # 遍历整个数组
         for i in range(n):
             max_bound = max(max_bound, nums[i] + i)
-            # 遇到边界，就更新边界
+            # 如果可以到达，即遇到边界，就更新边界
             if i == end:
+                # 注意，只有在可达的情况下，才会更新数组
                 end = max_bound
             if end >= n - 1:
                 return True
@@ -85,3 +87,25 @@ class Solution:
 
 
 print(Solution().canJump([3, 2, 1, 0, 4]))
+
+
+'''
+解题思路：
+如果某一个作为 起跳点 的格子可以跳跃的距离是 3，那么表示后面 3 个格子都可以作为 起跳点。
+可以对每一个能作为 起跳点 的格子都尝试跳一次，把 能跳到最远的距离 不断更新。
+如果可以一直跳到最后，就成功了。
+代码：
+C++
+
+bool canJump(vector<int>& nums) 
+{
+	int k = 0;
+	for (int i = 0; i < nums.size(); i++)
+	{
+	    // 看当前i是否可以作为起跳点，如果不行，直接返回false
+		if (i > k) return false;
+		k = max(k, i + nums[i]);
+	}
+	return true;
+}
+'''

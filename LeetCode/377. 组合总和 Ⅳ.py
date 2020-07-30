@@ -49,4 +49,14 @@ class Solution:
                 if nums[j] <= i:
                     dp[i] += dp[i - nums[j]]
         return dp[target]
-print(Solution().combinationSum4([1,2,3],5))
+    def combinationSum_test(self, nums: List[int], target: int) -> int:
+        n = len(nums)
+        dp = [0 for _ in range(target + 1)]
+        dp[0] = 1
+        # 顺序不同，组合不同，所以将nums放在内部循环
+        for j in range(n):
+            for i in range(1, target + 1):
+                if nums[j] <= i:
+                    dp[i] += dp[i - nums[j]]
+        return dp[target]
+print(Solution().combinationSum_test([1,2,3],5))

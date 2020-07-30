@@ -223,7 +223,9 @@ public class LRUCache {
     }
 }
 '''
-
+# 核心思路
+# 在双向链表的实现中，使用一个伪头部（dummy head）和伪尾部（dummy tail）标记界限
+# 这样在添加节点和删除节点的时候就不需要检查相邻的节点是否存在
 
 class DLinkedNode:
     def __init__(self, key=0, value=0):
@@ -295,6 +297,13 @@ class LRUCache:
 
 
 # 自己的版本
+'''
+为什么要在链表中同时存储 key 和 val，而不是只存储 val?
+当缓存容量已满，我们不仅仅要删除最后一个 Node 节点
+还要把 map 中映射到该节点的 key 同时删除
+而这个 key 只能由 Node 得到。如果 Node 结构中只存储 val
+那么我们就无法得知 key 是什么，就无法删除 map 中的键，造成错误。
+'''
 class DNode:
     def __init__(self, key=-1, value=-1):
         self.key = key
@@ -367,7 +376,7 @@ class LRUCache:
 # obj = LRUCache(capacity)
 # param_1 = obj.get(key)
 # obj.put(key,value)
-
+import collections
 class LRUCache(collections.OrderedDict):
 
     def __init__(self, capacity: int):
@@ -408,6 +417,103 @@ class LRUCache extends LinkedHashMap<Integer, Integer>{
     @Override
     protected boolean removeEldestEntry(Map.Entry<Integer, Integer> eldest) {
         return size() > capacity; 
+    }
+}
+'''
+
+# java
+'''
+class Node {
+    public int key, val;
+    public Node next, prev;
+    public Node(int k, int v) {
+        this.key = k;
+        this.val = v;
+    }
+}
+
+class DoubleList {  
+    // 头尾虚节点
+    private Node head, tail;  
+    // 链表元素数
+    private int size;
+    
+    public DoubleList() {
+        // 初始化双向链表的数据
+        head = new Node(0, 0);
+        tail = new Node(0, 0);
+        head.next = tail;
+        tail.prev = head;
+        size = 0;
+    }
+    
+    public void addFirst(Node x) {
+        x.next = head.next;
+        x.prev = head;
+        head.next.prev = x;
+        head.next = x;
+        size++;
+    }
+    
+    public void remove(Node x) {
+        x.prev.next = x.next;
+        x.next.prev = x.prev;
+        size--;
+    }
+    
+    public Node removeLast() {
+        if (tail.prev == head)
+            return null;
+        Node last = tail.prev;
+        remove(last);
+        return last;
+    }
+    
+    public int size() { return size; }
+}
+
+class LRUCache {
+
+    private int cap;
+    private HashMap<Integer, Node> map;
+    private DoubleList cache;
+    
+    public LRUCache(int capacity) {
+        // 初始化 LRU cache 的数据
+        this.cap = capacity;
+        map = new HashMap<>();
+        cache = new DoubleList();
+    }
+    
+    public int get(int key) {
+        if (!map.containsKey(key))
+            return -1;
+        int val = map.get(key).val;
+        put(key, val);
+        return val;
+    }
+    
+    public void put(int key, int val) {
+        // 先把新节点 x 做出来
+        Node x = new Node(key, val);
+        
+        if (map.containsKey(key)) {
+            // 删除旧的，新的插到头部
+            cache.remove(map.get(key));
+            cache.addFirst(x);
+            // 更新 map 中对应的数据
+            map.put(key, x);
+        } else {
+            if (cap == cache.size()) {
+                // 删除链表最后一个
+                Node last = cache.removeLast();
+                // 这一步很关键，一定要移除map中对应的key
+                map.remove(last.key);
+            }
+            // 直接添加到头部即可
+            cache.addFirst(x);
+            map.put(key, x);
+        }
     }
 }
 '''

@@ -28,6 +28,7 @@
 # 代码：
 # 思路一：
 # 双指针
+from typing import List
 class Solution:
     def minSubArrayLen(self, s: int, nums: List[int]) -> int:
         if not nums : return 0
@@ -45,6 +46,7 @@ class Solution:
         return res if res != float("inf") else 0
 
 # 思路二： 二分法
+import bisect
 class Solution:
     def minSubArrayLen(self, s: int, nums: List[int]) -> int:
         if not nums : return 0

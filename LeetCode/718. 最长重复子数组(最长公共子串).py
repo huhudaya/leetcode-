@@ -28,6 +28,7 @@ class Solution:
     def findLength(self, A: List[int], B: List[int]) -> int:
         # 最长公共子串
         m, n = len(A), len(B)
+        # dp[i][j]定义为以i，j结尾的最长子串
         dp = [[0] * (n + 1) for _ in range(m + 1)]
         res = 0
         for i in range(1, m + 1):

@@ -17,6 +17,7 @@
 '''
 from typing import List
 
+
 # 暴力dp 时间复杂度O(N2)
 class Solution:
     def maxEnvelopes(self, envelopes: List[List[int]]) -> int:
@@ -57,6 +58,17 @@ class Solution:
 
 # 二分法
 from bisect import bisect_left
+# 好方法
+class Solution:
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        q = [-float('inf')]
+        for i in nums:
+            # 如果直接大于牌堆的堆顶，就直接加当前元素，否则就二分插入到牌堆中
+            if i > q[-1]:
+                q += [i]
+            else:
+                q[bisect_left(q, i)] = i
+        return len(q) - 1
 
 
 class Solution:
@@ -136,22 +148,16 @@ class Solution:
         return pre[1] - cur[1] if cur[0] == pre[0] else cur[0] - pre[0]
 
 
-
-
-
-
-
-
-
 class Solution:
     def maxEnvelopes(self, envelopes: List[List[int]]) -> int:
         # 转换为求最长递增子序列
         import functools
         length = len(envelopes)
-        envelopes.sort(key = functools.cmp_to_key(self.sortEnvelopes))
+        envelopes.sort(key=functools.cmp_to_key(self.sortEnvelopes))
         # 求LIS
         heigh = [envelope[1] for envelope in envelopes]
         return self.lengthOfLIS(heigh)
+
     # def lengthOfLIS(self, heigh):
     #     length = len(heigh)
     #     if len(heigh) == 0:
@@ -189,5 +195,6 @@ class Solution:
                 piples += 1
             top[index] = poker
         return piples
+
     def sortEnvelopes(self, cur, pre):
         return pre[1] - cur[1] if cur[0] == pre[0] else cur[0] - pre[0]

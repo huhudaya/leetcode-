@@ -96,15 +96,15 @@ dp[0][k][1]=dp[1][k][1]第0天不可能有一次交易,设为负无穷float("-in
 class Solution(object):
     def maxProfit(self, prices):
         n = len(prices)
-        if n<1:
+        if n < 1:
             return 0
         dp = [[[0]*2 for _ in range(3)] for _ in range(n+1)]
         for k in range(3):
             dp[0][k][1] = float('-inf')
-        for i in range(1,n+1):
-            for k in range(1,3):
-                dp[i][k][0] = max(dp[i-1][k][0],dp[i-1][k][1]+prices[i-1])
-                dp[i][k][1] = max(dp[i-1][k][1],dp[i-1][k-1][0]-prices[i-1])
+        for i in range(1, n+1):
+            for k in range(1, 3):
+                dp[i][k][0] = max(dp[i - 1][k][0], dp[i - 1][k][1]+prices[i - 1])
+                dp[i][k][1] = max(dp[i - 1][k][1], dp[i - 1][k - 1][0]-prices[i - 1])
         return dp[n][2][0]
 
 卖出时算做交易
@@ -115,19 +115,19 @@ class Solution(object):
 for i in range(1,n+1):
     for k in range(3):
         dp[i][0][0] = 0
-        dp[i][k][0] = max(dp[i-1][k][0],dp[i-1][k-1][1]+prices[i-1])
-        dp[i][k][1] = max(dp[i-1][k][1],dp[i-1][k][0]-prices[i-1])
+        dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k-1][1]+prices[i-1]) 
+        dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k][0]-prices[i-1])
 return dp[n][2][0]
 代码
 class Solution(object):
     def maxProfit(self, prices):
         n = len(prices)
-        if n<1:
+        if n < 1:
             return 0
         dp = [[[0]*2 for _ in range(3)] for _ in range(n+1)]
         for k in range(3):
             dp[0][k][1] = float('-inf')
-        for i in range(1,n+1):
+        for i in range(1, n+1):
             # 卖出时才算交易的话，意味着当k=0的时候，也是可以进行交易的
             for k in range(3):
                 # 卖出时算一个交易次数
@@ -152,7 +152,7 @@ class Solution(object):
         dp = [[0]*2 for _ in range(3)]
         for k in range(3):
             dp[k][1] = float('-inf')
-        for i in range(1,n+1):
+        for i in range(1, n+1):
             for k in range(1,3):
                 dp[k][0] = max(dp[k][0],dp[k][1]+prices[i-1])
                 dp[k][1] = max(dp[k][1],dp[k-1][0]-prices[i-1])

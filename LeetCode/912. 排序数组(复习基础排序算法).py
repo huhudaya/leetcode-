@@ -16,6 +16,8 @@
 # 快排
 from typing import List
 import random
+
+
 class Solution:
     def randomized_partition(self, nums, l, r):
         # 找一个随机数
@@ -135,3 +137,48 @@ class Solution:
             nums[k] = right_nums[j]
             j += 1
             k += 1
+
+
+# 快排
+class Solution:
+    def sortArray(self, nums: List[int]) -> List[int]:
+        # 快速排序
+        def partition(left, right):
+            left_old = left
+            temp = nums[left]
+            # 指针交换法
+            while left < right:
+                while left < right and nums[right] >= temp:
+                    right -= 1
+                while left < right and nums[left] <= temp:
+                    left += 1
+                if left < right:
+                    nums[left], nums[right] = nums[right], nums[left]
+            nums[left], nums[left_old] = nums[left_old], nums[left]
+            return left
+
+        # 挖坑法
+        def partition2(left, right):
+            rand_int = random.randint(left, right)
+            nums[left], nums[rand_int] = nums[rand_int], nums[left]
+            left_old = left
+            temp = nums[left_old]
+            while left < right:
+                while left < right and nums[right] >= temp:
+                    right -= 1
+                nums[left] = nums[right]
+                while left < right and nums[left] <= temp:
+                    left += 1
+                nums[right] = nums[left]
+            nums[left] = temp
+            return left
+
+        def quick_sort(nums, left, right):
+            if left < right:
+                index = partition2(left, right)
+                quick_sort(nums, left, index - 1)
+                quick_sort(nums, index + 1, right)
+
+        n = len(nums)
+        quick_sort(nums, 0, n - 1)
+        return nums

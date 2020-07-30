@@ -140,6 +140,7 @@ class Solution:
         # 先将所有链表的头结点加入到堆中
         for i in range(len(lists)):
             if lists[i]:
+                # 放入堆中的数组是一个二元祖，元祖中第一个位置的元素是具体的值，第二个元素是第几行的数据
                 heapq.heappush(head, (lists[i].val, i))
                 # 这一步骤很关键，将列表中的每一个链表指向next链表
                 lists[i] = lists[i].next
@@ -260,3 +261,26 @@ class Solution:
         if p2 is None:
             cur.next = p1
         return dummy_node.next
+
+
+
+# 自己的版本
+class Solution:
+    def mergeKLists(self, lists: List[ListNode]) -> ListNode:
+        # 分治
+        n = len(lists)
+        # 合并两个有序数组
+        def merge2(l1, l2):
+            if l1 and l2:
+                if l1.val > l2.val:
+                    l1, l2 = l2, l1
+                l1.next = merge2(l1.next, l2)
+            return l1 or l2
+        def mergeK(left, right):
+            if left >= right:
+                return lists[left]
+            mid = left + (right - left) // 2
+            l1 = mergeK(left, mid)
+            l2 = mergeK(mid + 1, right)
+            return merge2(l1, l2)
+        return mergeK(0, n - 1)

@@ -59,7 +59,7 @@ class Solution:
             if index == n:
                 return
             # 这里和字典序的思想一样，计算step步长！
-            # 这里是根据层数计算当前节点下有多少个节点
+            # 这里是根据层数计算当前节点下有多少个节点，n-层数算有几种组合
             cnt = factorial[n - 1 - index]
             # 这个for循环用来判断是不是在当前子树中，如果在当前子树中，就要进入递归判断是当前子树中的哪一层
             for i in range(1, n + 1):
@@ -75,7 +75,7 @@ class Solution:
                 # 注意，这里只需要标记就可以
                 used[i] = True
                 # 如果执行到这里，说明一定在当前的子树下，所以需要index+1,表示第几层！
-                # 注意，这里的dfs中的index只是为了计算当前的层次
+                # 注意，这里的dfs中的index只是为了计算当前的层次！！！！！！！！
                 dfs(n, k, index + 1, path)
 
         if n == 0:
@@ -104,3 +104,33 @@ class Solution:
         #返回第k个
         return ''.join(map(str, list(arr[k-1])))
 
+
+
+class Solution:
+    def getPermutation(self, n: int, k: int) -> str:
+        path = []
+        n = 1
+        def dfs(depth, path, k):
+            if depth == n:
+                return
+            cnt = factorial[n - depth - 1]
+            for i in range(1, n + 1):
+                if used[i] is False:
+                    # 不在当前子树中
+                    if cnt < k:
+                        k -= cnt
+                        continue
+                    # 否则在当前子树中
+                    path.append(i)
+                    used[i] = True
+                    dfs(depth + 1, path, k)
+        if n == 0:
+            return ""
+        used = [False for _ in range(n + 1)]
+        path = []
+        factorial = [1 for _ in range(n + 1)]
+        # 计算1-n的阶乘然后用一个列表保存
+        for i in range(2, n + 1):
+            factorial[i] = factorial[i - 1] * i
+        dfs(0, path, k)
+        return ''.join([str(num) for num in path])

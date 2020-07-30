@@ -108,6 +108,7 @@ def sumNumbers(self, root: TreeNode) -> int:
 class Solution:
     def sumNumbers(self, root: TreeNode) -> int:
         res = []
+
         def dfs(root, tmp, res):
             if not root:
                 return
@@ -120,8 +121,10 @@ class Solution:
                 dfs(root.left, tmp, res)
             if root.right:
                 dfs(root.right, tmp, res)
+
         dfs(root, "", res)
         return sum(res)
+
 
 # 数学法
 # Definition for a binary tree node.

@@ -29,8 +29,9 @@ class TreeNode:
 
 from typing import List
 
-
+# 后序遍历的特点，最后一个元素为根节点
 class Solution:
+    # 递归法
     def buildTree(self, inorder: List[int], postorder: List[int]) -> TreeNode:
         if len(inorder) == 0:
             return None

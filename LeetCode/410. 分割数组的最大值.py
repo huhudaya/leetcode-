@@ -91,6 +91,7 @@ class Solution:
         right = sum(nums)
         while left + 1 < right:
             mid = left + (right - left) // 2
+            # 相当于找小于等于m的lastposition
             if get_num(mid) <= m:
                 right = mid
             else:

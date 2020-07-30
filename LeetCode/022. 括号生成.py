@@ -189,10 +189,12 @@ class Solution:
                 if not used[i]:
                     if i > 0 and used[i - 1] is False and candidates[i - 1] == candidates[i]:
                         continue
+                    # 只要左边小于右边就剪枝
                     if left < right:
                         continue
                     used[i] = True
                     if candidates[i] == "(":
+                        # left, right 用来记录当前的左右括号的个数
                         dfs(cur_str + candidates[i], used, left + 1, right, n)
                     else:
                         dfs(cur_str + candidates[i], used, left, right + 1, n)

@@ -41,7 +41,7 @@ class Solution:
             level += 1
             for i in range(n):
                 node = q.popleft()
-                #/* 判断是否到达终点 */
+                #/* 判断是否到达终点 */ 符合条件就提前终止
                 if not node.right and not node.left:
                     return level
                 if node.left:

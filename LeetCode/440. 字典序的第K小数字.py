@@ -37,7 +37,7 @@ class Solution:
         def cal_steps(n, n1, n2):
             step = 0
             while n1 <= n:
-                step += min(n2, n + 1) - n1
+                step += min(n2, n + 1) - n1  # //比如n是195的情况195到100有96个数
                 n1 *= 10
                 n2 *= 10
             return step
@@ -48,7 +48,7 @@ class Solution:
         while k > 0:
             # 求同一层移动一个节点所需要的步数
             steps = cal_steps(n, cur, cur + 1)
-            # 如果移动次数<=k，则需要水平移动一次
+            # 如果移动次数<=k，则需要水平移动一次，注意注意，这个k会一直减少！！！！！知道<=0
             if steps <= k:
                 k -= steps
                 cur += 1
@@ -88,6 +88,5 @@ class Solution:
                 k -= 1
                 cur *= 10
         return cur
-
 
 print(Solution().findKthNumber(100, 90))

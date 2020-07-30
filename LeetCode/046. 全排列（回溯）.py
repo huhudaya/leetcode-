@@ -111,6 +111,7 @@ class Solution:
                 if used[i] is False:
                     used[i] = True
                     path.append(nums[i])
+                    # 注意这里的depth只是用来记录当前的层次
                     dfs(nums, size, depth + 1, path, used, res)
                     used[i] = False
                     path.pop()
@@ -126,7 +127,7 @@ class Solution:
 
 import sys
 
-m, n, k = 100, 30, 90
+m, n, k = 3, 4, 7
 candidates = []
 used = [False for _ in range(m + n)]
 cnt = 0
@@ -136,7 +137,7 @@ for i in range(m + n):
     else:
         candidates.append("b")
 ans = []
-# 回溯遍历
+# 回溯遍历 全排列问题
 def dfs(nums, used, path, res, depth, size):
     global cnt
     if cnt == k:

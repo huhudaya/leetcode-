@@ -43,7 +43,7 @@ class Solution:
         return self.depth(root) != -1
 
     def depth(self, root):
-        if not root:
+        if root is None:
             return 0
         left = self.depth(root.left)
         if left == -1:
@@ -52,3 +52,23 @@ class Solution:
         if right == -1:
             return -1
         return max(left, right) + 1 if abs(left - right) < 2 else -1
+
+
+class Solution:
+    def isBalanced(self, root: TreeNode) -> bool:
+        if not root:
+            return True
+
+        def dfs(root):
+            if root is None:
+                return 0
+            left = dfs(root.left)
+            right = dfs(root.right)
+            if left == -1 or right == -1:
+                return -1
+            if abs(left - right) > 1:
+                return -1
+            # 返回高度
+            return max(left, right) + 1
+
+        return dfs(root) != -1

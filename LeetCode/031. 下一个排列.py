@@ -55,31 +55,34 @@ public class Solution {
 3.其实就相当于找到i右边从右侧开始遍历的第一个比i大的数作为新的排头兵，交换两个位置，然后反转index为i的右侧部分即可
 2.交换这两个数，然后反转i右侧的部分即可
 '''
-
 class Solution:
-    def nextPermutation(self, nums) -> None:
+    def nextPermutation(self, nums: List[int]) -> None:
         """
         Do not return anything, modify nums in-place instead.
         """
-        firstIndex = -1
+        first_index = -1
         n = len(nums)
+        # reverse函数 反转i到j之间的元素
         def reverse(nums, i, j):
             while i < j:
-                nums[i],nums[j] = nums[j], nums[i]
+                nums[i], nums[j] = nums[j], nums[i]
                 i += 1
                 j -= 1
-        for i in range(n-2, -1, -1):
-            if nums[i] < nums[i+1]:
-                firstIndex = i
+        # 从后往前遍历 找到first_index
+        for i in range(n - 2, -1, -1):
+            if nums[i] < nums[i + 1]:
+                first_index = i
                 break
-        #print(firstIndex)
-        if firstIndex == -1:
+        # 如果遍历完都没有找见这个index，就直接反转全部元素
+        if first_index == -1:
             reverse(nums, 0, n-1)
-            return 
-        secondIndex = -1
-        for i in range(n-1, firstIndex, -1):
-            if nums[i] > nums[firstIndex]:
-                secondIndex = i
+            return
+        second_index = -1
+        # 再次从后往前遍历整个元素，找见第一个比first_index的元素，然后交换两个元素
+        for i in range(n - 1, first_index, -1):
+            if nums[first_index] < nums[i]:
+                second_index = i
                 break
-        nums[firstIndex],nums[secondIndex] = nums[secondIndex], nums[firstIndex]
-        reverse(nums, firstIndex+1, n-1)
+        nums[first_index], nums[second_index] = nums[second_index], nums[first_index]
+        # 最后记得反转first_index之后的元素
+        reverse(nums, first_index + 1, n - 1)

@@ -102,7 +102,7 @@ arr = list(permutations(list_n))
 #返回第k个
 return ''.join(map(str, list(arr[k-1])))
 
-一个列表中取n个数的有序排列
+一个列表中取n个数的有序排列,相当于组合
 from itertools import combinations as com
 tmp = list(map(list, list(com(range(1, 10), k))))
 

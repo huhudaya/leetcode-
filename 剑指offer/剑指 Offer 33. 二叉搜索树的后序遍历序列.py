@@ -35,6 +35,7 @@ class Solution:
             if i >= j:
                 return True
             p = i
+            # 核心思路是找见第一个大于等于最后一个元素的索引！！！！！！
             while postorder[p] < postorder[j]:
                 p += 1
             m = p
@@ -74,9 +75,11 @@ public:
 # 而后序遍历的倒序为 “根、右、左” 顺序。
 from typing import List
 import sys
+
+
 # 核心思路就是维护一个min栈，逆序遍历整个数组
 # 因为是后序遍历，所以当逆序遍历的时候，数组中的第一个节点是根节点，然后右子树的节点都比根节点的值要大
-# 当
+# 初始化： 单调栈 stackstack ，父节点值 root = +\infinroot=+∞ （初始值为正无穷大，可把树的根节点看为此无穷大节点的左孩子）；
 class Solution:
     def verifyPostorder(self, postorder: List[int]) -> bool:
         # 单调栈
@@ -92,3 +95,24 @@ class Solution:
                 root = stack.pop()
             stack.append(postorder[i])
         return True
+
+
+class Solution:
+    def verifyPostorder(self, postorder: List[int]) -> bool:
+
+        def helper(nums):
+            if len(nums) <= 1:
+                return True
+            # 最后一个数为根节点
+            root = nums[-1]
+            for i in range(len(nums)):
+                if nums[i] > root:
+                    break
+            for j in range(i, len(nums) - 1):
+                if nums[j] < root:
+                    return False
+            return helper(nums[:i]) and helper(nums[i:-1])
+
+        if not postorder:
+            return True
+        return helper(postorder)

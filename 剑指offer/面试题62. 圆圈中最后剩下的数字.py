@@ -32,18 +32,21 @@
 因此有 f(n, m) = (m % n + x) % n = (m + x) % n。
 '''
 
-
 # 注意 是每次删除一个人，第一次有8个人的时候，第一轮过去杀死一个还有7个人
 
 # 递推 f(8,3) = (f(7, 3) + 3) % 8
 #     f(n,m) = (f(n - 1 + m) % n)
 import sys
+
 sys.setrecursionlimit(100000)
+
+
 def f(n, m):
     if n == 0:
         return 0
     x = f(n - 1, m)
     return (m + x) % n
+
 
 class Solution:
     def lastRemaining(self, n: int, m: int) -> int:
@@ -59,8 +62,9 @@ class Solution:
         return f
 
 
-
 from collections import deque
+
+
 # 队列模拟
 class Solution:
     def lastRemaining(self, n: int, m: int) -> int:
@@ -74,6 +78,7 @@ class Solution:
             simqueue.popleft()
         alive = simqueue.popleft()
         return alive
+
 
 '''
 既然约塞夫问题就是用人来举例的，那我们也给每个人一个编号（索引值），每个人用字母代替
@@ -139,9 +144,28 @@ class Solution {
 数学归纳法都是扯淡，都是有了公式强行去归纳，要是不知道递推公式怎么能从n=1,n=2,n=3找到取模规律
 
 '''
+
+'''
+最终剩下一个人时的安全位置肯定为0，反推安全位置在人数为n时的编号
+人数为1： 0
+人数为2： (0+m) % 2
+人数为3： ((0+m) % 2 + m) % 3
+人数为4： (((0+m) % 2 + m) % 3 + m) % 4
+........
+迭代推理到n就可以得出答案
+
+如果用dp的方式来思考本题。
+状态：还剩i个人的时候，安全人所在的位置编号 reuslt
+初始状态：只剩一个人的时候，他的位置肯定是 result = 0
+状态方程： i -> i + 1 result = （m + result） % i
+'''
+
 class Solution:
     def lastRemaining(self, n: int, m: int) -> int:
         res = 0
-        for i in range(2,n+1):
-            res = (res+m)%i
-        return(res)
+        # 最后一轮剩下2个人，所以从2开始反推
+        for i in range(1, n + 1):
+            # 核心思路就是只关注活着的人的索引，为什么要余 i 呢？这是因为前一轮的人数少于当前轮，比如第7轮有7个人， 第8轮有8个人，因为我们是从前到后推导的，所以要余数保证在当前轮的范围中
+            res = (res + m) % i
+        return (res)
+print(Solution().lastRemaining(8,3))

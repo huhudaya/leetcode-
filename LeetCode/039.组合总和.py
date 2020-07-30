@@ -81,7 +81,7 @@ class Solution:
             self.__dfs(candidates, i, res, target - candidates[i], path, size)
             # 路径移除
             path.pop()
-print(Solution().combinationSum([1,2,3],4))
+print(Solution().combinationSum([1,2,3],5))
 
 class Solution:
     def coinChange(self, coins: List[int], amount: int) -> int:

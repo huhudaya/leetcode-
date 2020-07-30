@@ -91,42 +91,7 @@ def quick_sort(array, left, right):
     quick_sort(array, left + 1, high)  # left+1 可能超过right
 
 
-list = [6, 1]
-quick_sort(list, 0, len(list) - 1)
-print(list)
-# list = [9, 1, 5, 3, 5, 2, 6, 8, 7, 6]
-list = [1, 5, 3, 5, 2, 6, 8, 7, 6, 1, 7, 7, 5]
-
-quick_sort(list, 0, len(list) - 1)
-print(list)
-
-
-# 基于分区的挖坑法：
-# def partition(arr):
-#     while :
-#         pass
-
-
-class Solution:
-    def bulbSwitch(self, n: int) -> int:
-        # 暴力法
-        bulb = [0] * n
-        cnt = 1
-        while cnt <= n:
-            for i in range(cnt - 1, n, cnt):
-                bulb[i] ^= 1
-                print("cnt is " + str(cnt) + 'and i is ' + str(i) + "and bulb[i] is " + str(bulb[i]))
-            cnt += 1
-            print(cnt)
-            print(bulb)
-        return sum(bulb)
-
-
-print(bin(7).count("1"))
-
-# print(Solution().bulbSwitch(3))
-
-
+# 这种缺点是会复制多个数组
 def quicksort(arr):
     if len(arr) <= 1:
         return arr
@@ -135,8 +100,9 @@ def quicksort(arr):
     middle = [x for x in arr if x == pivot]
     right = [x for x in arr if x > pivot]
     return quicksort(left) + middle + quicksort(right)
-print(quicksort([3, 6, 9, 8, 10, 1, 2, 1]))
 
+
+print(quicksort([3, 6, 9, 8, 10, 1, 2, 1]))
 
 # 快排
 from typing import List
@@ -165,4 +131,52 @@ class Solution:
 
     def sortArray(self, nums: List[int]) -> List[int]:
         self.randomized_quicksort(nums, 0, len(nums) - 1)
+        return nums
+
+
+
+
+
+# 标准版本的快速排序
+class Solution:
+    def sortArray(self, nums: List[int]) -> List[int]:
+        # 快速排序
+        def partition(left, right):
+            left_old = left
+            temp = nums[left]
+            # 指针交换法
+            while left < right:
+                while left < right and nums[right] >= temp:
+                    right -= 1
+                while left < right and nums[left] <= temp:
+                    left += 1
+                if left < right:
+                    nums[left], nums[right] = nums[right], nums[left]
+            nums[left], nums[left_old] = nums[left_old], nums[left]
+            return left
+
+        # 挖坑法
+        def partition2(left, right):
+            rand_int = random.randint(left, right)
+            nums[left], nums[rand_int] = nums[rand_int], nums[left]
+            left_old = left
+            temp = nums[left_old]
+            while left < right:
+                while left < right and nums[right] >= temp:
+                    right -= 1
+                nums[left] = nums[right]
+                while left < right and nums[left] <= temp:
+                    left += 1
+                nums[right] = nums[left]
+            nums[left] = temp
+            return left
+
+        def quick_sort(nums, left, right):
+            if left < right:
+                index = partition2(left, right)
+                quick_sort(nums, left, index - 1)
+                quick_sort(nums, index + 1, right)
+
+        n = len(nums)
+        quick_sort(nums, 0, n - 1)
         return nums

@@ -36,6 +36,7 @@ class Solution:
     def convert(self, s: str, numRows: int) -> str:
         if numRows < 2:
             return s
+        # 相当于初始化row行个空列表
         res = ["" for _ in range(numRows)]
         i, flag = 0, -1
         for c in s:
@@ -78,7 +79,8 @@ class Solution:
     def convert(self, s: str, numRows: int) -> str:
         if not s:
             return ""
-        if numRows == 1: return s
+        if numRows == 1:
+            return s
         split_s_len = numRows * 2 - 2
         data = []
         n = len(s)

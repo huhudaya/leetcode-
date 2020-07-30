@@ -158,8 +158,10 @@ class Solution:
 
         # 使用两个变量 i, j 记录当前匹配到的位置:  i表示字符串s,j表示匹配模式p
         def dp(i, j):
-            if (i, j) in memo: return memo[(i, j)]
-            if j == len(p): return i == len(s)
+            if (i, j) in memo:
+                return memo[(i, j)]
+            if j == len(p):
+                return i == len(s)
             # 这里必须是<len(s)
             first = i < len(s) and p[j] in {".", s[i]}
             if j <= len(p) - 2 and p[j + 1] == "*":

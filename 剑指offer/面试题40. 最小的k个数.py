@@ -175,6 +175,7 @@ class Solution:
         #         index = partition(left, right)
         # return arr[:k + 1]
         while 1:
+            # 每一次partition都相当于一次排序！
             idx = partition(left, right)
             if idx == k:
                 return arr[:k+1]

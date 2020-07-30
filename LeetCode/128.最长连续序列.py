@@ -98,3 +98,26 @@ class Solution3(object):
                     y += 1
                 res = max(res, y - x)
         return res
+
+'''
+增加了判断跳过的逻辑之后，时间复杂度是多少呢？
+外层循环需要 O(n) 的时间复杂度，只有当一个数是连续序列的第一个数的情况下才会进入内层循环
+然后在内层循环中匹配连续序列中的数，因此数组中的每个数只会进入内层循环一次。
+根据上述分析可知，总时间复杂度为 O(n)，符合题目要求。
+'''
+# 核心思路就是只有当i-1不在nums中才进入到内层循环，所以总共的时间复杂度就是O(N)
+class Solution:
+    def longestConsecutive(self, nums: List[int]) -> int:
+        nums = set(nums)
+        res = 0
+        cnt = 0
+        for i in nums:
+            # 如果不在set中，就以这个元素作为起始序列计算最大长度
+            if i - 1 not in nums:
+                cnt = 1
+                num = i + 1
+                while num in nums:
+                    cnt += 1
+                res = max(res, cnt)
+        return res
+Solution().longestConsecutive([100,4,200,1,3,2])

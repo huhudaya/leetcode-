@@ -125,6 +125,7 @@ class Solution:
 # DFS 和二叉树的直径差不多，看看那道题！通过一个全局变量记录最好的结果
 class Solution:
     def maxPathSum(self, root: TreeNode) -> int:
+        # 注意这里的初始化的坑
         self.maxVal = root.val
 
         def dfs(root):
@@ -137,3 +138,23 @@ class Solution:
 
         dfs(root)
         return self.maxVal
+
+# java
+'''
+ * Definition for a binary tree node.
+class Solution {
+    int res;
+    public int maxPathSum(TreeNode root) {
+        res = root.val;
+        dfs(root);
+        return res;
+    }
+    private int dfs(TreeNode root){
+        if (null == root) return 0;
+        int left = Math.max(dfs(root.left), 0);
+        int right = Math.max(dfs(root.right), 0);
+        res = Math.max(res, left + right + root.val);
+        return Math.max(left, right) + root.val;
+    }
+}
+'''

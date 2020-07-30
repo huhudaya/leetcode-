@@ -28,8 +28,7 @@ def portition(list, l, r):
             list[l], list[more] = list[more], list[l]
         else:
             l = l + 1
-            less += 1
-        list[more], list[r] = list[r], list[more]
+    list[more], list[r] = list[r], list[more]
     # list[more] = list[more]^list[r]
     # list[r] = list[more]^list[r]
     # list[more] = list[more]^list[r]

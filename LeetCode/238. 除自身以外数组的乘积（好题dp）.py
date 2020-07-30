@@ -22,8 +22,11 @@ class Solution:
         suffix_arr = [1] * n
         res = [0] * n
         # 总体思路就是构建两个前缀和后缀乘积数组
+        # 构建左前缀和右前缀
+        # 正向遍历 正序遍历
         for i in range(1, n):
             prefix_arr[i] = prefix_arr[i - 1] * nums[i - 1]
+        # 逆向遍历 逆序遍历
         for i in range(n - 2, -1, -1):
             suffix_arr[i] = suffix_arr[i + 1] * nums[i + 1]
         for i in range(n):
@@ -35,6 +38,7 @@ class Solution:
 class Solution:
     def productExceptSelf(self, nums: List[int]) -> List[int]:
         # 空间优化版本
+        # 使用变量代替前缀数组
         n = len(nums)
         res = [1] * n
         n = len(nums)

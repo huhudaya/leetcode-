@@ -212,7 +212,7 @@ class Solution:
                 i += judge * 1
                 ans.append(matrix[i][j])
 
-            # 没遍历一次，m 和 n 都要减少一次，
+            # 每遍历一次，m 和 n 都要减少一次，
             m = m - 1
             n = n - 1
             # 每一轮横向和纵向遍历完之后，需要拐点，即col方向减少，row方向减少
@@ -275,7 +275,8 @@ class Solution:
         return res
 
 
-Solution().spiralOrder([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]])
+# Solution().spiralOrder([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]])
+
 
 # 按圈遍历
 class Solution:
@@ -298,3 +299,31 @@ class Solution:
                     order.append(matrix[row][left])
             left, right, top, bottom = left + 1, right - 1, top + 1, bottom - 1
         return order
+
+
+
+class Solution:
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        if not matrix or not matrix[0]:
+            return []
+        res = []
+        m = len(matrix)
+        n = len(matrix[0])
+        directions = [[0, 1], [1, 0], [0, -1], [-1, 0]]
+        seen = [[False] * n for _ in range(m)]
+        row = 0
+        col = 0
+        di = 0
+        # 注意这里需要为m * n + 1
+        for i in range(m * n + 1):
+            res.append(matrix[row][col])
+            # 记录是否已经遍历过
+            seen[row][col] == True
+            rr = row + directions[di][0]
+            cc = col + directions[di][1]
+            if rr < 0 or rr >= m or cc < 0 or cc >= n or seen[rr][cc]:
+                di = (di + 1) % 4
+            row += directions[di][0]
+            col += directions[di][1]
+        return res
+Solution().spiralOrder([[1,2,3],[4,5,6],[7,8,9]])

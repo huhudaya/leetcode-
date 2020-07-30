@@ -45,8 +45,9 @@ class Solution:
             return None
         # 注意 先序遍历的第一个元素一定是树的根，这个根又可以将中序遍历分为左右两颗子树
         root = TreeNode(preorder[0])
+        # 找到在中序遍历中的索引
         mid = inorder.index(preorder[0])
-        # preorder[1: mid + 1]这里相当于指定左边的数量
+        # preorder[1: mid + 1]这里相当于指定左边的数量，注意这里表示为中序的数量转换为对应的前序的列表
         root.left = self.buildTree(preorder[1: mid + 1], inorder[:mid])
         root.right = self.buildTree(preorder[mid + 1:], inorder[mid + 1:])
         return root

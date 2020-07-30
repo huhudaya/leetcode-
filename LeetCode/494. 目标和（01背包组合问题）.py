@@ -46,7 +46,7 @@ class Solution:
     def findTargetSumWays(self, nums: List[int], S: int) -> int:
         # 递归
         if not nums:
-            return -1
+            rern -1
         n = len(nums)
 
         @functools.lru_cache(None)

@@ -49,8 +49,6 @@ class Solution:
 
 # 快排
 from random import randint
-
-
 class Solution:
     def findKthLargest(self, nums, k: int) -> int:
         if k > len(nums):
@@ -106,69 +104,6 @@ class Solution:
                 right = idx - 1
 
 
-
-# 官方题解
-import random
-'''
-随机选择一个枢轴。
-
-使用划分算法将枢轴放在数组中的合适位置 pos。将小于枢轴的元素移到左边，大于等于枢轴的元素移到右边。
-
-比较 pos 和 N - k 以决定在哪边继续递归处理。
-
-'''
-class Solution:
-    def findKthLargest(self, nums, k):
-        """
-        :type nums: List[int]
-        :type k: int
-        :rtype: int
-        """
-
-        def partition(left, right, pivot_index):
-            pivot = nums[pivot_index]
-            # 1. move pivot to end
-            nums[pivot_index], nums[right] = nums[right], nums[pivot_index]
-
-            # 2. move all smaller elements to the left
-            store_index = left
-            for i in range(left, right):
-                if nums[i] < pivot:
-                    nums[store_index], nums[i] = nums[i], nums[store_index]
-                    store_index += 1
-
-            # 3. move pivot to its final place
-            nums[right], nums[store_index] = nums[store_index], nums[right]
-
-            return store_index
-
-        def select(left, right, k_smallest):
-            """
-            Returns the k-th smallest element of list within left..right
-            """
-            if left == right:  # If the list contains only one element,
-                return nums[left]  # return that element
-
-            # select a random pivot_index between
-            pivot_index = random.randint(left, right)
-
-            # find the pivot position in a sorted list
-            pivot_index = partition(left, right, pivot_index)
-
-            # the pivot is in its final sorted position
-            if k_smallest == pivot_index:
-                return nums[k_smallest]
-            # go left
-            elif k_smallest < pivot_index:
-                return select(left, pivot_index - 1, k_smallest)
-            # go right
-            else:
-                return select(pivot_index + 1, right, k_smallest)
-
-        # kth largest is (n - k)th smallest
-        return select(0, len(nums) - 1, len(nums) - k)
-
-
 # --------------------------------------------------------------
 # 使用快排完成topK
 # 挖坑法
@@ -186,17 +121,7 @@ def partition(arr, low, high):
     return low
 
 
-# 快排
-# def quickSort(arr,low,high):
-# 	if low < high:
-# 		key = partition(arr,low,high)
-# 		quickSort(arr,0,key-1)
-# 		quickSort(arr,key+1,high)
-# arr = [1,3,4,3,2,5,3]
-# quickSort(arr,0,len(arr)-1)
-# print(arr)
-
-# 指针交换法 
+# 指针交换法
 def partition1(arr, l, r):
     index = arr[l]
     low = l
@@ -209,6 +134,18 @@ def partition1(arr, l, r):
             arr[l], arr[r] = arr[r], arr[l]
     arr[l], arr[low] = arr[low], arr[l]
     return l
+
+
+# 快排
+def quickSort(arr, low, high):
+    if low < high:
+        key = partition(arr, low, high)
+        quickSort(arr, 0, key - 1)
+        quickSort(arr, key + 1, high)
+
+
+arr = [1, 3, 4, 3, 2, 5, 3]
+quickSort(arr, 0, len(arr) - 1)
 
 
 # topK O(logN)
@@ -224,51 +161,11 @@ def topK(arr, k, low, high):
     return arr[pos]
 
 
-
-# 随机因子
-from typing import List
-import random
-
-
-class Solution:
-    def findKthLargest(self, nums: List[int], k: int) -> int:
-        size = len(nums)
-
-        target = size - k
-        left = 0
-        right = size - 1
-        while True:
-            index = self.__partition(nums, left, right)
-            if index == target:
-                return nums[index]
-            elif index < target:
-                # 下一轮在 [index + 1, right] 里找
-                left = index + 1
-            else:
-                right = index - 1
-
-    #  循环不变量：[left + 1, j] < pivot
-    #  (j, i) >= pivot
-    def __partition(self, nums, left, right):
-        # 随机化切分元素
-        # randint 是包括左右区间的
-        random_index = random.randint(left, right)
-        nums[random_index], nums[left] = nums[left], nums[random_index]
-
-        pivot = nums[left]
-        j = left
-        # 可能会存在不必要的交换
-        for i in range(left + 1, right + 1):
-            if nums[i] < pivot:
-                j += 1
-                nums[i], nums[j] = nums[j], nums[i]
-
-        nums[left], nums[j] = nums[j], nums[left]
-        return j
-
 # 自己的版本 一定要加随机因子
 # 挖坑法
 from typing import List
+
+
 class Solution:
     def findKthLargest(self, nums: List[int], k: int) -> int:
         n = len(nums) - 1
@@ -299,8 +196,11 @@ class Solution:
         arr[low] = index
         return low
 
+
 # 随机快排
 import random
+
+
 class Solution:
     def findKthLargest(self, nums: List[int], k: int) -> int:
         n = len(nums)
@@ -308,6 +208,7 @@ class Solution:
             return -1
         left = 0
         right = n - 1
+
         def partition(nums, left, right):
             index = random.randint(left, right)
             nums[index], nums[left] = nums[left], nums[index]
@@ -323,6 +224,7 @@ class Solution:
             # 填坑
             nums[left] = index
             return left
+
         while True:
             pos = partition(nums, left, right)
             if pos == k - 1:

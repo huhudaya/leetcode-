@@ -39,12 +39,14 @@
 '''
 
 
-# dp[i][j] 表示的就是 str1(0,…i) 和 str2(0,…j) 的答案，基本上字符串匹配类动态规划都可以先尝试这样去定义状态
+# dp[i][j] 表示的就是 str1(0,…i) 和 str2(0,…j) 的答案，
+# 基本上字符串匹配类动态规划都可以先尝试这样去定义状态
 class Solution:
     def longestCommonSubsequence(self, text1: str, text2: str) -> int:
         # dp思想
         m, n = len(text1), len(text2)
-        dp = [[0] * (n + 1) for i in range(m + 1)]
+        # dp[i][j] 定义为到i,j为止的最长子序列的长度
+        dp = [[0] * (n + 1) for _ in range(m + 1)]
         # basecase为0
         for i in range(1, m + 1):
             for j in range(1, n + 1):

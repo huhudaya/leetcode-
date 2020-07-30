@@ -61,6 +61,8 @@ class Solution:
             if not k:
                 return root.val
             root = root.right
+
+
 # 分治
 '''
 
@@ -94,7 +96,7 @@ private int nodeCount(TreeNode root) {
 }
 
 '''
-# 剪枝
+# 中序遍历 剪枝
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
         self.val = val

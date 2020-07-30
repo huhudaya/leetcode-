@@ -41,7 +41,7 @@ class Solution:
                 if marked[i][j] is False and grid[i][j] == '1':
                     count += 1
                     self.__dfs(grid, i, j, m, n, marked)
-            return count
+        return count
 
     def __dfs(self, grid, i, j, m, n, marked):
         marked[i][j] = True

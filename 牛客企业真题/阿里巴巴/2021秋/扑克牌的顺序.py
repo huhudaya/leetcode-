@@ -40,3 +40,63 @@
 		return orderNumbers;
 	}
 '''
+
+'''
+思路如下：由题意可知存在两种操作
+1.摸牌；2.放牌；且两种操作交替进行，直到手牌为空。
+因此可以将摸牌操作是为偶数，放牌操作视为奇数，设置一个标记量
+当标记为偶数的时候摸牌，标记为奇数的时候放牌，从而有了大体的操作思路。
+我们假设现在拿到的是最开始时候的有序牌堆，用每张牌的位置为牌编号
+即为1-n号牌（在程序中用0~n-1实现），然后设置刚才提到的标记量从0开始，一直到数组长度-1，当标记量为偶数时，将对应标记取出放入一个新数组res中暂存
+当标记量为奇数时将对应标记加到数组末尾，然后跳过该标记。
+同时实时更新数组长度，直到所有的牌都被放入res中（即标记量=数组长度，意味着最后一张牌放入后数组中没有新牌，不再增加长度）。
+此时res中牌的顺序就是题目给出的当前桌子上牌的顺序。
+如果要还原，则将res与给出的桌子上牌的顺序Nums一一对应，创建一个长度为n的空result数组来存储数据，res中存的是nums中元素的原位置，设k为res的某个下标，则result【res[k]】的值就是nums[k]的值，按照这个思路将result还原出来即可得到原数组。
+
+'''
+
+# python实现（将原数组打乱）（用C + +也可以，把list改成vector即可，功能是类似的）：
+def disorder():
+    nums = [1, 3, 5, 4, 2]  # nums为顺序牌堆数组，输出的是排序后的数组
+    list1 = []
+    list2 = []
+    n = len(nums)
+    # list1记录的是数组的索引下标
+    for i in range(0, n):
+        list1.append(i)
+    mark = 0
+    lenth = len(list1)
+    while mark < lenth:
+        if mark % 2 == 0:
+            list2.append(list1[mark])
+        else:
+            list1.append(list1[mark])
+            lenth += 1
+        mark += 1
+    res = []
+    for i in list2:
+        res.append(nums[i])
+    print(res)
+print(disorder())
+
+# python实现（将打乱数组还原，nums为展示在桌面上的数组，求原数组）
+def convert():
+    nums = [1, 2, 3, 4, 5, 6, 7, 8]
+    list1 = []
+    list2 = []
+    n = len(nums)
+    for i in range(0, n):
+        list1.append(i)
+    mark = 0
+    lenth = len(list1)
+    while mark < lenth:
+        if mark % 2 == 0:
+            list2.append(list1[mark])
+        else:
+            list1.append(list1[mark])
+            lenth += 1
+        mark += 1
+    res = [0 for _ in range(n)]
+    for i in range(len(list2)):
+        res[list2[i]] = nums[i]
+    print(res)

@@ -39,6 +39,7 @@ class Solution:
         return nums[left]
 
 # 自己的版本
+# right = right − 1 只需证明每次执行此操作后，旋转点 x 仍在 [i, j]区间内即可
 class Solution:
     def findMin(self, nums: List[int]) -> int:
         left = 0

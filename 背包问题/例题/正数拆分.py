@@ -1,5 +1,5 @@
 '''
-1.将正整数n无序拆分成最大数为m的拆分方案个数，要求所有拆分方案不重复。
+1.将正整数n无序拆分成最大的数为m的拆分方案个数，要求所有拆分方案不重复。
 样例：
 n = 5, m = 5,对应的拆分方案如下：
 5 = 5
@@ -33,7 +33,7 @@ public class Main {
         }      
     }
     public static int integerhuafen(int n, int m) {
-         
+    
         int dp[][] = new int[n + 1][m + 1];    
         for(int i = 1; i <= n; i++){
             for(int j = 1; j <= m; j++ ){

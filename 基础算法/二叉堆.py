@@ -54,7 +54,6 @@ class BinHeap:
             self.percDown(i)
             i = i - 1
 
-
 bh = BinHeap()
 alist = [9, 5, 6, 2, 3, 1, 9]
 bh.buildHeap(alist)
@@ -65,9 +64,6 @@ for i in range(len(alist)):  # 相当于0到(len(alist)-1)
     # print(bh.delMin())
     list.append(bh.delMin())  # 相当于弹len(alist)-1次
 print(list)
-
-
-
 
 
 # 创建大根堆import math

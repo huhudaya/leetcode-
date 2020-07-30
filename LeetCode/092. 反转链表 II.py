@@ -99,7 +99,6 @@ class Solution:
         for i in range(m - 1):
             pre = pre.next
         cur = pre.next
-        tail = pre.next
         # 保存这个pre
         node = pre
         pre = None

@@ -3,8 +3,6 @@
 
 有效的运算符包括 +, -, *, / 。每个运算对象可以是整数，也可以是另一个逆波兰表达式。
 
- 
-
 说明：
 
 整数除法只保留整数部分。
@@ -48,9 +46,12 @@
 适合用栈操作运算：遇到数字则入栈；遇到算符则取出栈顶两个数字进行计算，并将结果压入栈中。
 '''
 from typing import List
+
+
 class Solution:
     def evalRPN(self, tokens: List[str]) -> int:
         op_stack = []
+
         def doMath(op, op1, op2):
             if op == "+":
                 return op1 + op2
@@ -61,14 +62,17 @@ class Solution:
             elif op == "/":
                 # 使用int代替当元素是负数时候除法的不正确性
                 return int(op1 / op2)
+
         for op in tokens:
             if op not in "+-*/":
                 op_stack.append(int(op))
             else:
                 # 注意这里op1和op2的顺序
-                op2= op_stack.pop()
+                op2 = op_stack.pop()
                 op1 = op_stack.pop()
                 tmp = doMath(op, op1, op2)
                 op_stack.append(tmp)
         return op_stack[-1]
-Solution().evalRPN(["10","6","9","3","+","-11","*","/","*","17","+","5","+"])
+
+
+Solution().evalRPN(["10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"])

@@ -36,6 +36,8 @@ class TreeNode:
         self.val = x
         self.left = None
         self.right = None
+
+
 # 递归 中序遍历的方式
 class Solution:
     def isValidBST(self, root: TreeNode) -> bool:
@@ -70,26 +72,26 @@ class Solution:
         return True
 
 
-# 递归中序遍历
+# 递归中序遍历+剪枝
 class Solution:
     def isValidBST(self, root: TreeNode) -> bool:
+        # 使用一个变量存储上一个值
         self.pre = None
 
-        # 这种递归有点抽象，需要好好理解一下
-        # pre的值得变换规律是按中序排序的，先左再中后右边
-        def isBST(root):
-            if not root:
+        def dfs(root):
+            if root is None:
                 return True
-            if not isBST(root.left):
+            # 中序遍历
+            if dfs(root.left) is False:
                 return False
-            if self.pre and self.pre.val >= root.val:
+            # 这个时候是中序遍历！！
+            if self.pre and root.val <= self.pre.val:
                 return False
+            # 否则更新pre
             self.pre = root
-            # print(root.val)
-            return isBST(root.right)
+            return dfs(root.right)
 
-        return isBST(root)
-
+        return dfs(root)
 
 # 最大最小值
 class Solution:
@@ -103,15 +105,3 @@ class Solution:
             return isBST(root.left, min_val, root.val) and isBST(root.right, root.val, max_val)
 
         return isBST(root, float("-inf"), float("inf"))
-
-
-a = TreeNode(10)
-b = TreeNode(2)
-c = TreeNode(12)
-d = TreeNode(3)
-e = TreeNode(14)
-a.left = b
-a.right = c
-c.left = d
-c.right = e
-print(Solution().isValidBST(a))

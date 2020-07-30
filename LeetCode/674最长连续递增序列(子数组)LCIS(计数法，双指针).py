@@ -39,7 +39,7 @@ class Solution:
     def findLengthOfLCIS(self, nums) -> int:
         ans = anchor = 0
         for i in range(len(nums)):
-            if i and nums[i - 1] >= nums[i]:
+            if i > 0 and nums[i - 1] >= nums[i]:
                 anchor = i
             ans = max(ans, i - anchor + 1)
         return ans
@@ -71,6 +71,8 @@ class Solution:
 
 
 from typing import List
+
+
 class Solution:
     def findLengthOfLCIS(self, nums: List[int]) -> int:
         # left = 0
@@ -88,9 +90,9 @@ class Solution:
         # 计数法更好一点？
         ans = anchor = 0
         for i in range(len(nums)):
-            if i and nums[i-1] >= nums[i]:
+            if i and nums[i - 1] >= nums[i]:
                 anchor = i
-            ans = max(ans, i-anchor+1)
+            ans = max(ans, i - anchor + 1)
         return ans
 
         # res = 1
@@ -106,10 +108,12 @@ class Solution:
         #         cnt = 1
         # return res
 
+
 a = list(set([1, 2, 4, 3, 2, 4]))
 a.sort()
 a.reverse()
 print(a)
+
 
 class Solution:
     def findLengthOfLCIS(self, nums: List[int]) -> int:
@@ -122,7 +126,7 @@ class Solution:
         if n == 1:
             return 1
         for i in range(1, n):
-            if nums[i-1] < nums[i]:
+            if nums[i - 1] < nums[i]:
                 cnt += 1
                 res = max(res, cnt)
             else:

@@ -84,3 +84,26 @@ class Solution:
                 x = x + directions[count][0]
                 y = y + directions[count][1]
         return res
+
+
+
+# 自己的版本
+class Solution:
+    def generateMatrix(self, n: int) -> List[List[int]]:
+        # 模拟法
+        matrix = [[0] * n for i in range(n)]
+        directions = [[0, 1], [1, 0], [0, -1], [-1, 0]]
+        row = 0
+        col = 0
+        di = 0
+        for i in range(1, n * n + 1):
+            matrix[row][col] = i
+            # 下一个要前进的方向
+            rr = row + directions[di][0]
+            cc = col + directions[di][1]
+            if rr < 0 or rr >= n or cc < 0 or cc >= n or matrix[rr][cc]:
+                di = (di + 1) % 4
+            row += directions[di][0]
+            col += directions[di][1]
+        return matrix
+print(Solution().generateMatrix(100))
