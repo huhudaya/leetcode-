@@ -170,7 +170,7 @@ class Solution:
                         dp[i - 1][j - 1] + 1,  # 替换
                         dp[i][j - 1] + 1,  # 插入
                     )
-        return dp[m][n],dp
+        return dp[m][n], dp
 
 
-print(Solution().minDistance("a","cb"))
+print(Solution().minDistance("a", "cb"))

@@ -34,7 +34,9 @@ class Solution(object):
         def collect(node):
             if not node:
                 return "#"
+            # 这里为前序遍历
             serial = "{},{},{}".format(node.val, collect(node.left), collect(node.right))
+            # 这里为后序遍历
             count[serial] += 1
             if count[serial] == 2:
                 ans.append(node)

@@ -223,6 +223,8 @@ public class LRUCache {
     }
 }
 '''
+
+
 # 核心思路
 # 在双向链表的实现中，使用一个伪头部（dummy head）和伪尾部（dummy tail）标记界限
 # 这样在添加节点和删除节点的时候就不需要检查相邻的节点是否存在
@@ -304,6 +306,8 @@ class LRUCache:
 而这个 key 只能由 Node 得到。如果 Node 结构中只存储 val
 那么我们就无法得知 key 是什么，就无法删除 map 中的键，造成错误。
 '''
+
+
 class DNode:
     def __init__(self, key=-1, value=-1):
         self.key = key
@@ -372,17 +376,19 @@ class LRUCache:
         self.removeNode(node)
         return node
 
+
 # Your LRUCache object will be instantiated and called as such:
 # obj = LRUCache(capacity)
 # param_1 = obj.get(key)
 # obj.put(key,value)
 import collections
+
+
 class LRUCache(collections.OrderedDict):
 
     def __init__(self, capacity: int):
         super().__init__()
         self.capacity = capacity
-
 
     def get(self, key: int) -> int:
         if key not in self:
@@ -396,6 +402,7 @@ class LRUCache(collections.OrderedDict):
         self[key] = value
         if len(self) > self.capacity:
             self.popitem(last=False)
+
 
 '''
 class LRUCache extends LinkedHashMap<Integer, Integer>{
@@ -517,3 +524,5 @@ class LRUCache {
     }
 }
 '''
+
+

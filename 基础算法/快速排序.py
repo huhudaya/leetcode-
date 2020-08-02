@@ -51,7 +51,7 @@ if __name__ == '__main__':
     # list = '9 7 8 6 5 2 6 3 5 1'
     # list = list.split()
     # list = [int(i) for i in list]
-    list = [9, 1, 5, 3, 5, 2, 6, 8, 7, 6]
+    list = [9, 1, 5, 3, 5, 2, 6, 8, 7, 6,5,6,6,1,10,0]
     # list = [6,1]
     # list = [1,6,5,43,6,2,5,6]
     quick_sort(list, 0, len(list) - 1)
@@ -91,6 +91,7 @@ def quick_sort(array, left, right):
     quick_sort(array, left + 1, high)  # left+1 可能超过right
 
 
+# 快排Python简洁版本
 # 这种缺点是会复制多个数组
 def quicksort(arr):
     if len(arr) <= 1:
@@ -102,7 +103,7 @@ def quicksort(arr):
     return quicksort(left) + middle + quicksort(right)
 
 
-print(quicksort([3, 6, 9, 8, 10, 1, 2, 1]))
+# print(quicksort([3, 6, 9, 8, 10, 1, 2, 1]))
 
 # 快排
 from typing import List

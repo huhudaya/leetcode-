@@ -18,7 +18,7 @@
 '''
 
 
-# 注意，只有出现两次才能用这种方法
+# 注意，只有出现两次才能用这种方法，注意必须让数字都大于1才可以，而且需要求所有的元素的话，就需要用绝对值
 class Solution:
     def findDuplicates(self, nums):
         """
@@ -34,7 +34,7 @@ class Solution:
         return returnlist
 
 
-# 如果是求任意一个重复出现的数字呢？
+# 如果是求任意一个重复出现的数字呢？ 注意，次数数据的范围是0~n
 # 中心思想是将当前元素换到
 def find(arr):
     if arr is None:

@@ -88,7 +88,8 @@ class Solution {
 }
 >>>>>>>>>>更新：雷同题目相同解法>>>>>>>>>>>>>
 
-刚刚做了一道类似的题124. 二叉树中的最大路径和，虽然是Hard但解法和本题一毛一样～～ 唯一的区别是：不是求边长，而是路径上节点的value之和，因为节点的value可能是负数，因此求左孩子右孩子的时候要int leftSum = Math.max(0, dfs(root.left));舍弃掉负数的结果。
+刚刚做了一道类似的题124. 二叉树中的最大路径和，虽然是Hard但解法和本题一毛一样～～
+唯一的区别是：不是求边长，而是路径上节点的value之和，因为节点的value可能是负数，因此求左孩子右孩子的时候要int leftSum = Math.max(0, dfs(root.left));舍弃掉负数的结果。
 
 class Solution {
     int max = Integer.MIN_VALUE;

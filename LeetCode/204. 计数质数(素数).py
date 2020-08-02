@@ -75,7 +75,8 @@ class Solution:
             i += 1
         count = 0
         for i in range(2, n):
-            if isPrime[i]: count += 1
+            if isPrime[i]:
+                count += 1
         return count
 
     def countPrimes(self, n):
@@ -116,3 +117,25 @@ int countPrimes(int n) {
     return count;
 }
 '''
+
+
+class Solution:
+    def countPrimes(self, n: int) -> int:
+        dp = [1 for i in range(n)]
+        i = 2
+        while i * i < n:
+            # 如果是素数就进入循环
+            if dp[i] == 1:
+                j = i
+                while i * j < n:
+                    dp[i * j] = 0
+                    j += 1
+            i += 1
+        count = 0
+        for i in range(2, n):
+            if dp[i]:
+                count += 1
+        return count
+Solution().countPrimes(10)
+
+

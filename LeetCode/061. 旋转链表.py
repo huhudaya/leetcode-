@@ -43,6 +43,7 @@ class Solution(object):
         while cur:
             n += 1
             cur = cur.next
+        # 注意，这里需要求余数得到真正需要平移的次数
         k = k % n
         if k == 0:
             return head

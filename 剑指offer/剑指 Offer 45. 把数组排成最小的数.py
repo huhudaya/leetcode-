@@ -40,3 +40,56 @@ class Solution {
     }
 }
 '''
+
+
+from typing import List
+class Solution:
+    def minNumber(self, nums: List[int]) -> str:
+        def cmp_(a, b):
+            return int(str(a) + str(b)) <= int(str(b) + str(a))
+
+        def partition(left: int, right: int):
+            privot = right
+            small = left - 1
+            for index in range(left, right):
+                # if nums[index]<nums[privot]:
+                if cmp_(nums[index], nums[privot]):
+                    small += 1
+                    nums[small], nums[index] = nums[index], nums[small]
+            nums[small + 1], nums[privot] = nums[privot], nums[small + 1]
+            return small + 1
+
+        def q_sort(l: int, r: int):
+            if l >= r:
+                return nums
+            p = partition(l, r)
+            q_sort(l, p - 1)
+            q_sort(p, r)
+            return nums
+
+        q_sort(0, len(nums) - 1)
+        return "".join([str(x) for x in nums])
+
+
+
+from typing import List
+class Solution:
+    def largestNumber(self, nums: List[int]) -> str:
+        # 放一个快排搁着
+        def fast_sort(strs):
+            if len(strs) <= 1:
+                return strs
+            less, greater = [], []
+            p = strs.pop()
+            for i in strs:
+                if i + p < p + i:
+                    less.append(i)
+                else:
+                    greater.append(i)
+            return fast_sort(less) + [p] + fast_sort(greater)
+
+        strs = [str(num) for num in nums]
+        res = fast_sort(strs)
+        if res[0] == "0":
+            return "0"
+        return ''.join(res)

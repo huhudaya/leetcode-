@@ -75,7 +75,13 @@ class Solution {
 然后，在上面这个dfs的遍历过程中，还可以做一些其他的事情，这题做的就是 计算路径长度。由于子树的返回值已经确定了，所以需要额外的一个全局变量。
 如何计算路径长度呢？其实知道了和自己数值相等的左右子树的最大高度了，那么 把左右子树返回的值相加 就是贯穿自己的最长路径了
 '''
-# python
+class TreeNode:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+
+# divide&conquer的方式
 class Solution:
     def longestUnivaluePath(self, root: TreeNode) -> int:
         self.res = 0
@@ -98,3 +104,25 @@ class Solution:
         dfs(root)
         return self.res
 
+
+# traverse的方式计算任意以root为根的最大长度，注意，不能出现拐点
+class Solution:
+    def longestUnivaluePath(self, root: TreeNode) -> int:
+        self.res = 0
+        # traverse
+        if root is None:
+            return None
+        def traverse(root, cur_len):
+            self.res = max(self.res, cur_len)
+            if root.left:
+                if root.left.val == root.val:
+                    traverse(root.left, cur_len + 1)
+                else:
+                    traverse(root.left, 0)
+            if root.right:
+                if root.right.val == root.val:
+                    traverse(root.right, cur_len + 1)
+                else:
+                    traverse(root.right, 0)
+        traverse(root, 0)
+        return self.res

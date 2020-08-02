@@ -41,7 +41,7 @@ class Solution(object):
         dp = [0] * (n + 1)
         dp[0] = 1
         dp[1] = 1
-        # dp[i]为以 i 为根的二叉搜索树的个数
+        # dp[i]为到 i 为止的二叉搜索树的个数
         for i in range(2, n + 1):
             # j 表示以 j 进行分割形成左右子树的个数，dp[i]为这些树加起来
             for j in range(1, i + 1):
@@ -50,18 +50,19 @@ class Solution(object):
         return dp[n]
 
 
-# 递归
+# 暴力递归
 class Solution:
     def numTrees(self, n: int) -> int:
         if n <= 1:
             return 1
         res = 0
+        # 定义递归函数为到n位置的二叉搜索树的个数，for i in range(n)表示以i为根节点的二叉搜索树的个数
         for i in range(1, n + 1):
             res += self.numTrees(i - 1) * self.numTrees(n - i)
         return res
 
 
-# 备忘录
+# 备忘录优化
 class Solution:
     visited = dict()
 
@@ -73,6 +74,7 @@ class Solution:
         res = 0
         for i in range(1, n + 1):
             res += self.numTrees(i - 1) * self.numTrees(n - i)
+        # 在递归函数返回值之前需要将本次结果添加到备忘录中
         self.visited[n] = res
         return res
 

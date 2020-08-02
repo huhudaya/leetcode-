@@ -132,3 +132,21 @@ class Solution:
             else:
                 cnt = 1
         return res
+
+
+
+# 求"aaadsdf1234as1531523452345aa235235nn"的数字的最大长度
+def get_max(s):
+    n = len(s)
+    cnt = 0
+    res = 0
+    for i in range(n):
+        if s[i].isdigit():
+            cnt += 1
+        else:
+            cnt = 0
+        res = max(res, cnt)
+    print(res)
+s = "aaadsdf1234as1531523452345aa235235nn"
+b = "aa2ddf21sdf"
+get_max(s)

@@ -28,6 +28,8 @@ import collections
 # 建立堆，堆中添加一个元素的复杂度是 O(log(k))，要进行 N 次复杂度是 O(N)。
 # counter方法复杂度为O（N），建堆和输出结果是O（NlogK）
 # Klog(K) 空间复杂度为O(N)
+from typing import List
+import collections
 class Solution:
     def topKFrequent(self, nums, k):
         """
@@ -111,11 +113,6 @@ class Solution {
 }
 '''
 # 桶排序
-from typing import List
-
-import collections
-
-
 class Solution:
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
         if nums is None:

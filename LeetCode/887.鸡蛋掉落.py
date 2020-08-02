@@ -58,9 +58,11 @@ def dp(K, N):
     return res
 
 '''
-def superEggDrop(K: int, N: int):
 
+
+def superEggDrop(K: int, N: int):
     memo = dict()
+
     def dp(K, N) -> int:
         # base case
         if K == 1:
@@ -83,11 +85,12 @@ def superEggDrop(K: int, N: int):
                           dp(K - 1, i - 1),  # 碎
                           dp(K, N - i)  # 没碎
                       ) + 1  # 在第 i 楼扔了一次
-            )
+                      )
         return res
         # 记入备忘录
         memo[(K, N)] = res
         return res
+
     return dp(K, N)
 
 
@@ -150,11 +153,13 @@ def dp(K, N):
     return res
 
 '''
+
+
 # https://mp.weixin.qq.com/s?__biz=MzAxODQxMDM0Mw==&mid=2247484690&idx=1&sn=eea075701a5d96dd5c6e3dc6a993cac5&chksm=9bd7fb1aaca0720c58c9d9e02a8b9211a289bcea359633a95886d7808d2846898d489ce98078&scene=21#wechat_redirect
 # 二分搜索优化
 def superEggDrop(K: int, N: int):
-
     memo = dict()
+
     def dp(K, N) -> int:
         # base case
         if K == 1:
@@ -174,8 +179,8 @@ def superEggDrop(K: int, N: int):
         lo, hi = 1, N
         while lo <= hi:
             mid = (lo + hi) // 2
-            broken = dp(K - 1, mid - 1) # 碎
-            not_broken = dp(K, N - mid) # 没碎
+            broken = dp(K - 1, mid - 1)  # 碎
+            not_broken = dp(K, N - mid)  # 没碎
             # res = min(max(碎，没碎) + 1)
             if broken > not_broken:
                 hi = mid - 1
@@ -186,11 +191,16 @@ def superEggDrop(K: int, N: int):
 
         memo[(K, N)] = res
         return res
+
     return dp(K, N)
+
+
 print(float("INF"))
 
-
+import functools
 import sys
+
+
 class Solution:
     def superEggDrop(self, K: int, N: int) -> int:
         # 迭代
@@ -202,9 +212,7 @@ class Solution:
             if n == 0:
                 return 0
             for i in range(1, n + 1):
-               res = min(res, max(dp(k - 1, i - 1), dp(k, n - i)) + 1)
+                res = min(res, max(dp(k - 1, i - 1), dp(k, n - i)) + 1)
             return res
+
         return dp(K, N)
-
-
-

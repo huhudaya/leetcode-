@@ -29,6 +29,7 @@ from functools import lru_cache
 from typing import List
 
 
+# 记忆化dfs
 class Solution:
     def longestIncreasingPath(self, matrix: List[List[int]]) -> int:
         directions = [[-1, 0], [1, 0], [0, -1], [0, 1]]
@@ -40,6 +41,7 @@ class Solution:
         memo = {}
         res = 0
 
+        # 定义dfs(i, j)返回(i, j)为起点的最大长度
         @lru_cache(None)
         def dfs(i, j):
             res = 1
@@ -56,4 +58,37 @@ class Solution:
             for j in range(n):
                 res = max(res, dfs(i, j))
         return res
+
+
+# 备忘录
+class Solution:
+    def longestIncreasingPath(self, matrix: List[List[int]]) -> int:
+        directions = [[-1, 0], [1, 0], [0, -1], [0, 1]]
+        depath = []
+        if not matrix or not matrix[0]:
+            return 0
+        m = len(matrix)
+        n = len(matrix[0])
+        memo = {}
+        res = 0
+
         # 定义dfs(i, j)返回(i, j)为起点的最大长度
+        def dfs(i, j):
+            if (i, j) in memo:
+                return memo[(i, j)]
+            res = 1
+            for di in directions:
+                row = i + di[0]
+                col = j + di[1]
+                if row < 0 or row >= m or col < 0 or col >= n:
+                    continue
+                # 这里需要判断一下
+                if matrix[i][j] < matrix[row][col]:
+                    res = max(res, dfs(row, col) + 1)
+            memo[(i, j)] = res
+            return res
+
+        for i in range(m):
+            for j in range(n):
+                res = max(res, dfs(i, j))
+        return res

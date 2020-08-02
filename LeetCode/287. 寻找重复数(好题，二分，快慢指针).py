@@ -69,6 +69,7 @@ class Solution:
 
 
 # 快慢指针
+# folyd 判圈法
 '''
 题目设定的问题是N+1个元素都在[1,n]这个范围内。
 这样我们可以用那个类似于 ‘缺失的第一个正数’ 这种解法来
@@ -110,7 +111,7 @@ class Solution1:
         return slow
 
 
-a = [1, 3,0]
+a = [1, 3,4,2,2]
 print(Solution1().findDuplicate(a))
 
 

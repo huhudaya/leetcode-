@@ -17,10 +17,13 @@ Example:
 
 链接：https://leetcode-cn.com/problems/minimum-number-of-arrows-to-burst-balloons
 '''
+from typing import List
+
+
 class Solution:
     def findMinArrowShots(self, points: List[List[int]]) -> int:
         # 区间调度问题
-        points.sort(key = lambda x: x[1])
+        points.sort(key=lambda x: x[1])
         end = points[0][1]
         cnt = 1
         for point in points:
@@ -29,5 +32,3 @@ class Solution:
                 cnt += 1
                 end = point[1]
         return cnt
-                
-        
