@@ -134,10 +134,6 @@ class Solution:
         self.randomized_quicksort(nums, 0, len(nums) - 1)
         return nums
 
-
-
-
-
 # 标准版本的快速排序
 class Solution:
     def sortArray(self, nums: List[int]) -> List[int]:

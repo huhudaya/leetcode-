@@ -39,6 +39,10 @@ class Solution:
 import heapq
 
 
+
+
+# 注意，因为是有序数组的合并排序，所以可是使用一个小根堆，这样最后结果就是有序的
+# 每次都pop堆顶的元素，因为堆顶的元素是最小的！（这是因为数据都是有序的，所以可以利用这个条件）
 class Solution:
     def kthSmallest(self, matrix: List[List[int]], k: int) -> int:
         n = len(matrix)  # 注：题目中这个矩阵是n*n的，所以长宽都是n

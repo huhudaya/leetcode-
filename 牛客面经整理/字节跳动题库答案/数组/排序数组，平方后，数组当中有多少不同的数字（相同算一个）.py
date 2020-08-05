@@ -3,7 +3,8 @@
 链接：https://www.nowcoder.com/discuss/428158?source_id=profile_create&channel=2002
 来源：牛客网
 
-如果不是排序数组，可以使用hashset来保存数字的平方，重复就存不进去，那么最后就可以直接返回set的大小size即可。
+如果不是排序数组，可以使用hashset来保存数字的平方
+重复就存不进去，那么最后就可以直接返回set的大小size即可。
 时间空间复杂度都是O（n)。
 双指针遍历：这里是排序数组，既然有重复，肯定是有负数，0,1这些数字。
 平方后两头大，中间小，可以用首尾指针共同向中间扫描，扫描时去掉重复元素，同时用一个sum来记录有多少个不同数字。
@@ -54,3 +55,34 @@ public class Solution {
     }
 }
 '''
+
+def get_distinct(nums):
+    if not nums:
+        return -1
+    n = len(nums)
+    left = 0
+    right = n - 1
+    cnt = 0
+    while left <= right:
+        if nums[left] + nums[right] == 0:
+            cnt += 1
+            temp = nums[left]
+            while left <= right and nums[left] == temp:
+                left += 1
+            while left <= right and nums[right] == -temp:
+                right -= 1
+        # 偏小,left ++
+        if nums[left] + nums[right] < 0:
+            cnt += 1
+            temp = nums[left]
+            while left <= right and nums[left] == temp:
+                left += 1
+        # 偏大,right --
+        else:
+            cnt += 1
+            temp = nums[right]
+            while left <= right and nums[right] == temp:
+                right -= 1
+    return cnt
+
+print(get_distinct([-1,-2,1,1]))

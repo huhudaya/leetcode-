@@ -31,6 +31,7 @@ class Solution:
         for i in nums:
             if len(heap) < k:
                 heapq.heappush(heap, i)
+            # 如果堆顶比当前元素还笑，就replace
             elif heap[0] < i:
                 heapq.heapreplace(heap, i)
         return heap[0]

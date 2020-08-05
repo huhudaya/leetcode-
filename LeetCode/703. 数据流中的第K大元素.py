@@ -33,7 +33,7 @@ kthLargest.add(4);   // returns 8
 import heapq
 from typing import List
 
-
+# 使用小根堆维护前K个最大的元素，遍历完之后，堆顶是第k大
 class KthLargest:
     def __init__(self, k: int, nums: List[int]):
         self.heap = nums

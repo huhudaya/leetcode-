@@ -13,6 +13,7 @@
 '''
 # 分治递归 归并的思想
 # 这道题是从大到小的排序
+# 分治递归 归并的思想
 from typing import List
 class Solution:
     def reversePairs(self, nums: List[int]) -> int:
@@ -27,7 +28,9 @@ class Solution:
             res2 = mergeHelper(right)
             res = 0
             i = j = k = 0
+            # 因为要求的是逆序对，所以我们倒序排列！
             while i < len(left) and j < len(right):
+                # 因为需要倒序，所以应该采用谁大移动谁的策略
                 if left[i] <= right[j]:
                     nums[k] = right[j]
                     j += 1

@@ -90,7 +90,7 @@ class Solution:
         return False
 
 
-# 动态规划
+# 动态规划O(N^2)
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
         # 动态规划
@@ -108,3 +108,24 @@ class Solution:
                     break
 
         return dp[-1]
+
+# 顺着遍历
+# java
+'''
+public class Solution {
+    public boolean wordBreak(String s, List<String> wordDict) {
+        Set<String> wordDictSet = new HashSet(wordDict);
+        boolean[] dp = new boolean[s.length() + 1];
+        dp[0] = true;
+        for (int i = 1; i <= s.length(); i++) {
+            for (int j = 0; j < i; j++) {
+                if (dp[j] && wordDictSet.contains(s.substring(j, i))) {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+        return dp[s.length()];
+    }
+}
+'''
