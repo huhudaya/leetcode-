@@ -43,10 +43,10 @@ class Resource{
                 condition1.await();
             }
             number = 2;
-            condition2.signal();
             for (int i = 0; i < 5; i ++){
                 System.out.println(Thread.currentThread().getName() + "\t" + i);
             }
+            condition2.signal();
 
         } catch (Exception e){
             e.printStackTrace();

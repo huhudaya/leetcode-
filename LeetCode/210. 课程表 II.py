@@ -1,7 +1,8 @@
 '''
 现在你总共有 n 门课需要选，记为 0 到 n-1。
 
-在选修某些课程之前需要一些先修课程。 例如，想要学习课程 0 ，你需要先完成课程 1 ，我们用一个匹配来表示他们: [0,1]
+在选修某些课程之前需要一些先修课程。 
+例如，想要学习课程 0 ，你需要先完成课程 1 ，我们用一个匹配来表示他们: [0,1]
 
 给定课程总量以及它们的先决条件，返回你为了学完所有课程所安排的学习顺序。
 
@@ -29,7 +30,7 @@
 拓扑排序也可以通过 BFS 完成。
 '''
 from collections import deque
-
+from typing import List
 
 class Solution:
     def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
@@ -44,7 +45,7 @@ class Solution:
             adj[pre].add(cur)
         # 入队
         queue = deque()
-        # 判断一下那个课程的度数为0
+        # 先将度数为0的进行入队操作
         for i in range(numCourses):
             if in_degrees[i] == 0:
                 queue.append(i)

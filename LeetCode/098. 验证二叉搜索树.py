@@ -93,6 +93,23 @@ class Solution:
 
         return dfs(root)
 
+
+# 自己版本的递归
+class Solution:
+    def isValidBST(self, root: TreeNode) -> bool:
+        # 递归
+        self.pre = None
+        def dfs(root):
+            if root is None:
+                return True
+            left = dfs(root.left)
+            if self.pre and root.val <= self.pre.val:
+                return False
+            self.pre = root
+            right = dfs(root.right)
+            return left and right
+        return dfs(root)
+
 # 最大最小值
 class Solution:
     def isValidBST(self, root: TreeNode) -> bool:

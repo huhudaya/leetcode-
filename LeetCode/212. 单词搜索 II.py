@@ -27,6 +27,7 @@ words = ["oath","pea","eat","rain"] and board =
 散列表是否可行？为什么？ 前缀树如何？
 如果你想学习如何实现一个基本的前缀树，请先查看这个问题： 实现Trie（前缀树）。
 '''
+from typing import List
 class Solution:
     def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
         # trie树

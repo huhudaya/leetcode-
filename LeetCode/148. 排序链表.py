@@ -1,6 +1,6 @@
 # 148. 排序链表.py
 '''
-在 O(n log n) 时间复杂度和常数级空间复杂度下，对链表进行排序。
+在 O(nlogn) 时间复杂度和常数级空间复杂度下，对链表进行排序。
 
 示例 1:
 
@@ -190,7 +190,7 @@ class Solution:
         small = None
         equal = None
         cur = head
-        while cur is not None:
+        while cur:
             t = cur
             cur = cur.next
             if t.val < head.val:
@@ -211,9 +211,9 @@ class Solution:
         cur = ret
 
         # 将三个链表组合成一起，这一步复杂度是 o(n)
-        # 可以同时返回链表的头指针和尾指针加速链表的合并。
+        # 可以同时返回链表的头指针和尾指针加速链表的合并
         for p in [small, equal, big]:
-            while p is not None:
+            while p:
                 cur.next = p
                 p = p.next
                 cur = cur.next
