@@ -48,16 +48,14 @@ rear：指向队列尾部（即最后 1 个有效数据）的下一个位置，�
 
 浪费一个位置是指：循环数组中任何时刻一定至少有一个位置不存放有效元素。
 
-判别队列为空的条件是：front == rear;；
-
-判别队列为满的条件是：(rear + 1) % capacity == front;。可以这样理解，当 rear 循环到数组的前面，要从后面追上 front，还差一格的时候，判定队列为满。
+    判别队列为空的条件是：front == rear;；
+    判别队列为满的条件是：(rear + 1) % capacity == front;。可以这样理解，当 rear 循环到数组的前面，要从后面追上 front，还差一格的时候，判定队列为满。
 
 3、因为有循环的出现，要特别注意处理数组下标可能越界的情况。
-
-（1）指针后移的时候，索引 + 1，要取模；
-
-（2）指针前移的时候，为了循环到数组的末尾，需要先加上数组的长度，然后再对数组长度取模。
+    （1）指针后移的时候，索引 + 1，要取模；
+    （2）指针前移的时候，为了循环到数组的末尾，需要先加上数组的长度，然后再对数组长度取模。
 '''
+
 
 class MyCircularDeque:
 
@@ -93,7 +91,7 @@ class MyCircularDeque:
         """
         Deletes an item from the front of Deque. Return true if the operation is successful.
         """
-        if self.isEmpty:
+        if self.isEmpty():
             return False
         self.front = (self.front + 1) % self.capcity
         return True
@@ -108,40 +106,17 @@ class MyCircularDeque:
         return True
 
     def getFront(self) -> int:
-        """
-        Get the front item from the deque.
-        """
         if self.isEmpty():
             return -1
         return self.arr[self.front]
 
     def getRear(self) -> int:
-        """
-        Get the last item from the deque.
-        """
         if self.isEmpty():
             return -1
         return self.arr[(self.rear - 1 + self.capcity) % self.capcity]
 
     def isEmpty(self) -> bool:
-        """
-        Checks whether the circular deque is empty or not.
-        """
         return self.front == self.rear
 
     def isFull(self) -> bool:
-        """
-        Checks whether the circular deque is full or not.
-        """
         return (self.rear + 1) % self.capcity == self.front
-
-# Your MyCircularDeque object will be instantiated and called as such:
-# obj = MyCircularDeque(k)
-# param_1 = obj.insertFront(value)
-# param_2 = obj.insertLast(value)
-# param_3 = obj.deleteFront()
-# param_4 = obj.deleteLast()
-# param_5 = obj.getFront()
-# param_6 = obj.getRear()
-# param_7 = obj.isEmpty()
-# param_8 = obj.isFull()
