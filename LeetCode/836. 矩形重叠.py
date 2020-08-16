@@ -101,7 +101,7 @@ class Solution1:
                 rec1[1] >= rec2[3]  # top
         )
 
-
+# 看投影
 class Solution:
     def isRectangleOverlap(self, rec1: List[int], rec2: List[int]) -> bool:
         # 投影到 X和Y 轴看交集

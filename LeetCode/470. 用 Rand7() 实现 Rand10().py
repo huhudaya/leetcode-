@@ -36,10 +36,10 @@ rand7()调用次数的 期望值 是多少 ?
 def rand7():
     pass
 
-
 class Solution:
     def rand10(self):
         x = 50
+        # 为什么要大于40，这是因为需要等概率！所以需要1-10，而我们得到的x的范围为1-49，需要拒绝41-49
         while x > 40:
             x = (rand7() - 1) * 7 + rand7()
         return x % 10 + 1

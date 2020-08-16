@@ -3,10 +3,11 @@
 第一个差（如果存在的话）可能是正数或负数。少于两个元素的序列也是摆动序列。
 
 例如， [1,7,4,9,2,5] 是一个摆动序列，因为差值 (6,-3,5,-7,3) 是正负交替出现的。
-相反, [1,4,7,2,5] 和 [1,7,4,5,5] 不是摆动序列，第一个序列是因为它的前两个差值都是正数，第二个序列是因为它的最后一个差值为零。
+相反, [1,4,7,2,5] 和 [1,7,4,5,5] 不是摆动序列，
+第一个序列是因为它的前两个差值都是正数，第二个序列是因为它的最后一个差值为零
 
-给定一个整数序列，返回作为摆动序列的最长子序列的长度。
-通过从原始序列中删除一些（也可以不删除）元素来获得子序列，剩下的元素保持其原始顺序。
+给定一个整数序列，返回作为摆动序列的最长子序列的长度
+通过从原始序列中删除一些（也可以不删除）元素来获得子序列，剩下的元素保持其原始顺序
 
 示例 1:
 
@@ -39,18 +40,19 @@ nums[i+1] < nums[i]，类似第一种情况
 nums[i+1] == nums[i]，新的元素不能用于任何序列，保持不变
 '''
 
+from typing import List
 # 统计波峰的个数 贪心
-class Solution(object):
-    def wiggleMaxLength(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: int
-        """
+class Solution:
+    def wiggleMaxLength(self, nums: List[int]) -> int:
+        # 贪心
+        if not nums:
+            return 0
+        up = 1
+        down = 1
         n = len(nums)
-        if n < 2:
-            return n
-        up = down = 1
-        for i in range(1, len(nums)):
+        # 注意 上升的变量只和之前下降的变量的值有关系！
+        # 下降的变量只和之前上升的变量的值有关系！
+        for i in range(1, n):
             if nums[i] > nums[i - 1]:
                 up = down + 1
             if nums[i] < nums[i - 1]:

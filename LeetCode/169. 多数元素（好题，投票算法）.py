@@ -25,25 +25,29 @@
 '''
 import collections
 
+
 # hash O(N)
 class Solution:
     def majorityElement(self, nums):
         counts = collections.Counter(nums)
         return max(counts.keys(), key=counts.get)
 
+
 # 排序 O(NlogN)
 class Solution:
     def majorityElement(self, nums):
         nums.sort()
-        return nums[len(nums)//2]
+        return nums[len(nums) // 2]
+
 
 # 随机算法
 # 由于一个给定的下标对应的数字很有可能是众数，我们随机挑选一个下标，检查它是否是众数，如果是就返回，否则继续随机挑选。
 import random
 
+
 class Solution:
     def majorityElement(self, nums):
-        majority_count = len(nums)//2
+        majority_count = len(nums) // 2
         while True:
             candidate = random.choice(nums)
             if sum(1 for elem in nums if elem == candidate) > majority_count:
@@ -60,27 +64,30 @@ class Solution:
                 return nums[lo]
 
             # recurse on left and right halves of this slice.
-            mid = (hi-lo)//2 + lo
+            mid = (hi - lo) // 2 + lo
             left = majority_element_rec(lo, mid)
-            right = majority_element_rec(mid+1, hi)
+            right = majority_element_rec(mid + 1, hi)
 
             # if the two halves agree on the majority element, return it.
             if left == right:
                 return left
 
             # otherwise, count each element and return the "winner".
-            left_count = sum(1 for i in range(lo, hi+1) if nums[i] == left)
-            right_count = sum(1 for i in range(lo, hi+1) if nums[i] == right)
+            left_count = sum(1 for i in range(lo, hi + 1) if nums[i] == left)
+            right_count = sum(1 for i in range(lo, hi + 1) if nums[i] == right)
 
             return left if left_count > right_count else right
 
-        return majority_element_rec(0, len(nums)-1)
+        return majority_element_rec(0, len(nums) - 1)
+
 
 # 打擂台Boyer-Moore 投票算法
 '''
 思路
 如果我们把众数记为 +1，把其他数记为 -1，将它们全部加起来，显然和大于 0，从结果本身我们可以看出众数比其他数多。
 '''
+
+
 # Boyer-Moore 投票算法 O(N)，空间复杂度O(1)
 class Solution:
     def majorityElement(self, nums):
@@ -94,7 +101,10 @@ class Solution:
 
         return candidate
 
+
 from typing import List
+
+
 class Solution:
     def majorityElement(self, nums: List[int]) -> int:
         # 士兵攻击法
@@ -108,4 +118,3 @@ class Solution:
             else:
                 count -= 1
         return target
-

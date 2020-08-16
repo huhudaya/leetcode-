@@ -32,7 +32,7 @@ class Solution:
         new_B.sort(key=lambda x: x[1])
         res = [-1 for _ in range(n)]
         A.sort()
-        # 核心思路，A当前的最小值比B当前的最小值小，则两者进行配对
+        # 核心思路，A当前的最小值比B当前的最小值大，则两者进行配对
         # 否则A当前的最小值要和B当前的最大值进行一个配对
         # 让A的每一个元素都发挥一个最大的作用
         left = 0
