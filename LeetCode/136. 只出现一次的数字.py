@@ -19,7 +19,9 @@
 '''
 from functools import reduce
 from typing import List
+
+
 class Solution:
     def singleNumber(self, nums: List[int]) -> int:
         # 位运算--异或
-        return reduce(lambda x, y : x ^ y, nums)
+        return reduce(lambda x, y: x ^ y, nums)
