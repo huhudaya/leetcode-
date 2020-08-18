@@ -27,7 +27,7 @@
 from typing import List
 import sys
 
-
+# 使用hash
 class Solution:
     def minimumAbsDifference(self, arr: List[int]) -> List[List[int]]:
         # 使用hash
