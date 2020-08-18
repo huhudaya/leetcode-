@@ -87,3 +87,41 @@ private static int[] CountOfdistinctsubArrY(int[] arrY,int index){
 }
 }
 '''
+
+import sys
+def getMax(arr1, arr2):
+    n = len(arr1)
+    res = -sys.maxsize
+    for i in range(n):
+        resA = getPreSum(arr1, i)
+        resB = getDistinct(arr2, i)
+        for i in range(n):
+            res = max(res, resA[i] * resB[i])
+    return res
+
+
+def getPreSum(arr, index):
+    n = len(arr)
+    if n == 0:
+        return 0
+    res = [0 for _ in range(n)]
+    res[index] = arr[index]
+    for i in range(index + 1, n):
+        res[i] = arr[i] + res[i - 1]
+    return res
+
+
+def getDistinct(arr, index):
+    n = len(arr)
+    if n == 0:
+        return 0
+    hash = [0 for _ in range(50)]
+    res = [0 for i in range(n - index)]
+    for i in range(index, n):
+        cnt = 0
+        hash[arr[i]] += 1
+        for j in range(n):
+            if hash[j] == 1:
+                cnt += 1
+        res[i - index] = cnt
+    return res
