@@ -94,6 +94,7 @@ class Solution:
 class Solution:
     def maxProduct(self, nums: List[int]) -> int:
         nums_reverse = nums[::-1]
+        reversed(nums)
         for i in range(1, len(nums)):
             nums[i] *= nums[i - 1] or 1  # or 1的作用是，当nums[i - 1]==0时，nums[i]乘等自身
             nums_reverse[i] *= nums_reverse[i - 1] or 1
@@ -110,7 +111,9 @@ class Solution:
 
 1.负数为偶数个，则整个数组的各个值相乘为最大值；
 
-2.负数为奇数个，则从左边开始，乘到最后一个负数停止有一个“最大值”，从右边也有一个“最大值”，比较，得出最大值。
+2.负数为奇数个
+  从左边开始，乘到最后一个负数停止有一个“最大值”
+  从右边也有一个“最大值”，比较，得出最大值。
 
 class Solution {
     public int maxProduct(int[] nums) {
@@ -119,15 +122,15 @@ class Solution {
         
         for(int num:nums){
             a=a*num;
-            if(max<a)max=a;
-            if(num==0)a=1;
+            if(max<a) max=a;
+            if(num==0) a=1;
 
         }
         a=1;
         for(int i=nums.length-1;i>=0;i--){
             a=a*nums[i];
-            if(max<a)max=a;
-            if(nums[i]==0)a=1;
+            if(max<a) max=a;
+            if(nums[i]==0) a=1;
         }  
         return max;
     }
@@ -135,6 +138,7 @@ class Solution {
 '''
 
 
+# 动态规划
 class Solution:
     def maxProduct(self, nums: List[int]) -> int:
         # 核心思路，记录之前的最大值和最小值

@@ -13,7 +13,6 @@
 
 注意：该题与 1081 https://leetcode-cn.com/problems/smallest-subsequence-of-distinct-characters 相同
 
-通过次数17,465提交次数43,386
 '''
 
 from collections import Counter
@@ -23,6 +22,7 @@ class Solution:
     def removeDuplicateLetters(self, s: str) -> str:
         n = len(s)
         seen = set()
+        # 这里先用一个hash记录所有元素的个数
         hash = Counter(s)
         stack = []
         # 单调栈维护字典序
