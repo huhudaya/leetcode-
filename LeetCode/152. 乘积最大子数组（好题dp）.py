@@ -96,7 +96,9 @@ class Solution:
         nums_reverse = nums[::-1]
         reversed(nums)
         for i in range(1, len(nums)):
+            # 正向遍历
             nums[i] *= nums[i - 1] or 1  # or 1的作用是，当nums[i - 1]==0时，nums[i]乘等自身
+            # 反向遍历
             nums_reverse[i] *= nums_reverse[i - 1] or 1
         return max(max(nums), max(nums_reverse))
 
