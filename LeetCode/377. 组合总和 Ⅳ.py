@@ -59,4 +59,4 @@ class Solution:
                 if nums[j] <= i:
                     dp[i] += dp[i - nums[j]]
         return dp[target]
-print(Solution().combinationSum_test([1,2,3],5))
+print(Solution().combinationSum4([1,2,3],5))

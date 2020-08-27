@@ -178,6 +178,8 @@ class Solution:
 # 用栈
 # 核心思路就是初始化栈中元素始终保持一个下标，这样相减的话会比较方便
 import sys
+
+
 class Solution:
     def longestValidParentheses(self, s: str) -> int:
         # 注意，栈中需要有初始值
@@ -228,3 +230,21 @@ class Solution:
             elif right < left:
                 right, left = 0, 0
         return res
+
+
+import sys
+
+
+class Solution:
+    memo = dict()
+    # def get_res(self, nums, m):
+    #     n = len(nums)
+    #     if (nums, m) in memo:
+    #         return memo[(nums, m)]
+    #     if m == 1:
+    #         return sum(nums)
+    #     res = sys.maxsize
+    #     for i in range(n):
+    #         res = min(res, max(sum(nums[:i + 1]), self.get_res(nums[i + 1:], m - 1)))
+    #     memo[nums, m] = res
+    #     return res

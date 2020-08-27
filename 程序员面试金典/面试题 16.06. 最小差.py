@@ -12,20 +12,21 @@
 正确结果在区间[-2147483648, 2147483647]内
 '''
 
-
 # 母题系列
 # https://leetcode-cn.com/problems/smallest-difference-lcci/solution/wo-shi-ni-de-ma-ma-ya-di-yi-qi-by-fe-lucifer/
 from typing import List
+
+
 class Solution:
     def smallestDifference(self, a: List[int], b: List[int]) -> int:
         n = len(a)
         m = len(b)
+        # 先对两个数组进行排序
         a.sort()
         b.sort()
         res = float('inf')
         i = j = 0
-        # 双指针
-        # 谁小移动谁
+        # 双指针，谁小移动谁
         while i < n and j < m:
             res = min(res, abs(a[i] - b[j]))
             if a[i] < b[j]:

@@ -81,7 +81,7 @@ def sqrt(m, n):
     left = 0
     right = m
     # 这个eps要取的比精度稍微大一点
-    eps = 1e-13
+    eps = 1e-8
     while abs(right - left) >= eps:
         mid = left + (right - left) / 2
         tmp = mid ** n
@@ -93,7 +93,7 @@ def sqrt(m, n):
         else:
             left = mid
     # return "%.12f" % mid
-    return "%.12f" % left
+    return "%.7f" % left
 
 
 print(sqrt(m, n))

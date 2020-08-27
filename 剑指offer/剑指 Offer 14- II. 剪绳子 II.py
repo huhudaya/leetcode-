@@ -62,6 +62,7 @@ class Solution:
         for i in range(1, n):
             res = max(res, max(i * self.integerBreak(n - i), i * (n - i)))
         return res
+print(Solution().integerBreak(3))
 
 
 # 动态规划
@@ -88,4 +89,4 @@ class Solution:
             for j in range(i, n + 1):
                 dp[j] = max(dp[j], dp[j - i] * i, (j - i) * i)
         return dp[n]
-print(Solution().integerBreak(120))
+# print(Solution().integerBreak(120))

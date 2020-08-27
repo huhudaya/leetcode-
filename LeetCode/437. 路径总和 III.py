@@ -54,3 +54,25 @@ class Solution:
 
         dfs(root, sum)
         return self.res
+
+
+# 借助hash表
+class Solution:
+    def pathSum(self, root: TreeNode, sum: int) -> int:
+        from collections import defaultdict
+        hashMap = defaultdict(int)
+        hashMap[0] = 1
+
+        def dfs(root, curSum):
+            if not root:
+                return 0
+            curSum += root.val
+            cnt = hashMap[curSum - sum]
+            # 回溯
+            hashMap[curSum] += 1
+            leftCnt = dfs(root.left, curSum)
+            rightCnt = dfs(root.right, curSum)
+            hashMap[curSum] -= 1
+            return leftCnt + rightCnt + cnt
+
+        return dfs(root, 0)

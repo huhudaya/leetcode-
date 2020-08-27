@@ -1,5 +1,6 @@
 '''
-把n个骰子扔在地上，所有骰子朝上一面的点数之和为s。输入n，打印出s的所有可能的值出现的概率。
+把n个骰子扔在地上，所有骰子朝上一面的点数之和为s。
+输入n，打印出s的所有可能的值出现的概率。
 
  
 
@@ -36,16 +37,18 @@ n>1 , F(n,s) = F(n-1,s-1)+F(n-1,s-2) +F(n-1,s-3)+F(n-1,s-4)+F(n-1,s-5)+F(n-1,s-6
 #####动态规划未优化版本
 class Solution:
     def twoSum(self, n: int) -> List[float]:
-
+        # dp[i][j] 表示第 i 个阶段点数 j 出现的次数
         dp = [[0 for _ in range(6 * n + 1)] for _ in range(n + 1)]
         for i in range(1, 7):
             dp[1][i] = 1
-        # 遍历n个骰子，相当于遍历nums数组
+        # 遍历n个骰子，相当于遍历nums数组，i表示第i个骰子
         for i in range(2, n + 1):
-            # 相当于遍历target
+            # 相当于遍历target，j代表当前值的和
             for j in range(i, i * 6 + 1):
+                # k代表当前骰子的值
                 for k in range(1, 7):
                     if j >= k + 1:
+                        # 状态转移方程： i个骰子和为j += i-1个骰子和为j-k + 第i个骰子值为k
                         dp[i][j] += dp[i - 1][j - k]
         res = []
         for i in range(n, n * 6 + 1):
@@ -54,7 +57,7 @@ class Solution:
 
 
 # 相当于组合背包的组合问题
-# 这道题相当于是顺序不同，组合不同的完全背包的组合问题
+# 这道题相当于是顺序不同，组合不同的01背包的组合问题，只能使用一次
 # 优化的时候要把nums数组放在里面
 # 这里的nums数组即[1:n+1]
 # 这里的target数组即[n, 6*n+1]
@@ -65,7 +68,7 @@ class Solution:
         for i in range(1, 7):  # 初始化dp，第一轮的抛掷
             dp[i] = 1
         for i in range(2, n + 1):  # 从第二轮抛掷开始算
-            # 需要倒着遍历
+            # 01背包需要倒着遍历
             for j in range(6 * n, i - 1, -1):  # 第二轮抛掷最小和为2，从大到小更新对应               ##的抛掷次数
                 dp[j] = 0  # 每次投掷要从0更新dp[j]大小，点数和出现的次数要重新计算
                 for cur in range(1, 7):  # 每次抛掷的点数
