@@ -39,6 +39,7 @@ class Solution:
     def findLengthOfLCIS(self, nums) -> int:
         ans = anchor = 0
         for i in range(len(nums)):
+            # 如果不符合条件，就重新计数
             if i > 0 and nums[i - 1] >= nums[i]:
                 anchor = i
             ans = max(ans, i - anchor + 1)

@@ -40,16 +40,44 @@ import sys
 
 sys.setrecursionlimit(100000)
 
+'''
+大体思路：
 
-def f(n, m):
-    if n == 0:
-        return 0
-    x = f(n - 1, m)
-    return (m + x) % n
+n个人编号0,1,2,...,n-1，每数m次删掉一个人
+假设有函数f(n)表示n个人最终剩下人的编号
+n个人删掉1个人后可以看做n-1的状态，不过有自己的编号。
+n个人删掉的第一个人的编号是(m-1)%n，那么n个人时删掉第一个人的后面那个人(m-1+1)%n一定是n-1个人时候编号为0的那个人，即n个人时的编号m%n（这个编号是对于n个人来考虑的），n-1个人时编号为i的人就是n个人时(m+i)%n
+所以f(n)=(m+f(n-1))%n
+f(1)=0，因为1个人时只有一个编号0。
+'''
 
 
+
+'''
+两者序号的关系
+我们知道，从 f(n - m) 场景下删除的第一个数的序号是 (m - 1) % n，那么 f(n - 1, m) 场景将使用被删除数字的下一个数，即序号 m % n 作为它的 0 序号。
+设 f(n - 1, m) 的结果为 x，x 是从 f(n, m) 场景下序号为 m % n 的数字出发所获得的结果，因此，我们可以得出：m % n + x 是该数字在 f (n, m) 场景下的结果序号。即：
+
+f(n, m) = m % n + x
+但由于 m % n + x 可能会超过 n 的范围，所以我们再取一次模：
+
+f(n , m) = (m % n + x) % n = (m + x) % n
+将 f(n - 1, m) 代回，得到递推公式：
+f(n, m) = (m + f(n - 1, m)) % n
+有了递推公式后，想递归就递归，想迭代就迭代咯~
+'''
+
+# 一个基本事实，当n-1和n带入函数中得到的都是同一个值，这个值是存好的那个人的编号！
 class Solution:
     def lastRemaining(self, n: int, m: int) -> int:
+        # 递归函数的定义为：返回存活的那个人的编号
+        def f(n, m):
+            if n == 0:
+                return 0
+            # 有n - 1个人的时候，存好的那个人的编号，然后根据那个人的编号进行反推
+            x = f(n - 1, m)
+            return (m + x) % n
+
         return f(n, m)
 
 
@@ -160,6 +188,7 @@ class Solution {
 状态方程： i -> i + 1 result = （m + result） % i
 '''
 
+
 class Solution:
     def lastRemaining(self, n: int, m: int) -> int:
         res = 0
@@ -170,4 +199,6 @@ class Solution:
             # 因为我们是从前到后推导的，所以要余数保证在当前轮的范围中
             res = (res + m) % i
         return res
-print(Solution().lastRemaining(8,3))
+
+
+print(Solution().lastRemaining(8, 3))

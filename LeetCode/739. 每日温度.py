@@ -37,10 +37,10 @@ from typing import List
 # 为什么执行要736ms？？？wtf!
 class Solution:
     def dailyTemperatures(self, T: List[int]) -> List[int]:
-        # 单调栈的思想，也可以使用双端队列维护max的思想
+        # 单调栈的思想，也可以使用双端队列维护max的思想 max栈
         n = len(T)
         stack = []
-        res = [0 for i in range(n)]
+        res = [0 for _ in range(n)]
         # 倒着遍历 时间复杂度为O(N)
         for i in range(n - 1, -1, -1):
             # 维护单调栈的模板

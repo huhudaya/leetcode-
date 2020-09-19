@@ -168,7 +168,8 @@ class Solution:
 
 
 # 分治
-# O(kn×logk)
+# O(KN×logK)
+# 空间复杂度为O(K)
 class Solution(object):
     def mergeKLists(self, lists):
         """
@@ -269,7 +270,7 @@ class Solution:
     def mergeKLists(self, lists: List[ListNode]) -> ListNode:
         # 分治
         n = len(lists)
-        # 合并两个有序数组
+        # 合并两个有序链表
         def merge2(l1, l2):
             if l1 and l2:
                 if l1.val > l2.val:

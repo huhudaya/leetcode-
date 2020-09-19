@@ -52,6 +52,72 @@ class Solution:
         return res
 
 
+'''
+class Solution {
+    public List<Double> averageOfLevels(TreeNode root) {
+        List<Double> averages = new ArrayList<Double>();
+        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            double sum = 0;
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                sum += node.val;
+                TreeNode left = node.left, right = node.right;
+                if (left != null) {
+                    queue.offer(left);
+                }
+                if (right != null) {
+                    queue.offer(right);
+                }
+            }
+            averages.add(sum / size);
+        }
+        return averages;
+    }
+}
+'''
+
+# go
+'''
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left TreeNode
+ *     Right TreeNode
+ * }
+ */
+type data struct {sum, count int}
+func averageOfLevels(root *TreeNode) []float64 {
+    levelData := []data{}
+    var dfs func(node *TreeNode, level int)
+    dfs = func(node *TreeNode, level int) {
+        if node == nil { 
+            return
+        }
+        if level < len(levelData) {
+            levelData[level].sum += node.Val
+            levelData[level].count++
+        }else {
+            levelData = append(levelData, data{node.Val, 1})
+        }
+        dfs(node.Left, level + 1)
+        dfs(node.Right, level + 1)
+    }
+    dfs(root, 0)
+    
+    // averages := make([]float64, len(levelData))
+    var averages []float64
+	for _, d := range levelData {
+		averages = append(averages, float64(d.sum) / float64(d.count))
+        // averages[i] = float64(d.sum) / float64(d.count)
+	}
+	return averages
+}
+'''
+
 # 深度优先搜索
 '''
 方法一：深度优先搜索
@@ -100,22 +166,24 @@ public class Solution {
     }
 }
 '''
+
+
 # dfs
 class Solution:
-    def averageOfLevels(self, root: TreeNode):
-        res = []
-        _sum = []
+    def averageOfLevels(self, root: TreeNode) -> List[float]:
+        totals = []
+        counts = []
 
-        def helper(root, depth):
-            if not root:
+        def dfs(root, level, res, _sum):
+            if root is None:
                 return
-            if depth < len(res):
-                res[depth] += 1
-                _sum[depth] += 1
-            else:
-                res[depth].append(root.val * 1)
-                _sum[depth].append(1)
-            helper(root.left, depth + 1)
-            helper(root.right, depth + 1)
+            if len(res) == level:
+                res.append(0)
+                _sum.append(0)
+            res[level] += root.val
+            _sum[level] += 1
+            dfs(root.left, level + 1, res, _sum)
+            dfs(root.right, level + 1, res, _sum)
 
-        helper(root, 0)
+        dfs(root, 0, totals, counts)
+        return [total / count for total, count in zip(totals, counts)]

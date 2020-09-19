@@ -19,6 +19,7 @@
 链接：https://leetcode-cn.com/problems/shu-zu-zhong-zhong-fu-de-shu-zi-lcof
 '''
 # 时间复杂度O(n),空间复杂度O(1)
+# 抽屉算法
 class Solution:
     def findRepeatNumber(self, arr) -> int:
         if arr is None or arr == []:

@@ -29,7 +29,7 @@ class Solution:
     def climbStairs(self, n: int) -> int:
         if n == 1:
             return 1
-        dp = [0 for i in range(n + 1)]
+        dp = [0 for _ in range(n + 1)]
         # base case
         dp[0] = 0
         dp[1] = 1

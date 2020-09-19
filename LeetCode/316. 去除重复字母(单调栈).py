@@ -20,14 +20,13 @@ from collections import Counter
 # 单调栈
 class Solution:
     def removeDuplicateLetters(self, s: str) -> str:
-        n = len(s)
         seen = set()
         # 这里先用一个hash记录所有元素的个数
         hash = Counter(s)
         stack = []
         # 单调栈维护字典序
         for char in s:
-            # 如果 char 在senn中，就需要删除掉当前元素
+            # 如果 char 在seen中，就需要删除掉当前元素
             if char not in seen:
                 # 维护一个单调min栈, 如果hash表中的元素的个数大于0，代表可以被删除
                 while stack and stack[-1] > char and hash[stack[-1]] > 0:

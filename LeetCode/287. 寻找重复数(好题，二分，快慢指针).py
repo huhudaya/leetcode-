@@ -111,9 +111,8 @@ class Solution1:
         return slow
 
 
-a = [1, 3,4,2,2]
+a = [1, 3, 4, 2, 2]
 print(Solution1().findDuplicate(a))
-
 
 '''
 public class Solution {

@@ -26,6 +26,7 @@ class BinHeap:
                 tmp = self.heapList[i]
                 self.heapList[i] = self.heapList[mc]
                 self.heapList[mc] = tmp
+            # 这里别忘了更新 i 为 mc
             i = mc
 
     def minChild(self, i):
@@ -53,6 +54,7 @@ class BinHeap:
         while (i > 0):
             self.percDown(i)
             i = i - 1
+
 
 bh = BinHeap()
 alist = [9, 5, 6, 2, 3, 1, 9]
@@ -110,6 +112,3 @@ li = list()
 for i in range(len(alist), -1, -1):
     li.append(i)
 print(li)
-
-# for i in range(10,0,-1):
-#     print(i,end='')

@@ -123,39 +123,3 @@ class Solution:
         res = []
         dfs(nums, size, 0, [], used, res)
         return res
-
-
-import sys
-
-m, n, k = 3, 4, 7
-candidates = []
-used = [False for _ in range(m + n)]
-cnt = 0
-for i in range(m + n):
-    if i < m:
-        candidates.append("a")
-    else:
-        candidates.append("b")
-ans = []
-# 回溯遍历 全排列问题
-def dfs(nums, used, path, res, depth, size):
-    global cnt
-    if cnt == k:
-        return
-    for i in range(len(nums)):
-        if depth == size:
-            return
-        if not used[i]:
-            if i > 0 and used[i - 1] == False and nums[i - 1] == nums[i]:
-                continue
-            used[i] = True
-            cnt += 1
-            path.append(nums[i])
-            if cnt == k:
-                ans.append(path[:])
-                break
-            dfs(nums, used, path, res, depth + 1, size)
-            path.pop()
-            used[i] = False
-dfs(candidates, used, [], [], 0, m + n)
-print("".join(ans[0]))

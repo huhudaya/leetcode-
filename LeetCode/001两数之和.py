@@ -73,3 +73,45 @@ class Solution {
     }
 }
 '''
+
+
+# go
+'''
+func twoSum(nums []int, target int) []int {
+    result := []int{}
+    m := make(map[int]int)
+    for i,k := range nums {      
+        if value,exist := m[target-k];exist {
+            result = append(result,value)
+            result = append(result,i)
+        }
+        m[k] = i
+    }
+    return result
+}
+
+
+# 解法2
+func twoSum2(nums []int, target int) []int {
+	m := map[int]int{}
+	for i, v := range nums {
+		if k, ok := m[target-v]; ok {
+			return []int{k, i}
+		}
+		m[v] = i
+	}
+	return nil
+}
+# 解法3
+// 算法1：暴力破解法
+func twoSum1(nums []int, target int) []int {
+	for i := 0; i < len(nums); i++ {
+		for j := i+1; j < len(nums); j++ {
+			if nums[i]+nums[j] == target {
+				return []int{i, j}
+			}
+		}
+	}
+	return nil
+}
+'''

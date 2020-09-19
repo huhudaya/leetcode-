@@ -34,3 +34,32 @@ class Solution:
             if k in nums2_hash:
                 res.extend(min(nums2_hash[k], v) * [k])
         return res
+
+# java
+'''
+class Solution {
+    public int[] intersect(int[] nums1, int[] nums2) {
+        HashMap<Integer,Integer> map = new HashMap<>();
+        //1.统计nums1中各个元素的出现次数
+        for (int i = 0; i < nums1.length; i++) {
+            //当Map集合中有这个key时，就使用这个key值，如果没有就使用默认值defaultValue
+            int count = map.getOrDefault(nums1[i], 0)+1;
+            map.put(nums1[i],count);
+        }
+        //2. 遍历nums2查找存在map中的元素同时更新map的key的次数
+        int[] result = new int[nums1.length];//既然是两数组的交集，那么长度一定小于等于任意一个数组
+        int index = 0;
+        for (int target : nums2) {
+            int count = map.getOrDefault(target, 0);
+            //证明元素target存在于map，就说明nums2中的target是和nums1有交集的元素
+            if (count > 0){
+                result[index++] = target;//添加到结果集中
+                count --;
+                map.put(target, count);//更新map
+            }
+        }
+       //将指定的数组指定的范围复制到一个新的数组中
+        return Arrays.copyOfRange(result,0,index);
+    }
+}
+'''

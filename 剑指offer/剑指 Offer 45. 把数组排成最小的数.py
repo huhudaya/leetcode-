@@ -18,6 +18,7 @@
 # 相当于一个排序的过程，先两两排序？？好像是这样？
 from typing import List
 import functools
+# lambda
 class Solution:
     def minNumber(self, nums: List[int]) -> str:
         def sort_rule(x, y):

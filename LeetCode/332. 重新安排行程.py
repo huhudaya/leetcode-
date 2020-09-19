@@ -68,12 +68,25 @@ import heapq
 # 对于当前节点而言，从它的每一个非「死胡同」分支出发进行深度优先搜索，都将会搜回到当前节点。
 # 而从它的「死胡同」分支出发进行深度优先搜索将不会搜回到当前节点。
 # 也就是说当前节点的死胡同分支将会优先于其他非「死胡同」分支入栈。
+'''
+Hierholzer 算法用于在连通图中寻找欧拉路径，其流程如下：
+
+    1.从起点出发，进行深度优先搜索。
+
+    2.每次沿着某条边从某个顶点移动到另外一个顶点的时候，都需要删除这条边。
+
+    3.如果没有可移动的路径，则将所在节点加入到栈中，并返回。
+'''
+# 时间复杂度O(mlogm),m是边的数量，对于每一条边都需要O(logm)的删除它
 class Solution:
     def findItinerary(self, tickets: List[List[str]]) -> List[str]:
         def dfs(curr: str):
             while vec[curr]:
+                # 弹出一个值，然后维护堆的数据结构，logN的时间复杂度
                 tmp = heapq.heappop(vec[curr])
+                # 继续dfs,直到遇到死路
                 dfs(tmp)
+            # 如果是死路一条，那么放入栈中
             stack.append(curr)
 
         vec = collections.defaultdict(list)
@@ -86,3 +99,31 @@ class Solution:
         stack = list()
         dfs("JFK")
         return stack[::-1]
+
+
+# 回溯
+class Solution:
+    def findItinerary(self, tickets):
+        from collections import defaultdict
+        ticket_dict = defaultdict(list)
+        # 构建邻接表
+        for item in tickets:
+            ticket_dict[item[0]].append(item[1])
+
+        path = ['JFK']
+
+        def backtrack(cur_from):
+            if len(path) == len(tickets) + 1:  # 结束条件
+                return True
+            ticket_dict[cur_from].sort()
+            for _ in ticket_dict[cur_from]:
+                cur_to = ticket_dict[cur_from].pop(0)  # 删除当前节点
+                path.append(cur_to)  # 做选择
+                if backtrack(cur_to):  # 进入下一层决策树
+                    return True
+                path.pop()  # 取消选择
+                ticket_dict[cur_from].append(cur_to)  # 恢复当前节点
+            return False
+
+        backtrack('JFK')
+        return path

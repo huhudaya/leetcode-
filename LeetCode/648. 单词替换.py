@@ -20,10 +20,6 @@
 1 <= dict[i].length <= 100
 1 <= 句中词语数 <= 1000
 1 <= 句中词语长度 <= 1000
-
-来源：力扣（LeetCode）
-链接：https://leetcode-cn.com/problems/replace-words
-著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 '''
 # 前缀函数
 from typing import List
@@ -41,122 +37,6 @@ class Solution:
                     s[i] = j
                     break
         return ' '.join(s)
-
-
-# 字典树
-# 把所有的词根放入前缀树中，在树上查找每个单词的最短词根，该操作可在线性时间内完成。
-# 时间复杂度：O(N)，其中 NN 是 sentence 的长度。每次查询操作为线性时间复杂度
-class Solution:
-    def replaceWords(self, dict: List[str], sentence: str) -> str:
-        d = {}  # 字典树初始化
-        for word in dict:  # 把前缀词放进字典树
-            t = d
-            for c in word:
-                if c not in t:
-                    t[c] = {}
-                t = t[c]
-            t['end'] = True
-
-        def f(word):  # 单词前缀判断
-            t = d
-            for i, c in enumerate(word):
-                if 'end' in t:
-                    return word[: i]  # 存在前缀就返回前缀
-                elif c not in t:
-                    break  # 不存在前缀就跳出循环并返回原词
-                t = t[c]
-            return word
-
-        return ' '.join(map(f, sentence.split(' ')))
-
-
-# 字典序
-import collections
-
-
-class Solution(object):
-    def replaceWords(self, roots, sentence):
-        Trie = lambda: collections.defaultdict(Trie)
-        trie = Trie()
-        END = True
-
-        for root in roots:
-            reduce(dict.__getitem__, root, trie)[END] = root
-
-        def replace(word):
-            cur = trie
-            for letter in word:
-                if letter not in cur or END in cur: break
-                cur = cur[letter]
-            return cur.get(END, word)
-
-        return " ".join(map(replace, sentence.split()))
-
-
-class Solution:
-    def replaceWords(self, dict, sentence: str) -> str:
-        contain = collections.defaultdict(int)
-        for dic in dict:
-            contain[dic] = len(dic)
-        result = sorted(contain.items(), key=lambda ky: (ky[1], ky[0]))
-        words = sentence.split(" ")
-        for i in range(len(words)):
-            for sub_word, length in result:
-                if sub_word == words[i][:length]:
-                    words[i] = sub_word
-                    break
-        return " ".join(words)
-
-
-class TrieNode:
-    def __init__(self, val=None, isEnd=False):
-        self.val = val
-        self.isEnd = isEnd
-        self.children = {}
-
-
-class Solution:
-    def replaceWords(self, dict: List[str], sentence: str) -> str:
-        # insert node to trie tree
-        def insertWord(word):
-            cur = root
-            for w in word:
-                if w not in cur.children:
-                    cur.children[w] = TrieNode(w, False)
-                cur = cur.children[w]
-            cur.isEnd = True
-
-        # find the word's replacement in the trie tree
-        def find(word):
-            cur = root
-            # res用于保存前路径
-            res = []
-            for w in word:
-                # 达到某个词根处，立即返回该词根
-                if cur.isEnd:
-                    return ''.join(res)
-                # 未达到词根先出现tree之外的字符
-                # 不进行替换
-                if w not in cur.children:
-                    return word
-                # 记录到路径
-                res.append(w)
-                # 树继续往下走
-                cur = cur.children[w]
-            else:
-                return ''.join(res)
-
-        # Build Trie Tree
-        root = TrieNode('')
-        for word in dict:
-            insertWord(word)
-        # replace
-        # 依次替换并返回
-        words = sentence.split()
-        res = []
-        for word in words:
-            res.append(find(word))
-        return ' '.join(res)
 
 
 # 简洁版本（模板）

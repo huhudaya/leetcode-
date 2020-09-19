@@ -1,3 +1,4 @@
+from typing import List
 class Solution:
     def sortArray(self, nums: List[int]) -> List[int]:
         # 冒泡排序

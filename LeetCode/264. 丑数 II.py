@@ -28,7 +28,7 @@ class Solution:
             res = heapq.heappop(heap)
             while heap and res == heap[0]:
                 res = heapq.heappop(heap)
-            a, b, c = res * 2, res * 3, res * 5
+                a, b, c = res * 2, res * 3, res * 5
             for t in [a, b, c]:
                 heapq.heappush(heap, t)
         return res

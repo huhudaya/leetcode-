@@ -16,20 +16,15 @@
 
 # 求前 k 大，用小根堆，求前 k 小，用大根堆。
 
-# 1排序
+# 排序
 # O(Nlog(N))
-
-
-# 堆排序
-import heapq
-import collections
-
-
 # 建立堆，堆中添加一个元素的复杂度是 O(log(k))，要进行 N 次复杂度是 O(N)。
 # counter方法复杂度为O（N），建堆和输出结果是O（NlogK）
 # Klog(K) 空间复杂度为O(N)
 from typing import List
 import collections
+
+
 class Solution:
     def topKFrequent(self, nums, k):
         """
@@ -112,6 +107,33 @@ class Solution {
     }
 }
 '''
+
+
+
+'''
+class Solution {
+    public int[] topKFrequent(int[] nums, int k) {
+        HashMap<Integer, Integer> count = new HashMap();
+        for (int num: nums){
+            count.put(num, count.getOrDefault(num, 0) + 1);
+        }
+        // 小根堆 按value建堆
+        PriorityQueue<Integer> heap = new PriorityQueue<>((o1, o2) -> count.get(o1) - count.get(o2));
+        for (int num: count.keySet()){
+            heap.add(num);
+            if (heap.size() > k) heap.poll();
+        }
+        // 输出
+        int[] topK = new int[k];
+        for (int i = 0; i < k; i ++){
+            topK[i] = heap.poll();
+        }
+        return topK;
+    }
+}
+'''
+
+
 # 桶排序
 class Solution:
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
@@ -123,9 +145,9 @@ class Solution:
         res = []
         cnt = 0
         hash = collections.Counter(nums)
-        for key in hash:
+        for key, val in hash.items():
             # value作为索引，将key作为value
-            bucket[hash.get(key)].append(key)
+            bucket[val].append(key)
         # 倒着遍历bucket
         for num in bucket[::-1]:
             if cnt == k:
@@ -133,6 +155,7 @@ class Solution:
             if num:
                 res.extend(num)
                 cnt += len(num)
+        return res
 
 
 # 堆 排序
@@ -165,10 +188,10 @@ class Solution(object):
         return [item[1] for item in priority_queue]
 
 
-
-
 import heapq
 from collections import Counter
+
+
 class Solution:
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
         # 求最大的k个数用小根堆
@@ -188,4 +211,5 @@ class Solution:
             ans.append(i[1])
         return ans
 
-Solution().topKFrequent([4,1,-1,2,-1,2,3],2)
+
+Solution().topKFrequent([4, 1, -1, 2, -1, 2, 3], 2)

@@ -76,13 +76,14 @@ public class Solution {
 '''
 from typing import List
 
-
+# 正向遍历
 class Solution:
     def nextGreaterElement(self, nums1: List[int], nums2: List[int]) -> List[int]:
         stack, hashmap = list(), dict()
         for i in nums2:
             # 其实相当于维护一个双端队列qmax，只不过在弹出值得时候加到hahsMap中 max栈
             while len(stack) != 0 and stack[-1] < i:
+                # 正向遍历的时候，弹出单调栈的时候才将具体的值加入到hashMap中
                 hashmap[stack.pop()] = i
             stack.append(i)
         # 因为无重复数据

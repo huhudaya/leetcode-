@@ -86,11 +86,6 @@ class Solution:
 递归得到左和右，将返回列表增加它们的全部组合。（值：当前循环变量，左：当前左，右：当前右）
 
 将元组(left，right)作为键，返回列表为值加入字典，然后返回。
-
-作者：ting-ting-28
-链接：https://leetcode-cn.com/problems/unique-binary-search-trees-ii/solution/python3-xiang-xi-di-gui-by-ting-ting-28/
-来源：力扣（LeetCode）
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 '''
 
 
