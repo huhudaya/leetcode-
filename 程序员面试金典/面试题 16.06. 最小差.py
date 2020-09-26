@@ -16,7 +16,7 @@
 # https://leetcode-cn.com/problems/smallest-difference-lcci/solution/wo-shi-ni-de-ma-ma-ya-di-yi-qi-by-fe-lucifer/
 from typing import List
 
-
+# 时间复杂度ONlogN
 class Solution:
     def smallestDifference(self, a: List[int], b: List[int]) -> int:
         n = len(a)

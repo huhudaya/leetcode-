@@ -298,3 +298,72 @@ class Solution:
             self.__dfs(nums, i + 1, path, res)
             path.pop()
 print(Solution().subsets([1,2,3]))
+
+
+# go语言
+'''
+func subsets(nums []int) [][]int {
+    ret := make([][]int, 0)
+    
+    list := make([]int, 0)
+    
+    // backtrack(nums, 0, list, &ret)
+    backTrack(nums, &ret, list, 0)
+    return ret
+}
+
+
+func backTrack(nums []int, ret *[][]int, path []int, pos int) {
+    temp := make([]int, len(path))
+    copy(temp, path)
+    *ret = append(*ret, temp)
+    
+    for i := pos;i < len(nums); i++ {
+        path = append(path, nums[i])
+        backTrack(nums, ret, path, i+1)
+        path = path[:len(path)-1]
+    }
+}
+'''
+# Java迭代
+'''
+public List<List<Integer>> subsets(int[] nums) {
+    List<List<Integer>> res = new ArrayList<>(1 << nums.length);
+    //先添加一个空的集合
+    res.add(new ArrayList<>());
+    for (int num : nums) {
+        //每遍历一个元素就在之前子集中的每个集合追加这个元素，让他变成新的子集
+        for (int i = 0, j = res.size(); i < j; i++) {
+            //遍历之前的子集，重新封装成一个新的子集
+            List<Integer> list = new ArrayList<>(res.get(i));
+            //然后在新的子集后面追加这个元素
+            list.add(num);
+            //把这个新的子集添加到集合中
+            res.add(list);
+        }
+    }
+    return res;
+}
+'''
+# 回溯Java
+'''
+public List<List<Integer>> subsets(int[] nums) {
+    List<List<Integer>> list = new ArrayList<>();
+    backtrack(list, new ArrayList<>(), nums, 0);
+    return list;
+}
+
+private void backtrack(List<List<Integer>> list, List<Integer> tempList, int[] nums, int start) {
+    //走过的所有路径都是子集的一部分，所以都要加入到集合中
+    list.add(new ArrayList<>(tempList));
+    for (int i = start; i < nums.length; i++) {
+        //做出选择
+        tempList.add(nums[i]);
+        //递归
+        backtrack(list, tempList, nums, i + 1);
+        //撤销选择
+        tempList.remove(tempList.size() - 1);
+    }
+}
+'''
+

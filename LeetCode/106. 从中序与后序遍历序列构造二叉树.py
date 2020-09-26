@@ -40,3 +40,36 @@ class Solution:
         root.left = self.buildTree(inorder[:mid], postorder[:mid])
         root.right = self.buildTree(inorder[mid + 1:], postorder[mid:-1])
         return root
+
+# go
+'''
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func buildTree(inorder []int, postorder []int) *TreeNode {
+    if len(inorder) == 0 || len(postorder) == 0 {
+        return nil
+    }
+    last := len(postorder) - 1
+    val := postorder[last]
+    root := &TreeNode{Val: val}
+    mid := indexOf(inorder, val)
+    root.Left = buildTree(inorder[:mid], postorder[:mid])
+    root.Right = buildTree(inorder[mid + 1:], postorder[mid:last])
+    return root
+}
+func indexOf(list []int, val int) int {
+    for i, num := range list {
+        if num == val {
+            val = i
+            break
+        }
+    }
+    return val
+}
+'''

@@ -105,6 +105,7 @@ class Solution:
             return left
 
         def select(left, right):
+            # 使用随机快排的方式
             pivot = random.randint(left, right)
             index = partition(left, right, pivot)
             if index > k:

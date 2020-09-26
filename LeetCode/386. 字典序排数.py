@@ -56,3 +56,24 @@ class Solution:
         for i in range(1, 10):
             dfs(i, n, res)
         return res
+
+
+# java
+'''
+class Solution {
+    ArrayList<Integer> res = new ArrayList<>();
+    public List<Integer> lexicalOrder(int n) {
+        for (int i = 1; i < 10; i ++){
+            dfs(n, i);
+        }
+        return res;
+    }
+    private void dfs(int n, int cur){
+        if (cur > n) return;
+        res.add(cur);
+        for (int i = 0; i < 10; i ++) {
+            dfs(n, cur * 10 + i);
+        }
+    }
+}
+'''
