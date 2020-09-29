@@ -74,4 +74,25 @@ class Solution:
                 root = root.left  # 遍历至左子节点
             else:
                 break
-        return None
+        return root
+
+# go
+"""
+func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
+	// 迭代
+    if p.Val > q.Val {
+        p, q = q, p
+    }
+    node := root
+    for node != nil {
+        if node.Val < p.Val {
+            node = node.Right
+        }else if node.Val > q.Val {
+            node = node.Left
+        }else {
+            return node
+        }
+    }
+    return nil
+}
+"""

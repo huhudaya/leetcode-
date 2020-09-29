@@ -71,6 +71,7 @@ class RandomizedSet:
 class RandomizedSet:
 
     def __init__(self):
+        # hash中key为数组中对应下标，val为元素的值
         self.cache = {}
         self.nums = []
         self.size = 0
@@ -86,8 +87,8 @@ class RandomizedSet:
         if val not in self.cache:
             return False
         # 将要删除的元素交换到数组末位，然后删除
-        index = self.cache[val]
-        last = self.nums[-1]
+        index = self.cache[val]  # 找到要删除的元素的索引
+        last = self.nums[-1]    # 找到数组最后一个位置的元素
         # 将数组中对应索引位置更新为原来数组中的最后一个元素
         self.nums[index] = last
         # 更新hash中的val对应的数组索引

@@ -38,6 +38,7 @@ class RandomizedCollection:
     def __init__(self):
         self.nums = []
         self.size = 0
+        # 使用一个hashmap + set的数据结构，set中保存的是对应元素的数组下标，数组下标一定是唯一的
         self.cache = defaultdict(set)
 
     def insert(self, val: int) -> bool:
