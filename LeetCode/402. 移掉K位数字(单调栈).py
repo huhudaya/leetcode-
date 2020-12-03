@@ -36,6 +36,7 @@ class Solution:
             stack.append(i)
         stack = list(map(str, stack))
         res = "".join(stack[:idx]).lstrip("0") or "0"
+        return res
 
 
 # java
@@ -53,7 +54,7 @@ class Solution {
     }
         
     /* remove the remaining digits from the tail. */
-    for(int i=0; i<k; ++i) {
+    for(int i = 0; i < k; ++i) {
       stack.removeLast();
     }
         
@@ -70,5 +71,26 @@ class Solution {
     if (ret.length() == 0) return "0";
     return ret.toString();
   }
+}
+'''
+
+# go
+'''
+func removeKdigits(num string, k int) string {
+    stack := []byte{}
+    for i := range num {
+        digit := num[i]
+        for k > 0 && len(stack) > 0 && digit < stack[len(stack)-1] {
+            stack = stack[:len(stack)-1]
+            k--
+        }
+        stack = append(stack, digit)
+    }
+    stack = stack[:len(stack)-k]
+    ans := strings.TrimLeft(string(stack), "0")
+    if ans == "" {
+        ans = "0"
+    }
+    return ans
 }
 '''

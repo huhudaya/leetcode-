@@ -57,3 +57,47 @@ class Solution:
             self._dfs(nums, size, path, res, i + 1)
             path.pop()
 print(Solution().subsetsWithDup([1,1,0]))
+
+
+# java
+"""
+public List<List<Integer>> subsetsWithDup(int[] nums) {
+    List<List<Integer>> ans = new ArrayList<>();
+    Arrays.sort(nums); //排序
+    getAns(nums, 0, new ArrayList<>(), ans);
+    return ans;
+}
+
+private void getAns(int[] nums, int start, ArrayList<Integer> temp, List<List<Integer>> ans) {
+    ans.add(new ArrayList<>(temp));
+    for (int i = start; i < nums.length; i++) {
+        //和上个数字相等就跳过
+        if (i > start && nums[i] == nums[i - 1]) {
+            continue;
+        }
+        temp.add(nums[i]);
+        getAns(nums, i + 1, temp, ans);
+        temp.remove(temp.size() - 1);
+    }
+}
+"""
+'''
+func subsetsWithDup(nums []int) (result [][]int) {
+	var dfs func(temp []int, idx int)
+	n := len(nums)
+	sort.Ints(nums)
+	dfs = func(temp []int, idx int) {
+		result = append(result, append([]int(nil), temp...))
+		for i := idx; i < n; i++ {
+			if i > idx && nums[i] == nums[i-1] {
+				continue
+			}
+			temp = append(temp, nums[i])
+			dfs(temp, i+1)
+			temp = temp[:len(temp)-1]
+		}
+	}
+	dfs([]int{}, 0)
+	return
+}
+'''

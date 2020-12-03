@@ -26,6 +26,7 @@
 本题与 783 https://leetcode-cn.com/problems/minimum-distance-between-bst-nodes/ 相同
 '''
 # Definition for a binary tree node.
+import sys
 class TreeNode:
     def __init__(self, x):
         self.val = x
@@ -45,3 +46,31 @@ class Solution:
             dfs(root.right)
         dfs(root)
         return self.res
+
+'''
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func getMinimumDifference(root *TreeNode) int {
+    var dfs func(node *TreeNode)
+    ans, pre := math.MaxInt64, -1
+    dfs = func(root *TreeNode) {
+        if root == nil {
+            return
+        }
+        dfs(root.Left)
+        if pre != -1 && root.Val-pre < ans {
+            ans = root.Val - pre
+        }
+        pre = root.Val
+        dfs(root.Right)
+    }
+    dfs(root)
+    return ans
+}
+'''

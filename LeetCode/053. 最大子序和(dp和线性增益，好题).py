@@ -93,3 +93,39 @@ class Solution:
                 sum_i = nums[i]
             res = max(sum_i, res)
         return res
+
+import sys
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        n = len(nums)
+        res = -sys.maxsize
+        tmp = 0
+        for i in range(n):
+            if tmp < 0:
+                tmp = 0
+            tmp += nums[i]
+            res = max(res, tmp)
+        return res
+
+'''
+func maxSubArray(nums []int) int {
+	ans := nums[0]
+	cur := nums[0]
+	if len(nums) == 1 {
+		return nums[0]
+	}
+	max := func(a, b int) int {
+		if a > b {
+			return a
+		}
+		return b
+	}
+	for i := 1; i < len(nums); i++ {
+		// 判断 cur是否大于0
+		// 如果小于0,就舍弃之前的值，否则更新值
+		cur = max(nums[i], cur+nums[i])
+		ans = max(cur, ans)
+	}
+	return ans
+}
+'''

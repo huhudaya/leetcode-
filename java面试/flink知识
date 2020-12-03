@@ -1,13 +1,17 @@
+flink处理增量数据文档:
+https://blog.csdn.net/leaeason/article/details/107762692?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.channel_param&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.channel_param
+
 flink的checkpoint原理
 1.简单的想法是在上游选择一个偏移量，然后让程序停下来，然后做一个快照，显然不可取
 2.采用分布式快照，即使用一个barrier，barrier之前到来的元素，都保存在当前的checkpoint状态state中
   barrier之后到来的元素，都算作下一个checkpoint状态
-  barrier可以采用广播的思路，将上游的barrier广播出去，然后下游的slot中的barrier到达之后，就做一个barrier，完成一个分布式快照，相当于是照相的时候，我们在不同时间进行拍照，然后对每个人进行一个拼接
+  barrier可以采用广播的思路，将上游的barrier广播出去，然后下游的slot中的barrier到达之后，就做一个barrier
+  完成一个分布式快照，相当于是照相的时候，我们在不同时间进行拍照，然后对每个人进行一个拼接
   当上游有多个source怎么办？这样就有了多个barrier，此时就有一个barrier对齐的概念
   步骤：
     1.上游的每个source在某一时刻会发送一个barrier_id,单调递增，这个barrier_id会进行广播的操作
     2.下游的solt只有当上游所广播的barrier_id都收集到了才能保存状态！否则，在barrier之前达到的元素，都需要缓存在buffer_memory
-3.checkpoint两阶段提交的流程
+3.flinkcheckpoint两阶段提交的流程
     1.开启一个kafka事务
     2.source插入barrier并且广播到下游operator
     3.遇见barrier的算子将状态存入状态后端
@@ -27,6 +31,7 @@ flink的checkpoint原理
         2.多并行度，watermark数据上游朝下游广播出去，比如多个分区的wm分别为2，3，5，6，此时最小的wm为2，将2广播出去，然后下游收到这个广播的wm,表示2以前的数据都处理完成了
         3.Long.MAX_VALUE表示事件时间的结束
         4.单个分区取最大值，多个分区取所有分区中的最小值
+        5.如果source的并行度弄成1会比较方便的调试程序
 
 
 HADOOP负载均衡:
@@ -68,3 +73,29 @@ HADOOP负载均衡:
     在CDC的场景下，如果上游source是2，中间map有3个算子，下游sink并行度是2，那么如何避免乱序？
     在source到map可以使用hash,在map到sink也可以使用hash,避免直接使用rebalance
 
+
+flink中并行度和task的关系
+https://blog.csdn.net/qq_34897849/article/details/103931374
+    Flink 中每一个 TaskManager 都是一个JVM进程，它可能会在独立的线程上执行一个或多个 subtask
+    为了控制一个 TaskManager 能接收多少个 task， TaskManager 通过 task slot 来进行控制（一个 TaskManager 至少有一个 slot）
+    slot 主要隔离内存，cpu 是slot之间共享的。也就是说4核的机器 ，内存足够，可以把slot设置为8。最多能同时运行8个任务。建议一个核心数分配一个slot
+    这种图中 source、map 合成的task的并行度为6
+keyby 、window、apply合成的task的并行度为6
+sink的并行度为1
+总共有13个task
+但是不是需要13个slot才能满足这个并行度的要求
+
+Flink-sql解析过程
+    基于此，一次完整的SQL解析过程如下：
+    用户使用对外提供Stream SQL的语法开发业务应用
+    用calcite对StreamSQL进行语法检验，语法检验通过后，转换成calcite的逻辑树节点；最终形成calcite的逻辑计划
+    采用Flink自定义的优化规则和calcite火山模型、启发式模型共同对逻辑树进行优化，生成最优的Flink物理计划
+    对物理计划采用janino codegen生成代码，生成用低阶API DataStream 描述的流应用，提交到Flink平台执行
+
+五、Flink 是如何保证Exactly-once语义的？
+    Flink通过实现两阶段提交和状态保存来实现端到端的一致性语义。 分为以下几个步骤：
+    1.开始事务（beginTransaction）创建一个临时文件夹，来写把数据写入到这个文件夹里面
+    2.预提交（preCommit）将内存中缓存的数据写入文件并关闭
+    3.正式提交（commit）将之前写完的临时文件放入目标目录下。这代表着最终的数据会有一些延迟
+    4.丢弃（abort）丢弃临时文件
+        若失败发生在预提交成功后，正式提交前。可以根据状态来提交预提交的数据，也可删除预提交的数据。

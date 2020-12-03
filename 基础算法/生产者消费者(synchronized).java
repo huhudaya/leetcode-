@@ -1,3 +1,5 @@
+
+// 生产者消费者三步骤：判断、干活、通知
 public class TestProduce {
     public static void main(String[] args) {
         SyncStack sStack = new SyncStack();// 定义缓冲区对象；
@@ -21,6 +23,7 @@ class SyncStack {// 缓冲区(相当于：馒头筐)
     Mantou[] ms = new Mantou[10];
 
     public synchronized void push(Mantou m) {
+        // 1.判断
         while (index == ms.length) {//说明馒头筐满了
             try {
                //wait后，线程会将持有的锁释放，进入阻塞状态；
@@ -32,10 +35,11 @@ class SyncStack {// 缓冲区(相当于：馒头筐)
                 e.printStackTrace();
             }
         }
-        // 唤醒在当前对象等待池中等待的第一个线程。
+        // 3.通知 唤醒在当前对象等待池中等待的第一个线程。
         //notifyAll叫醒所有在当前对象等待池中等待的所有线程。
         this.notify();
-        // 如果不唤醒的话。以后这两个线程都会进入等待线程，没有人唤醒。
+
+        // 2.干活 如果不唤醒的话。以后这两个线程都会进入等待线程，没有人唤醒。
         ms[index] = m;
         index++;
     }

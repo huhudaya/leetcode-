@@ -178,13 +178,10 @@ class Solution:
 # 用栈
 # 核心思路就是初始化栈中元素始终保持一个下标，这样相减的话会比较方便
 import sys
-
-
 class Solution:
     def longestValidParentheses(self, s: str) -> int:
         # 注意，栈中需要有初始值
         stack = [-1]
-        length = 0
         max_length = 0
         for i in range(len(s)):
             if s[i] == '(':
@@ -248,3 +245,33 @@ class Solution:
     #         res = min(res, max(sum(nums[:i + 1]), self.get_res(nums[i + 1:], m - 1)))
     #     memo[nums, m] = res
     #     return res
+
+
+# 栈-golang
+'''
+func longestValidParentheses(s string) int {
+    maxAns := 0
+    stack := []int{}
+    stack = append(stack, -1)
+    for i := 0; i < len(s); i++ {
+        if s[i] == '(' {
+            stack = append(stack, i)
+        } else {
+            stack = stack[:len(stack)-1]
+            if len(stack) == 0 {
+                stack = append(stack, i)
+            } else {
+                maxAns = max(maxAns, i - stack[len(stack)-1])
+            }
+        }
+    }
+    return maxAns
+}
+
+func max(x, y int) int {
+    if x > y {
+        return x
+    }
+    return y
+}
+'''

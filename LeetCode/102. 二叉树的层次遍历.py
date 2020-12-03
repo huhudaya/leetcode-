@@ -42,6 +42,7 @@ class TreeNode:
 class Solution:
     def levelOrder(self, root: TreeNode) -> List[List[int]]:
         res = []
+
         def helper(root, depth):
             if not root:
                 return
@@ -50,8 +51,10 @@ class Solution:
             res[depth].append(root.val)
             helper(root.left, depth + 1)
             helper(root.right, depth + 1)
+
         helper(root, 0)
         return res
+
 
 # 自己的版本
 class Solution:
@@ -59,18 +62,20 @@ class Solution:
         if not root:
             return []
         res = [[root.val]]
+
         def helper(root, depth):
             if not root.left and not root.right:
                 return
             if len(res) == depth:
                 res.append([])
             if root.left:
-                # 提前就放进去
+                # 如果孩子节点有值就提前就放进去
                 res[depth].append(root.left.val)
                 helper(root.left, depth + 1)
             if root.right:
                 res[depth].append(root.right.val)
                 helper(root.right, depth + 1)
+
         helper(root, 1)
         return res
 
@@ -172,3 +177,141 @@ class Solution:
                     queue.append(node.right)
             res.append(level)
         return res
+# go
+'''
+func levelOrder(root *TreeNode) [][]int {
+    ret := [][]int{}
+    if root == nil {
+        return ret
+    }
+    q := []*TreeNode{root}
+    for i := 0; len(q) > 0; i++ {
+        ret = append(ret, []int{})
+        p := []*TreeNode{}
+        for j := 0; j < len(q); j++ {
+            node := q[j]
+            ret[i] = append(ret[i], node.Val)
+            if node.Left != nil {
+                p = append(p, node.Left)
+            }
+            if node.Right != nil {
+                p = append(p, node.Right)
+            }
+        }
+        q = p
+    }
+    return ret
+}
+'''
+'''
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func levelOrder(root *TreeNode) [][]int {
+	//创建一个保存最终结果的二位切片
+	var result [][]int
+
+	//如果节点为空，直接返回
+	if root == nil {
+		return result
+	}
+
+	//创建一个队列，并把根节点从前端入队
+	queue := list.New()
+	queue.PushFront(root)
+
+	for queue.Len() > 0 {
+		//保存当前层数据的切片
+		var curLevel []int
+		//count：保存当前层节点个数
+		count := queue.Len()
+
+		for count > 0 {
+			//从队列后端取出数据
+			element := queue.Back()
+			node := element.Value.(*TreeNode)
+			curLevel = append(curLevel, node.Val)
+
+			//把左右子节点依次从队列前端入队
+			if node.Left != nil {
+				queue.PushFront(node.Left)
+			}
+			if node.Right != nil {
+				queue.PushFront(node.Right)
+			}
+
+			//删除节点，并把当前剩余节点数-1
+			queue.Remove(element)
+			count--
+		}
+
+		result = append(result, curLevel)
+	}
+	return result
+}
+'''
+
+# dfs
+'''
+var res [][]int
+
+func levelOrder(root *TreeNode) [][]int {
+	res = [][]int{}
+	dfs(root, 0)
+	return res
+}
+
+func dfs(root *TreeNode, level int) {
+	if root != nil {
+		if len(res) == level {
+			res = append(res, []int{})
+		}
+		res[level] = append(res[level], root.Val)
+		dfs(root.Left, level+1)
+		dfs(root.Right, level+1)
+	}
+}
+'''
+
+
+# 队列
+'''
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func levelOrder(root *TreeNode) [][]int {
+	var res [][]int
+	if root == nil {
+		return res
+	}
+	queue := make([]*TreeNode, 0)
+	queue = append(queue, root)
+	for len(queue) > 0 {
+		l := len(queue)
+		ans := make([]int, 0)
+		for i := 0; i < l; i++ {
+			node := queue[i]
+			ans = append(ans, node.Val)
+			if node.Left != nil {
+				queue = append(queue, node.Left)
+			}
+			if node.Right != nil {
+				queue = append(queue, node.Right)
+			}
+		}
+		res = append(res, ans)
+		queue = queue[l:]
+	}
+	return res
+}
+'''

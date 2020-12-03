@@ -48,6 +48,9 @@ class Solution:
         if nums[right] == target:
             return right
         return -1
-
-
 print(Solution().search([1, 3, 1, 1, 0], 3))
+
+# golang
+'''
+
+'''

@@ -1,0 +1,5 @@
+目前在HDFS中现有的副本防止策略类有2大继承子类,分别为BlockPlacementPolicyDefault, BlockPlacementPolicyWithNodeGroup,其中继承关系如下所示:
+简要概况起来3点:
+    1st replica. 如果写请求方所在机器是其中一个datanode,则直接存放在本地,否则随机在集群中选择一个datanode.
+    2nd replica. 第二个副本存放于不同第一个副本的所在的机架.
+    3rd replica.第三个副本存放于第二个副本所在的机架,但是属于不同的节点.

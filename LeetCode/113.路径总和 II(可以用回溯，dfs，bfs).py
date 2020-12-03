@@ -298,3 +298,41 @@ class Solution:
         # 这句话加不加其实都可以，因为上面cur_sum其实每次都是一个新的字符串！
         # cur_sum -= root.val
         tmp_res.pop()
+
+
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+#
+#
+# @param root TreeNode类
+# @param sum int整型
+# @return int整型二维数组
+#
+class Solution:
+    def pathSum(self , root , sum ):
+        # write code here
+        res = []
+        if not root:
+            return res
+        def dfs(root, path, sum):
+            if not root:
+                return
+            if root.left is None and root.right is None:
+                if sum - root.val == 0:
+                    path.append(root.val)
+                    res.append(path[:])
+                    path.pop()
+            if root.left:
+                path.append(root.val)
+                dfs(root.left, path, sum - root.val)
+                path.pop()
+            if root.right:
+                path.append(root.val)
+                dfs(root.right, path, sum - root.val)
+                path.pop()
+        dfs(root, [], sum)
+        return res

@@ -31,7 +31,7 @@ class Solution:
         for i in nums:
             if len(heap) < k:
                 heapq.heappush(heap, i)
-            # 如果堆顶比当前元素还笑，就replace
+            # 如果堆顶比当前元素还小，就replace
             elif heap[0] < i:
                 heapq.heapreplace(heap, i)
         return heap[0]
@@ -50,6 +50,8 @@ class Solution:
 
 # 快排
 from random import randint
+
+
 class Solution:
     def findKthLargest(self, nums, k: int) -> int:
         if k > len(nums):
@@ -230,7 +232,7 @@ class Solution:
             pos = partition(nums, left, right)
             if pos == k - 1:
                 return nums[pos]
-            elif pos > k:
+            elif pos >= k:
                 right = pos - 1
-            elif pos < k:
+            elif pos <= k:
                 left = pos + 1

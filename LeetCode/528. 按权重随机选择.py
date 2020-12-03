@@ -105,3 +105,161 @@ class Solution:
             else:
                 r = mid
         return l
+
+class Solution:
+    # 常规求和再二分查找的方法，应对pick调用次数较多但数据量不大的情况
+    def __init__(self, w: list):
+        self.w, self.sum = [0], 0
+        for i in w:
+            self.sum += i
+            self.w.append(self.sum)
+        self.sum -= 1
+
+    def pickIndex(self) -> int:
+        w = random.randint(0, self.sum)
+        return bisect.bisect(self.w, w)-1
+
+class Solution:
+    # 处理海量数据的A-res算法，应对pick调用次数较少但数据量特别大以及数据流的情况
+    def __init__(self, w: list):
+        self.w = w
+
+    def pickIndex(self) -> int:
+        _i, _v = 0,  float('-inf')
+        for i, w in enumerate(self.w):
+            v = random.random()**(1/w)
+            if v > _v:
+                _i, _v = i, v
+        return _i
+
+# 前缀和数组+二分
+'''
+class Solution {
+
+    List<Integer> psum = new ArrayList<>();
+    int tot = 0;
+    Random rand = new Random();
+
+    public Solution(int[] w) {
+        for (int x : w) {
+            tot += x;
+            psum.add(tot);
+        }
+    }
+
+    public int pickIndex() {
+        int targ = rand.nextInt(tot);
+
+        int lo = 0;
+        int hi = psum.size() - 1;
+        while (lo != hi) {
+            int mid = (lo + hi) / 2;
+            if (targ >= psum.get(mid)) lo = mid + 1;
+            else hi = mid;
+        }
+        return lo;
+    }
+}
+'''
+# 自己的版本
+import random
+import bisect
+class Solution:
+
+    def __init__(self, w: List[int]):
+        n = len(w)
+        pre_sum = [0] * n
+        pre_sum[0] = w[0]
+        for i in range(1, n):
+            pre_sum[i] = pre_sum[i - 1] + w[i]
+        self.tmp_sum = pre_sum[-1]
+        self.pre_sum = pre_sum
+        self.n = n
+    def pickIndex(self) -> int:
+        index = random.randint(1, self.tmp_sum)
+        return bisect.bisect_left(self.pre_sum, index)
+# Your Solution object will be instantiated and called as such:
+# obj = Solution(w)
+# param_1 = obj.pickIndex()
+
+
+'''
+type Solution struct {
+	w   []int
+	sum int
+}
+
+func Constructor(w []int) Solution {
+	rand.Seed(time.Now().UnixNano())
+
+	sum := 0
+	for _, v := range w {
+		sum += v
+	}
+	return Solution{
+		w:   w,
+		sum: sum,
+	}
+}
+
+func (this *Solution) PickIndex() int {
+	tmp := rand.Intn(this.sum)
+
+	out := 0
+	for i, v := range this.w {
+		tmp -= v
+		if tmp < 0 {
+			out = i
+			break
+		}
+	}
+	return out
+}
+'''
+
+# 自己版本的golang
+'''
+type Solution struct {
+    PreSum []int
+    Sum int
+    size int
+}
+
+func Constructor(w []int) Solution {
+    // 构造前缀和数组
+    node := make([]int, len(w) + 1)
+    for i, c := range w {
+        node[i + 1] = c + node[i]
+    }
+    return Solution{
+        PreSum:     node[1:],
+        Sum:        node[len(w)],
+        size:       len(w),
+    }
+}
+
+
+func (this *Solution) PickIndex() int {
+    //取[1, thie.Sum]的数:
+    rand.Seed(time.Now().UnixNano())
+    tmp := rand.Intn(this.Sum - 1 + 1) + 1
+    left := 0
+    right := this.size
+    w := this.PreSum
+    // 二分法找左边界
+    for left + 1 < right {
+        mid := left + (right - left) >> 1
+        // first_position
+        if w[mid] >= tmp {
+            right = mid
+        }else {
+            left = mid
+        }
+    }
+    if w[left] >= tmp {
+        return left
+    }else {
+        return right
+    }
+}
+'''

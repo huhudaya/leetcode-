@@ -1,0 +1,49 @@
+三种join实现方式
+https://www.cnblogs.com/erlou96/p/13599964.html
+https://www.cnblogs.com/wqbin/p/10270384.html
+一.common join
+
+ common join也叫做shuffle join，reduce join操作。
+ 适用于两个table的大小相当，但是又不是很大的情况下使用。具体流程就是在map端进行数据的切分，一个block对应一个map操作，然后进行shuffle操作，把对应的block shuffle到reduce端去，再逐个进行联合。
+
+缺点：容易产生数据倾斜，大数据量下性能不好
+
+
+
+二.map join
+
+mapJoin的主要意思就是，当join的两个表是一个比较小的表和一个特别大的表的时候
+我们把比较小的table直接放到内存中去，然后再对比较大的表格进行map操作。
+join就发生在map操作的时候，每当扫描一个大的table中的数据，就要去去查看小表的数据，哪条与之相符，继而进行连接。
+这里的join并不会涉及reduce操作。
+
+Map Join 的计算步骤分两步：
+    1.先将小表的数据变成hashtable广播到所有的map 端，将大表的数据进行合理的切分
+    2.然后在map 阶段的时候用大表的数据一行一行的去探测(probe) 小表的hashtable. 如果join key 相等，就写入HDFS
+map join 之所以叫做map join 是因为它所有的工作都在map 端进行计算.
+    hive 在map join 上做了几个优化：
+        hive 0.6 的时候默认认为写在select 后面的是大表，前面的是小表， 或者使用 /*+mapjoin(map_table) */ 提示进行设定. hive 0.7 的时候这个计算是自动化的，它首先会自动判断哪个是小表，哪个是大表，这个参数由（hive.auto.convert.join=true）来控制. 然后控制小表的大小由（hive.smalltable.filesize=25000000L）参数控制（默认是25M），当小表超过这个大小，hive 会默认转化成common join. 你可以查看HIVE-1642.
+        首先小表的Map 阶段它会将自己转化成MapReduce Local Task ，然后从HDFS 取小表的所有数据，将自己转化成Hashtable file 并压缩打包放入DistributedCache 里面.
+        目前hive 的map join 有几个限制，一个是它打算用BloomFilter 来实现hashtable , BloomFilter 大概比hashtable 省8-10倍的内存, 但是BloomFilter 的大小比较难控制.
+        现在DistributedCache 里面hashtable默认的复制是3份，对于一个有1000个map 的大表来说，这个数字太小，大多数map 操作都等着DistributedCache 复制.
+
+缺点：小表不能太大，吃内存
+
+
+
+三.SMB(Sort-Merge-Buket) Join
+
+smb是sort  merge bucket操作，首先进行排序，继而合并，然后放到所对应的bucket中去
+bucket是hive中和分区表类似的技术，就是按照key进行hash，相同的hash值都放到相同的buck中去。
+在进行两个表联合的时候。我们首先进行分桶，在join会大幅度的对性能进行优化。
+也就是说，在进行联合的时候，是table1中的一小部分和table1中的一小部分进行联合
+table联合都是等值连接，相同的key都放到了同一个bucket中去了，那么在联合的时候就会大幅度的减小无关项的扫描。
+set hive.auto.convert.sortmerge.join=true
+
+set hive.optimize.bucketmapjoin=true;
+
+set hive.optimize.bucketmapjoin.sortedmerge=true;
+
+在执行任务时，可以通过设置相关参数，手工选择join方式
+
+

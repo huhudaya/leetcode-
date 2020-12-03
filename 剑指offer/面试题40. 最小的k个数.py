@@ -182,3 +182,146 @@ class Solution:
             if idx > k:
                 right = idx - 1
         return arr[:k + 1]
+
+
+# java
+'''
+# 小根堆
+class Solution {
+    public int[] smallestK(int[] arr, int k) {
+        PriorityQueue<Integer> heap = new PriorityQueue<>(k + 1);
+        Arrays.stream(arr).forEach(num -> heap.offer(num));
+        int[] res = new int[k];
+        int idx = 0;
+        while (idx < k) res[idx++] = heap.poll();
+        return res;
+    }
+}
+
+# 大根堆
+class Solution {
+    public int[] smallestK(int[] arr, int k) {
+        if (k == 0) return new int[0];
+        PriorityQueue<Integer> heap = new PriorityQueue<>(k + 1, Comparator.comparingInt(item -> -item));
+        int idx = 0, len = arr.length;
+        for (; idx < k; ++idx)
+            heap.offer(arr[idx]);
+        for (; idx < len; ++idx) {
+            heap.offer(arr[idx]);
+            heap.poll();
+        }
+        return heap.stream().mapToInt(Integer::valueOf).toArray();
+    }
+}
+
+# lambda
+class Solution {
+    public int[] smallestK(int[] arr, int k) {
+        return Arrays.stream(arr).sorted().limit(k).toArray();
+    }
+}
+
+# 快排
+    public int[] smallestK(int[] arr, int k) {
+        if (k >= arr.length) {
+            return arr;
+        }
+
+        int low = 0;
+        int high = arr.length - 1;
+        while (low < high) {
+            int pos = partition(arr, low, high);
+            if (pos == k - 1) {
+                break;
+            } else if (pos < k - 1) {
+                low = pos + 1;
+            } else {
+                high = pos - 1;
+            }
+        }
+
+        int[] dest = new int[k];
+        System.arraycopy(arr, 0, dest, 0, k);
+        return dest;
+    }
+
+    private int partition(int[] arr, int low, int high) {
+        int pivot = arr[low];
+        while (low < high) {
+            while (low < high && arr[high] >= pivot) {
+                high--;
+            }
+
+            arr[low] = arr[high];
+            while (low < high && arr[low] <= pivot) {
+                low++;
+            }
+            arr[high] = arr[low];
+        }
+        arr[low] = pivot;
+        return low;
+    }
+
+# 排序
+class Solution {
+    public int[] smallestK(int[] arr, int k) {
+        if (arr == null || arr.length == 0) return new int[k];
+        int[] result = new int[k];
+        Arrays.sort(arr);
+        for (int i = 0; i < k;  i++) {
+            result[i] = arr[i];
+        }
+
+        return result;
+
+    }
+}
+
+# 最小堆
+class Solution {
+    public int[] smallestK(int[] arr, int k) {
+        if (arr == null || arr.length == 0) return new int[k];
+        int[] result = new int[k];
+        PriorityQueue<Integer> queue = new PriorityQueue<>();
+        for (int i : arr) {
+            queue.offer(i);
+        }
+
+        for (int i = 0; i < k; i++) {
+            result[i] = queue.poll();
+        }
+
+        return result;
+
+    }
+}
+
+# 应该使用的大根堆
+class Solution {
+     public int[] smallestK(int[] arr, int k) {
+        if (arr == null) return arr;
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>((o1, o2) -> o2 - o1);
+        for (int num : arr) {
+            if (maxHeap.size() == k) {
+                if (maxHeap.peek()!=null && num < maxHeap.peek()) {
+                    maxHeap.remove();
+                    maxHeap.offer(num);
+                }
+            } else {
+                //还未满，继续添加元素
+                maxHeap.offer(num);
+            }
+        }
+        return heap2Array(maxHeap);
+    }
+
+    private int[] heap2Array(PriorityQueue<Integer> maxHeap) {
+        int[] arr = new int[maxHeap.size()];
+        List<Integer> list = new ArrayList<>(maxHeap);
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = list.get(i);
+        }
+        return arr;
+    }
+}
+'''

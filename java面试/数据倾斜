@@ -1,0 +1,66 @@
+https://www.jianshu.com/p/daa4e7c86925?clicktime=1573703099&enterid=1573703099
+
+1. 空值数据倾斜
+    join的key值发生倾斜，key值包含很多空值或是异常值，这种情况可以对异常值赋一个随机值来分散key。
+    案例：在日志中，常会有信息丢失的问题，比如日志中的 user_id，如果取其中的 user_id 和 用户表中的user_id 关联，会碰到数据倾斜的问题。
+    select * from log l
+    left outer join user u on
+    case when (l.user_id is null or I.user_id='-' or I.user_id='0')
+    then concat(‘sql_hive’,rand() ) else l.user_id end = u.user_id;
+
+
+2. Join操作产生数据倾斜
+    2.1 大表和小表Join
+        产生原因：Hive在进行join时，按照join的key进行分发，而在join左边的表的数据会首先读入内存，如果左边表的key相对分散，读入内存的数据会比较小，join任务执行会比较快；
+        而如果左边的表key比较集中，而这张表的数据量很大，那么数据倾斜就会比较严重，而如果这张表是小表，则还是应该把这张表放在join左边。
+        解决方式：使用map join让小的维度表先进内存。在map端完成reduce。
+        在0.7.0版本之前：需要在sql中使用 /*+ MAPJOIN(smallTable) */ ；
+        SELECT /*+ MAPJOIN(b) */ a.key, a.value
+        FROM a
+        JOIN b ON a.key = b.key;
+    2.2 大表和大表Join
+    产生原因：业务数据本身的特性，导致两个表都是大表。
+    解决方式：业务削减。
+    案例：user 表有 500w+ 的记录，把 user 分发到所有的 map 上也是个不小的开销，而且 map join 不支持这么大的小表。
+    如果用普通的 join，又会碰到数据倾斜的问题。
+    select * from log l left outer join user u
+    on l.user_id = u.user_id;
+    解决方法：当天登陆的用户其实很少,先只查询当天登录的用户，log里user_id有上百万个，这就又回到原来map join问题。
+    所幸，每日的会员uv不会太多，有交易的会员不会太多，有点击的会员不会太多，有佣金的会员不会太多等等。所以这个方法能解决很多场景下的数据倾斜问题。
+
+
+说的是优化手段，但更多的是"踩坑"的经验之谈。
+
+☝️ 优化之道：
+
+    首先要了解数据分布，自己动手解决数据倾斜问题是个不错的选择；
+    1.增加jvm（Java Virtual Machine：Java虚拟机）内存，这适用于变量值非常少的情况，这种情况下，往往只能通过硬件的手段来进行调优，增加jvm内存可以显著的提高运行效率；
+
+    2.增加reduce的个数，这适用于变量值非常多的情况，这种情况下最容易造成的结果就是大量相同key被partition到一个分区，从而一个reduce执行了大量的工作；
+
+    3.重新设计key，有一种方案是在map阶段时给key加上一个随机数，有了随机数的key就不会被大量的分配到同一节点(小几率)，待到reduce后再把随机数去掉即可；
+
+    4.使用combiner合并。combinner是在map阶段，reduce之前的一个中间阶段，在这个阶段可以选择性的把大量的相同key数据先进行一个合并，可以看做是local reduce，然后再交给reduce来处理，减轻了map端向reduce端发送的数据量(减轻了网络带宽)，也减轻了map端和reduce端中间的shuffle阶段的数据拉取数量(本地化磁盘IO速率)；（hive.map.aggr=true）
+
+    5.设置合理的map reduce的task数，能有效提升性能。（比如，10w+级别的计算，用160个reduce，那是相当的浪费，1个足够）；
+
+    6.数据量较大的情况下，慎用count(distinct)，count(distinct)容易产生倾斜问题；
+
+    7.hive.groupby.skewindata=true
+      有数据倾斜的时候进行负载均衡，当选项设定为 true，生成的查询计划会有两个 MR Job。第一个 MR Job 中，Map 的输出结果集合会随机分布到 Reduce 中，每个 Reduce 做部分聚合操作，并输出结果，这样处理的结果是相同的 Group By Key 有可能被分发到不同的 Reduce 中，从而达到负载均衡的目的；第二个 MR Job 再根据预处理的数据结果按照 Group By Key 分布到 Reduce 中（这个过程可以保证相同的 Group By Key 被分布到同一个 Reduce 中），最后完成最终的聚合操作。
+
+✌️  SQL语句调节：
+    如何Join：
+        关于驱动表的选取，选用join key分布最均匀的表作为驱动表；
+        做好列裁剪和filter操作，以达到两表做join的时候，数据量相对变小的效果。
+    大小表Join：
+        使用map join让小的维度表（1000条以下的记录条数） 先进内存。在map端完成reduce。
+    大表Join大表：
+        把空值的key变成一个字符串加上随机数，把倾斜的数据分到不同的reduce上，由于null值关联不上，处理后并不影响最终结果。
+    count distinct大量相同特殊值：
+        count distinct时，将值为空的情况单独处理，如果是计算count distinct，可以不用处理，直接过滤，在最后结果中加1。如果还有其他计算，需要进行group by，可以先将值为空的记录单独处理，再和其他计算结果进行union。
+    group by维度过小：
+        采用sum() group by的方式来替换count(distinct)完成计算。
+    特殊情况特殊处理：
+        在业务逻辑优化效果的不大情况下，有些时候是可以将倾斜的数据单独拿出来处理。最后union回去。
+

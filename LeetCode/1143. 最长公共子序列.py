@@ -45,7 +45,7 @@ class Solution:
     def longestCommonSubsequence(self, text1: str, text2: str) -> int:
         # dp思想
         m, n = len(text1), len(text2)
-        # dp[i][j] 定义为到i,j为止的最长子序列的长度
+        # dp[i][j] 定义为到i, j为止的最长子序列的长度
         dp = [[0] * (n + 1) for _ in range(m + 1)]
         # basecase为0
         for i in range(1, m + 1):
@@ -55,3 +55,55 @@ class Solution:
                 else:
                     dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
         return dp[m][n]
+# java
+'''
+// java
+class Solution {
+    public int longestCommonSubsequence(String text1, String text2) {
+        int m = text1.length();
+        int n = text2.length();
+        int[][] dp = new int[m + 1][n + 1];
+        for (int i = 1; i < m + 1; ++i) {
+            for (int j = 1; j < n + 1; ++j) {
+                if (text1.charAt(i - 1) == text2.charAt(j - 1)){
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                } else {
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+        return dp[m][n];
+    }
+}
+'''
+
+# golang
+'''
+func longestCommonSubsequence(text1 string, text2 string) int {
+    m, n := len(text1), len(text2)
+    if m == 0 || n == 0 {
+        return 0
+    }
+    dp := make([][]int, m + 1)
+    for i := 0; i <= m; i++ {
+        dp[i] = make([]int, n + 1)
+    }
+    for i := 1; i <= m; i++ {
+        for j := 1; j <= n; j++ {
+            if text1[i - 1] == text2[j - 1] {
+                dp[i][j] = dp[i - 1][j - 1] + 1
+            } else {
+                dp[i][j] = maxInt(dp[i - 1][j], dp[i][j - 1])
+            }
+        }
+    }
+    return dp[m][n]
+}
+
+func maxInt(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+'''

@@ -56,7 +56,15 @@ with tmp as (
 
 -- lateral的用法
 lateral view explode(split(...)) new_table as new_column
-
+select id,explode(arry1) from table; —错误
+会报错FAILED: SemanticException 1:40 Only a single expression in the SELECT clause is supported with UDTF’s.
+select explode(array1) from table; —正确
+但是实际中经常要拆某个字段,然后一起与别的字段一起出.例如上面的id和拆分的array元素是对应的.我们应该如何进行连接呢?我们知道直接select id,explode()是不行的.这个时候就需要lateral view出厂了.
+lateral view为侧视图,意义是为了配合UDTF来使用,把某一行数据拆分成多行数据.不加lateral view的UDTF只能提取单个字段拆分,并不能塞会原来数据表中.加上lateral view就可以将拆分的单个字段数据与原始表数据关联上.
+在使用lateral view的时候需要指定视图别名和生成的新列别名
+select id,num from table lateral view explode(array1) subview as num;
+subview为视图别名,num为指定新列别名
+lateral view explode 相当于一个拆分array1字段的虚表,然后根据id将其与原表进行笛卡尔积关联.
 
 
 
@@ -123,3 +131,28 @@ from_unixtime(floor(unix_timestamp(errorTime) / 60) * 60, '%Y-%m-%d %H:%i:%s') a
 
 -- 按时间段统计3
 from_unixtime(unix_timestamp(time) - unix_timestamp(time) % time_interval, '%Y-%m-%d %H:%i:%s') as date
+
+
+-- 对ab事件压缩得到，值相等的多行压缩为一行
+a time1
+a time2
+a time3
+b time4
+a time5
+先rank over (partition by event order by time),得到rank列
+a time1 1
+a time2 1
+a time3 1
+b time4 2
+a time5 3
+在lag一下
+a time1 1 time2
+a time2 1 time3
+a time3 1 time4
+b time4 2 time5
+a time5 3 null
+在 select event,min(time1) as begintime,max(time2) as endtime group by event, rn
+得到
+a time1 time4
+b time4 time5
+a time5 null
