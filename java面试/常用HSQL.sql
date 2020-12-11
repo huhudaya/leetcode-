@@ -34,6 +34,7 @@ province,
 saleroom,
 lag(saleroom,1,0) over(partition by concat(month(dt),"-",day(dt)),area,province order by dt asc) pre_sale
 from new_table)
+
 select
 dt,area,province,saleroom,pre_sale,
 if(round((saleroom-pre_sale)/abs(pre_sale)*1.00,2) is null,100,round((saleroom-pre_sale)/abs(pre_sale)*1.00,2)*100)

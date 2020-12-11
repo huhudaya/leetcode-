@@ -11,7 +11,7 @@ flink的checkpoint原理
   步骤：
     1.上游的每个source在某一时刻会发送一个barrier_id,单调递增，这个barrier_id会进行广播的操作
     2.下游的solt只有当上游所广播的barrier_id都收集到了才能保存状态！否则，在barrier之前达到的元素，都需要缓存在buffer_memory
-3.flinkcheckpoint两阶段提交的流程
+3.flink checkpoint两阶段提交的流程
     1.开启一个kafka事务
     2.source插入barrier并且广播到下游operator
     3.遇见barrier的算子将状态存入状态后端
@@ -98,4 +98,68 @@ Flink-sql解析过程
     2.预提交（preCommit）将内存中缓存的数据写入文件并关闭
     3.正式提交（commit）将之前写完的临时文件放入目标目录下。这代表着最终的数据会有一些延迟
     4.丢弃（abort）丢弃临时文件
-        若失败发生在预提交成功后，正式提交前。可以根据状态来提交预提交的数据，也可删除预提交的数据。
+        若失败发生在预提交成功后，正式提交前。可以根据状态来提交预提交的数据，也可删除预提交的数据
+checkpoint：
+    一句话的事儿： checkpoint【可以理解为checkpoint是把state数据持久化存储了】，则表示了一个Flink Job在一个特定时刻的一份全局状态快照，即包含了所有task/operator的状态
+
+反压：
+    https://www.cnblogs.com/029zz010buct/p/10156836.html
+    https://blog.csdn.net/weixin_45399233/article/details/100186766?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-2.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-2.control
+    在 Flink 中，这些分布式阻塞队列就是这些逻辑流，而队列容量是通过缓冲池来（LocalBufferPool）实现的。
+    每个被生产和被消费的流都会被分配一个缓冲池。缓冲池管理着一组缓冲(Buffer)，缓冲在被消费后可以被回收循环利用。
+    这很好理解：你从池子中拿走一个缓冲，填上数据，在数据消费完之后，又把缓冲还给池子，之后你可以再次使用它。
+    大白话原理：
+        大的原理，上游的task产生数据后，会写在本地的缓存中，然后通知JM自己的数据已经好了，JM通知下游的Task去拉取数据，下游的Task然后去上游的Task拉取数据，形成链条。
+        但是在何时通知JM？这里有一个设置，比如pipeline还是blocking，pipeline意味着上游哪怕产生一个数据，也会去通知，blocking则需要缓存的插槽存满了才会去通知，默认是pipeline。
+        虽然生产数据的是Task，但是一个TaskManager中的所有Task共享一个NetworkEnvironment，下游的Task利用ResultPartitionManager主动去上游Task拉数据，底层利用的是Netty和TCP实现网络链路的传输。
+        那么，一直都在说Flink的背压是一种自然的方式，为什么是自然的了？
+        从上面的图中下面的链路中可以看到，当下游的process逻辑比较慢，无法及时处理数据时，他自己的local buffer中的消息就不能及时被消费，进而导致netty无法把数据放入local buffer，进而netty也不会去socket上读取新到达的数据，进而在tcp机制中，tcp也不会从上游的socket去读取新的数据，上游的netty也是一样的逻辑，它无法发送数据，也就不能从上游的localbuffer中消费数据，所以上游的localbuffer可能就是满的，上游的operator或者process在处理数据之后进行collect.out的时候申请不能本地缓存，导致上游的process被阻塞。这样，在这个链路上，就实现了背压。
+        如果还有相应的上游，则会一直反压上去，一直影响到source，导致source也放慢从外部消息源读取消息的速度。一旦瓶颈解除，网络链路畅通，则背压也会自然而然的解除。
+
+可撤回流：
+    同一个订单的商品在运输过程中，因为各种原因，物流公司是有可能从A变成B的。为了统计物流公司承担的订单数目，菜鸟团队使用blink计算的retraction机制进行变key汇总操作。
+
+    -- TT source_table 数据如下：
+    order_id      tms_company
+    0001           中通
+    0002           中通
+    0003           圆通
+
+    -- SQL代码
+    create view dwd_table as
+    select
+        order_id,
+        StringLast(tms_company)
+    from source_table
+    group by order_id;
+
+    create view dws_table as
+    select
+        tms_company,
+        count(distinct order_id) as order_cnt
+    from dwd_table
+    group by tms_company
+
+
+    此时结果为：
+    tms_company  order_cnt
+    中通          2
+    圆通          1
+
+    -----------------------
+    之后又来了一条新数据 0001的订单 配送公司改成 圆通了。这时，第一层group by的会先向下游发送一条 (0001,中通）的撤回消息，第二层group by节点收到撤回消息后，会将这个节点 中通对应的 value减少1，并更新到结果表中；然后第一层的分桶统计逻辑向下游正常发送(0001,圆通）的正向消息，更新了圆通物流对应的订单数目，达到了最初的汇总目的。
+
+    order_id      tms_company
+    0001           中通
+    0002           中通
+    0003           圆通
+    0001           圆通
+
+    写入ADS结果会是（满足需求）
+    tms_company  order_cnt
+    中通          1
+    圆通          2
+
+
+双流join和维表join的区别：
+    解释的比较好：https://blog.csdn.net/weixin_42868529/article/details/110449793?utm_medium=distribute.pc_relevant.none-task-blog-baidulandingword-12&spm=1001.2101.3001.4242
