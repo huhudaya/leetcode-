@@ -298,7 +298,7 @@ func levelOrder(root *TreeNode) [][]int {
 	queue = append(queue, root)
 	for len(queue) > 0 {
 		l := len(queue)
-		ans := make([]int, 0)
+		f := make([]int, 0)
 		for i := 0; i < l; i++ {
 			node := queue[i]
 			ans = append(ans, node.Val)

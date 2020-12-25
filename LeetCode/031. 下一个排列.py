@@ -10,7 +10,7 @@
 1,2,3 → 1,3,2
 3,2,1 → 1,2,3
 1,1,5 → 1,5,1
-
+12354 -> 12435
 链接：https://leetcode-cn.com/problems/next-permutation
 '''
 # java
@@ -55,6 +55,7 @@ public class Solution {
 3.其实就相当于找到i右边从右侧开始遍历的第一个比i大的数作为新的排头兵，交换两个位置，然后反转index为i的右侧部分即可
 2.交换这两个数，然后反转i右侧的部分即可
 '''
+from typing import List
 class Solution:
     def nextPermutation(self, nums: List[int]) -> None:
         """
